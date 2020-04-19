@@ -1,0 +1,1 @@
+export {milk}  from './GetMilk'
