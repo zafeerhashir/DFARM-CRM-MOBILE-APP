@@ -2,6 +2,8 @@
 
  async function executeRequest(method, pathname, body = {}, headers = {}) {
 
+  console.log(body,'executeRequest')
+
    response  = await fetch(`https://dfarm.herokuapp.com/${pathname}`, {
         method: method,
         headers: {
@@ -9,7 +11,11 @@
         'Content-Type': 'application/json',
         ...headers
         },
+        body: JSON.stringify(body)
     });
+
+    console.log(response,'executeRequestresponse')
+
 
     return await response.json();
 

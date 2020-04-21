@@ -8,15 +8,11 @@ function Input(props) {
   const [error, setError] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  //   required = () => {
-  //     if (props.required == false) {
-  //       props.error(false);
-  //     }
-  //   };
 
   const onChangeRowInput = async (value = null) => {
    setValue(value)
     var regex = new RegExp(props.regex);
+    var requireField
 
     // not using required Filed Validator
     if (props.required == false) {
@@ -38,7 +34,7 @@ function Input(props) {
       requireField = await requireFieldValidator(value);
     }
 
-    regexValidator = regex.test(value);
+    var regexValidator = regex.test(value);
 
 
     if (requireField) {
@@ -124,6 +120,10 @@ export {Input}
 const inputStyles = {
   container: {
     width: '100%',
+    borderWidth: 0,
+    marginBottom: 40,
+    backgroundColor: color.white,
+
   },
 
   labelContainer: {
@@ -139,7 +139,7 @@ const inputStyles = {
   },
 
   errorContainer: {
-    height: 30,
+    height: 10,
     justifyContent: 'center',
     width: '100%',
   },

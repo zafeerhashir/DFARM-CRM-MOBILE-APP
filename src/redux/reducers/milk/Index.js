@@ -1,1 +1,1 @@
-export {milk}  from './GetMilk'
+export {milk}  from './Milk'
