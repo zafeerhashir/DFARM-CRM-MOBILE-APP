@@ -1,4 +1,5 @@
 export { Input } from './Input'
 export { Button } from './Button'
 export { Date } from './DatePicker'
+export { MaterialDropdown } from './DropDown'
 export { SmartView } from './SmartView'

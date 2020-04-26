@@ -1,10 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import color from '../assets/color/Index';
 import DatePicker from 'react-native-datepicker';
 
-function Date(props) {
+function IDate(props,ref) {
   const [date, setDate] = useState('');
+
+  useImperativeHandle(ref, () => ({
+    clear: () => {
+      props.onDateChange('')
+      setDate('')
+    }
+  }));
+
+
 
   return (
     <View style={datePickerStyles.pickerContainer}>
@@ -24,8 +33,8 @@ function Date(props) {
                 position: 'absolute',
                 left: 0,
                 marginLeft: 0,
-                height: 40,
-                width: 40,
+                height: 50,
+                width: 50,
               },
               dateInput: {
                 paddingLeft: 0,
@@ -48,7 +57,7 @@ function Date(props) {
   );
 }
 
-export {Date};
+export const Date = forwardRef(IDate)
 
 const datePickerStyles = {
   pickerContainer: {
@@ -56,20 +65,21 @@ const datePickerStyles = {
     borderWidth: 0,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     borderColor: color.grey.color,
     borderWidth: 0,
-    marginTop: 30,
+    height: 100,
     borderWidth: 0,
+
   },
   datePickerStyle: {
-    width: 40,
+    width: 50,
     borderWidth: 0,
   },
   pickerCol: {
     width: '100%',
     borderWidth: 0,
     justifyContent: 'space-between',
-    height: 65,
   },
   pickerRow: {
     width: '100%',

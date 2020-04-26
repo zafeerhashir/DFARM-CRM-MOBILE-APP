@@ -1,14 +1,23 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {View, TextInput} from 'react-native';
-import {Input, Button, Date, SmartView} from '../../../components/Index';
+import {
+  Input,
+  Button,
+  Date,
+  SmartView,
+  MaterialDropdown,
+} from '../../../components/Index';
 import {literRegex} from '../../../validations/Index';
 import color from '../../../assets/color/Index';
 import {useSelector, useDispatch} from 'react-redux';
-import {addMilk} from '../../../redux/actions/Index';
-import { thisTypeAnnotation } from '@babel/types';
+import {addMilk, getMilk, getAnimal} from '../../../redux/actions/Index';
+import {thisTypeAnnotation} from '@babel/types';
 
 function AddMilk() {
-  const [username, setUsername] = useState('');
+  const milkReducerState = useSelector(state => state.milk);
+  const animalReducerState = useSelector(state => state.animal);
+
+  const [animalTagId, setAnimalTagId] = useState('');
   const [milkAM, setMilkAM] = useState('');
   const [milkPM, setMilkPM] = useState('');
   const [milkAMError, setMilkAMError] = useState(true);
@@ -16,35 +25,58 @@ function AddMilk() {
   const [date, setDate] = useState('');
   const buttonDisable = validate(milkAMError, milkPMError, date);
   const dispatch = useDispatch();
-  const milk = useSelector(state => state.milk);
+  const milkAMRef = useRef();
+  const milkPMRef = useRef();
+  const dateRef = useRef();
 
-  // useEffect(() => {
-  //   dispatch({type:"GET_MILK_START"});
-  // });
+  const inputMilkPM = useRef(null);
+
+  useEffect(() => {
+    dispatch(getAnimal());
+  },[]);
 
   const callApi = () => {
     const postBodyAddMilk = {
       milk: [{date, milkProduceAM: milkAM, milkProducePM: milkPM}],
     };
-    dispatch(addMilk(postBodyAddMilk));
-    if(milk.loading == false)
-    {
-      setMilkPM('')
-      setMilkAM('')
-      setDate('')
+    const payload ={
+      postBodyAddMilk,
+      animalTagId
     }
+    console.log(payload,'PostMilkBody')
+    dispatch(addMilk(payload));
+
+    milkAMRef.current.clear();
+    milkPMRef.current.clear();
+    dateRef.current.clear();
   };
 
   return (
-    <SmartView loading={milk.loading}>
+    <SmartView loading={milkReducerState.milkLoading}>
       <View style={addMilkStyles.form}>
         <Date
+          date={date}
+          ref={dateRef}
           onDateChange={date => {
             setDate(date);
           }}
         />
+
+        {console.log(animalReducerState.animalData,'animalData')}
+        <MaterialDropdown
+          label={'Animal'}
+          placeholder={'Select Animal'}
+          onChangeText={value => setAnimalTagId(value)}
+          data={animalReducerState.animalData}
+          valueExtractor={values => values._id}
+          labelExtractor={values => values.tag}
+        />
+
         <Input
           label={'Milk Produce AM'}
+          maxLength={2}
+          ref={milkAMRef}
+          value={milkAM}
           placeholder={'Enter Milk Produce AM'}
           errorMessage={'The value must be numeric'}
           onChangeText={value => setMilkAM(value)}
@@ -56,6 +88,10 @@ function AddMilk() {
 
         <Input
           label={'Milk Produce PM'}
+          required={false}
+          maxLength={2}
+          ref={milkPMRef}
+          value={milkPM}
           placeholder={'Enter Milk Produce PM'}
           errorMessage={'The value must be numeric'}
           onChangeText={value => setMilkPM(value)}

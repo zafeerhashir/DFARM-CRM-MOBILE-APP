@@ -1,12 +1,20 @@
-import React, {useState, useEffect} from 'react';
-import {TextInput, Text, View } from 'react-native';
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import { Text, TextInput, View } from 'react-native';
 import color from '../assets/color/Index';
-import { requireFieldValidator } from '../validations/Index'
+import { requireFieldValidator } from '../validations/Index';
 
-function Input(props) {
+function IInput(props,ref) {
   const [value, setValue] = useState('');
   const [error, setError] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+
+  useImperativeHandle(ref, () => ({
+    clear: () => {
+      props.onChangeText('')
+      setValue('')
+    }
+  }));
 
 
   const onChangeRowInput = async (value = null) => {
@@ -113,15 +121,17 @@ return (
   );
 }
 
+export const Input = forwardRef(IInput)
 
 
-export {Input}
 
 const inputStyles = {
   container: {
     width: '100%',
+    justifyContent:'center',
+    alignItems:'center',
     borderWidth: 0,
-    marginBottom: 40,
+    height: 100,
     backgroundColor: color.white,
 
   },
@@ -146,6 +156,8 @@ const inputStyles = {
   input: {
     height: 50,
     width: '100%',
+    borderBottomWidth: 0.5
+
   },
   error: {
     color: color.red,

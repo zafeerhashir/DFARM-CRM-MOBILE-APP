@@ -1,53 +1,53 @@
-import constant from '../../constant/Index'
+import constant from '../constant/Index'
 
 const initialState = {
-	data: [],
-	loading: false,
-	loadingError: false
+	animalData: [],
+	animalLoading: false,
+	animalLoadingError: false
 };
 
  function animal (state = initialState, action) {
 	switch (action.type) {
 		case constant.GET_ANIMAL_START:
 			return { ...state, 
-				loading: true 
+				animalLoading: true 
 			}
 		case constant.GET_ANIMAL_SUCCESS:
 
 			return {
 				...state,
-				data: action.payload,
-				loading: false,
-				loadingError: false
+				animalData: action.payload,
+				animalLoading: false,
+				animalLoadingError: false
 			}
 		case constant.GET_ANIMAL_FAILURE:
 			return { ...state, 
-				loadingError: true, 
-				loading: false 
+				animalLoadingError: true, 
+				animalLoading: false 
 			}
 
 		case constant.ADD_ANIMAL_START:
 			return {
 				...state,
-				loadingError: false, 
-				loading: true 
+				animalLoadingError: false, 
+				animalLoading: true 
 			}	
 
 			case constant.ADD_ANIMAL_SUCCESS:
 
 			return {
 				...state,
-				data:action.payload,
-				loadingError: false, 
-				loading: false 
+				animalData:action.payload,
+				animalLoadingError: false, 
+				animalLoading: false 
 			}
 
 			case constant.ADD_ANIMAL_FAILURE:
 			return {
 				...state,
-				data:action.payload,
-				loadingError: true, 
-				loading: false
+				animalData:action.payload,
+				animalLoadingError: true, 
+				animalLoading: false
 			}
 		default:
 			return state

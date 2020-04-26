@@ -1,8 +1,12 @@
 import {combineReducers} from 'redux'
-import { milk } from './milk/Index'
+import { milk } from './Milk'
+import { animal } from './Animal'
+
+
 
 
 
 export const rootReducer = combineReducers({
-	milk
+	milk,
+	animal
 })

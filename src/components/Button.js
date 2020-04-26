@@ -23,6 +23,7 @@ const buttonStyles = {
     width: '100%',
     backgroundColor: color.black,
     height: 50,
+    marginVertical: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
