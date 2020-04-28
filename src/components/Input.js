@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useState, useEffect } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import color from '../assets/color/Index';
 import { requireFieldValidator } from '../validations/Index';
@@ -9,13 +9,19 @@ function IInput(props,ref) {
   const [errorMessage, setErrorMessage] = useState('');
 
 
-  useImperativeHandle(ref, () => ({
+
+  useImperativeHandle((props,ref), () => ({
     clear: () => {
       props.onChangeText('')
+      onChangeRowInput()
       setValue('')
     }
   }));
 
+
+  useEffect(() => {
+    onChangeRowInput()
+  },[]);
 
   const onChangeRowInput = async (value = null) => {
    setValue(value)
@@ -107,6 +113,7 @@ return (
       <View style={inputStyles.inputContainer}>
         <TextInput
           style={inputStyles.input}
+          keyboardType={props.keyboardType}
           onChangeText={(value)=>onChangeRowInput(value)}
         //   onFocus={onChangeRowInput(value)}
           placeholder={props.placeholder}
@@ -128,18 +135,19 @@ export const Input = forwardRef(IInput)
 const inputStyles = {
   container: {
     width: '100%',
-    justifyContent:'center',
+    justifyContent:'space-between',
     alignItems:'center',
     borderWidth: 0,
-    height: 100,
+    height: 110,
     backgroundColor: color.white,
 
   },
 
   labelContainer: {
-    height: 30,
+    height: 20,
     justifyContent: 'center',
     width: '100%',
+    borderWidth:0,
   },
 
   inputContainer: {
@@ -149,14 +157,18 @@ const inputStyles = {
   },
 
   errorContainer: {
-    height: 10,
+    height: 30,
     justifyContent: 'center',
     width: '100%',
+    borderWidth: 0
   },
   input: {
-    height: 50,
+    height: 45,
+    borderWidth:0,
     width: '100%',
-    borderBottomWidth: 0.5
+    borderBottomWidth: 0.5,
+    borderWidth:0,
+
 
   },
   error: {

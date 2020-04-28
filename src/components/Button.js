@@ -7,10 +7,10 @@ function Button(props) {
 
   return (
     <TouchableOpacity
-      style={[buttonStyles.container, props.disabled &&  buttonStyles.disabled ]}
+      style={[buttonStyles.container ]}
       disabled={props.disabled}
       onPress={props.onPress}>
-      <Text style={buttonStyles.title}>{props.title}</Text>
+      <Text style={[buttonStyles.title,props.disabled &&  buttonStyles.disabled ]}>{props.title}</Text>
     </TouchableOpacity>
   );
 
@@ -21,17 +21,17 @@ export {Button};
 const buttonStyles = {
   container: {
     width: '100%',
-    backgroundColor: color.black,
+    backgroundColor: color.tealDarkGreen,
     height: 50,
     marginVertical: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
   disabled:{
-    backgroundColor: color.grey,
+    color: color.lightGrey,
 
   },
   title: {
-    color: color.white,
+    color: color.black,
   },
 };

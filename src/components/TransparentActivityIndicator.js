@@ -24,7 +24,7 @@ function TransparentActivityIndicator ()
           width: "100%"
         }}
       >
-        <ActivityIndicator color={color.black.color} size="large" />
+        <ActivityIndicator  color={color.tealDarkGreen} size="large" />
       </View>
     );
   

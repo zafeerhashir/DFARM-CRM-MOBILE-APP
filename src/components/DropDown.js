@@ -1,13 +1,24 @@
-import React, { forwardRef, useRef, useState } from 'react';
+import React, { forwardRef, useRef, useState, useImperativeHandle } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import color from '../assets/color/Index';
 import { Dropdown } from "react-native-material-dropdown";
 
 
-function IDropDown(props)  {
+function IDropDown(props,ref)  {
   
   const [value, setValue] = useState('');
   const dropDownRef = useRef();
+
+
+  
+  useImperativeHandle((props,ref), () => ({
+    clear: () => {
+      props.onChangeText('')
+      setValue('')
+    }
+  }));
+
+
 
  
 
@@ -58,6 +69,11 @@ function IDropDown(props)  {
             labelExtractor={props.labelExtractor}
           />
         </View>
+        <View style={dropDownStyles.errorContainer}>
+          {value == '' &&
+           <Text style={dropDownStyles.error}>This field is required</Text>
+          }
+        </View>
 
       </View>
     );
@@ -74,11 +90,10 @@ const dropDownStyles = {
   },
   containerStyle: {
     width: "100%",
+    justifyContent:'space-between',
+    alignItems:'center',
     borderWidth: 0,
-    justifyContent: "center",
-    borderWidth: 0,
-    borderWidth: 0,
-    height: 100
+    height: 110,
   },
   dropdownOffset: {
     top: 32,
@@ -86,16 +101,18 @@ const dropDownStyles = {
   },
   labelContainer: {
     height: 20,
+    borderWidth:0,
     width: "100%"
   },
   dropDownContainer: {
-    width: "100%"
+    width: "100%",
+    borderWidth:0,
   },
   childContainer: {
     height: 0
   },
   renderBaseInput: {
-    height: 50,
+    height: 45,
     width: "100%",
     borderBottomWidth: 0.5,
     textAlign: "left"
@@ -120,7 +137,7 @@ const dropDownStyles = {
     justifyContent: "center",
     alignItems: "center",
     width: "8%",
-    height: 50,
+    height: 45,
     borderBottomWidth: 0.5
   },
   container: {
@@ -133,5 +150,14 @@ const dropDownStyles = {
     justifyContent: "center",
     alignItems: "center",
     width: "92%"
-  }
+  },
+  errorContainer: {
+    height: 30,
+    justifyContent: 'center',
+    width: '100%',
+    borderWidth: 0
+  },
+  error: {
+    color: color.red,
+  },
 };

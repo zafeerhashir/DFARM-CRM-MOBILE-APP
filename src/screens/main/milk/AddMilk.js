@@ -19,7 +19,7 @@ function AddMilk() {
 
   const [animalTagId, setAnimalTagId] = useState('');
   const [milkAM, setMilkAM] = useState('');
-  const [milkPM, setMilkPM] = useState('');
+  const [milkPM, setMilkPM] = useState(0);
   const [milkAMError, setMilkAMError] = useState(true);
   const [milkPMError, setMilkPMError] = useState(true);
   const [date, setDate] = useState('');
@@ -28,6 +28,8 @@ function AddMilk() {
   const milkAMRef = useRef();
   const milkPMRef = useRef();
   const dateRef = useRef();
+  const animalRef = useRef();
+
 
   const inputMilkPM = useRef(null);
 
@@ -37,7 +39,7 @@ function AddMilk() {
 
   const callApi = () => {
     const postBodyAddMilk = {
-      milk: [{date, milkProduceAM: milkAM, milkProducePM: milkPM}],
+      milk: [{date, milkProduceAM: milkAM, milkProducePM: milkPM == '' ? 0 : milkPM}],
     };
     const payload ={
       postBodyAddMilk,
@@ -49,6 +51,7 @@ function AddMilk() {
     milkAMRef.current.clear();
     milkPMRef.current.clear();
     dateRef.current.clear();
+    animalRef.current.clear();
   };
 
   return (
@@ -64,6 +67,7 @@ function AddMilk() {
 
         {console.log(animalReducerState.animalData,'animalData')}
         <MaterialDropdown
+          ref={animalRef}
           label={'Animal'}
           placeholder={'Select Animal'}
           onChangeText={value => setAnimalTagId(value)}
@@ -74,6 +78,7 @@ function AddMilk() {
 
         <Input
           label={'Milk Produce AM'}
+          keyboardType={'number-pad'}
           maxLength={2}
           ref={milkAMRef}
           value={milkAM}
@@ -88,6 +93,7 @@ function AddMilk() {
 
         <Input
           label={'Milk Produce PM'}
+          keyboardType={'number-pad'}
           required={false}
           maxLength={2}
           ref={milkPMRef}
@@ -125,11 +131,13 @@ const addMilkStyles = {
     width: '100%',
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: color.white,
   },
   form: {
     width: '90%',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth:0
   },
 };

@@ -9,7 +9,8 @@ function* getMilk() {
     console.log(response,'getMilkresponse')
     yield put({
       type: constant.GET_MILK_SUCCESS,
-      payload: response,
+      payload: response
+      ,
     });
   } catch (error) {
     console.log(error,'getMilkEror')

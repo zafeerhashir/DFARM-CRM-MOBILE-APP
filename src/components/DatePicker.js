@@ -1,19 +1,17 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import React, {forwardRef, useImperativeHandle, useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import color from '../assets/color/Index';
 import DatePicker from 'react-native-datepicker';
 
-function IDate(props,ref) {
+function IDate(props, ref) {
   const [date, setDate] = useState('');
 
   useImperativeHandle(ref, () => ({
     clear: () => {
-      props.onDateChange('')
-      setDate('')
-    }
+      props.onDateChange('');
+      setDate('');
+    },
   }));
-
-
 
   return (
     <View style={datePickerStyles.pickerContainer}>
@@ -50,27 +48,33 @@ function IDate(props,ref) {
               setDate(date), props.onDateChange(date);
             }}
           />
-          {date == '' ?   <Text style={datePickerStyles.placeholderText}>Select date</Text>  : <Text style={datePickerStyles.dateText}>{date}</Text>}
+          {date == '' ? (
+            <Text style={datePickerStyles.placeholderText}>Select date</Text>
+          ) : (
+            <Text style={datePickerStyles.dateText}>{date}</Text>
+          )}
         </View>
+      </View>
+      <View style={datePickerStyles.errorContainer}>
+        {date == '' && (
+          <Text style={datePickerStyles.error}>This field is required</Text>
+        )}
       </View>
     </View>
   );
 }
 
-export const Date = forwardRef(IDate)
+export const Date = forwardRef(IDate);
 
 const datePickerStyles = {
   pickerContainer: {
     width: '100%',
-    borderWidth: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     borderColor: color.grey.color,
     borderWidth: 0,
-    height: 100,
-    borderWidth: 0,
-
+    height: 85,
+    marginTop: 20
   },
   datePickerStyle: {
     width: 50,
@@ -79,6 +83,7 @@ const datePickerStyles = {
   pickerCol: {
     width: '100%',
     borderWidth: 0,
+    height: 55,
     justifyContent: 'space-between',
   },
   pickerRow: {
@@ -88,11 +93,19 @@ const datePickerStyles = {
     alignItems: 'center',
   },
   dateText: {
-    marginLeft: '5%'
-  },
-  placeholderText:{
     marginLeft: '5%',
-    color: color.grey
-  
-  }
+  },
+  placeholderText: {
+    marginLeft: '5%',
+    color: color.grey,
+  },
+  errorContainer: {
+    height: 20,
+    justifyContent: 'center',
+    width: '100%',
+    borderWidth: 0,
+  },
+  error: {
+    color: color.red,
+  },
 };

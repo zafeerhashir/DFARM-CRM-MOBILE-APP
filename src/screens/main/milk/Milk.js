@@ -1,60 +1,87 @@
-import React, {useState, useEffect} from 'react';
-import { View, Text } from 'react-native';
-import {connect} from 'react-redux';
-import {getMilk} from '../../../redux/actions/Milk';
-import {useSelector, useDispatch} from 'react-redux';
+import React, {useEffect,useState,useRef} from 'react';
+import {FlatList, Text, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {SmartView, Row, Date} from '../../../components/Index';
+import {getMilk} from '../../../redux/actions/Index';
+import {formatDate} from './../../../conversions/Index';
 
 function Milk() {
+
+  const dateRef = useRef();
+  const [date, setDate] = useState('');
+  const milkReducerState = useSelector(state => state.milk);
   const dispatch = useDispatch();
-  // const courses = useSelector(state => state.milk.data);
 
   useEffect(() => {
-    dispatch({type:"GET_MILK_START"});
-  });
+    dispatch(getMilk());
+  }, []);
 
   return (
-    <View style={milkStyles.parentContainer}>
-      <View style={milkStyles.childOneContainer}>
-        <View style={milkStyles.subChildOneContainer}>
-          <View style={milkStyles.subSubChildOneContainer}>
-          <Text>
-          </Text>
+    <SmartView loading={milkReducerState.milkLoading}>
+      <View style={milkStyles.parentContainer}>
+        <View style={milkStyles.childOneContainer}>
+          <View style={milkStyles.subChildOneContainer}>
+            <View style={milkStyles.subSubChildOneContainer}>
+            <Date
+            date={date}
+            placeholder={'Select from date'}
+            ref={dateRef}
+            onDateChange={date => {
+              setDate(date);
+            }}
+          />
+            </View>
+
+            <View style={milkStyles.subSubChildOneContainer}>
+            <Date
+            date={date}
+            placeholder={'Select to date'}
+            ref={dateRef}
+            onDateChange={date => {
+              setDate(date);
+            }}
+          />
+            </View>
           </View>
 
-          <View style={milkStyles.subSubChildOneContainer}></View>
+          <View style={milkStyles.subChildTwoContainer}>
+            <View style={milkStyles.subSubChildTwoContainer}>
+            <Text>Total Milk</Text>
+            </View>
+
+            <View style={milkStyles.subSubChildTwoContainerLabel}>
+            <Text>1000000 Liter</Text>
+            </View>
+          </View>
         </View>
 
-        <View style={milkStyles.subChildTwoContainer}>
-          <View style={milkStyles.subSubChildTwoContainer}></View>
-
-          <View style={milkStyles.subSubChildTwoContainerLabel}></View>
-        </View>
+        <FlatList
+          data={milkReducerState.milkData}
+          renderItem={({item}) => (
+            <View style={milkStyles.cardContainer}>
+              <View style={milkStyles.cardContainerChild}>
+                <Row 
+                 label={'Date'} 
+                 value={formatDate(item.date)} 
+                />
+                <Row
+                  label={'Morning Milk'}
+                  value={`${item.milkProduceAM} liter`}
+                />
+                <Row
+                  label={'Evening Milk'}
+                  value={`${item.milkProducePM} liter`}
+                />
+                <Row
+                  label={'Total Milk'}
+                  value={item.milkProduceAM + item.milkProducePM}
+                />
+              </View>
+            </View>
+          )}
+        />
       </View>
-
-      <View style={milkStyles.cardContainer}>
-        <View style={milkStyles.cardContainerChildOne}>
-          <View style={milkStyles.cardContainerChildOneRow}>
-            <View style={milkStyles.cardContainerChildOneColLabel}></View>
-
-            <View style={milkStyles.cardContainerChildOneColText}></View>
-          </View>
-
-          <View style={milkStyles.cardContainerChildOneRow}>
-            <View style={milkStyles.cardContainerChildOneColLabel}></View>
-
-            <View style={milkStyles.cardContainerChildOneColText}></View>
-          </View>
-
-          <View style={milkStyles.cardContainerChildOneRow}>
-            <View style={milkStyles.cardContainerChildOneColLabel}></View>
-
-            <View style={milkStyles.cardContainerChildOneColText}></View>
-          </View>
-        </View>
-
-        <View style={milkStyles.cardContainerChildTwo}></View>
-      </View>
-    </View>
+    </SmartView>
   );
 }
 
@@ -71,6 +98,36 @@ function Milk() {
 //   null
 // )(IMilk)
 
+{
+  /*  <View style={milkStyles.cardContainer}>
+            <View style={milkStyles.cardContainerChildOne}>
+              <View style={milkStyles.cardContainerChildOneRow}>
+                <View style={milkStyles.cardContainerChildOneColLabel}>
+                  <Text style={{fontSize: 15}}>Morning Milk (liter)</Text>
+                </View>
+
+                <View style={milkStyles.cardContainerChildOneColText}>
+                  <Text style={{fontSize: 15}}>22</Text>
+                </View>
+              </View>
+
+              <View style={milkStyles.cardContainerChildOneRow}>
+                <View style={milkStyles.cardContainerChildOneColLabel}>
+                  <Text style={{fontSize: 15}}>Evening Milk (liter)</Text>
+                </View>
+
+                <View style={milkStyles.cardContainerChildOneColText}>
+                  <Text style={{fontSize: 16}}>22</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={milkStyles.cardContainerChildTwo}>
+              <Text style={{fontSize: 18, fontWeight: 'bold'}}>2020/04/28</Text>
+            </View>
+        </View>*/
+}
+
 export {Milk};
 
 const milkStyles = {
@@ -78,14 +135,16 @@ const milkStyles = {
     flex: 1,
     width: '100%',
     borderWidth: 1,
+    alignItems: 'center',
+    marginBottom: 40
   },
 
   childOneContainer: {
-    height: 200,
+    height: 140,
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
-    borderWidth: 1,
+    width: '95%',
+    borderWidth: 0,
     paddingHorizontal: 10,
   },
 
@@ -97,59 +156,68 @@ const milkStyles = {
   },
 
   subSubChildOneContainer: {
-    height: 40,
-    width: '35%',
+    height: 70,
+    width: '40%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: 0,
   },
 
   subChildTwoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    marginTop: 30,
   },
 
   subSubChildTwoContainer: {
-    height: 40,
-    width: '35%',
+    height: 45,
+    width: '25%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
+    elevation: 1
   },
 
   subSubChildTwoContainerLabel: {
-    height: 40,
-    width: '20%',
+    height: 45,
+    width: '35%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: 0,
+    elevation: 1
   },
 
   cardContainer: {
-    height: 150,
-    width: '100%',
+    minWidth: '100%',
     alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 10,
-    borderWidth: 1,
+    justifyContent: 'center',
+    borderWidth: 0,
+    paddingHorizontal: 8,
+    marginBottom: 15,
+  },
+
+  cardContainerChild: {
+    width: '95%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 3,
+    borderWidth: 0,
   },
 
   cardContainerChildTwo: {
-    width: '30%',
-    height: 30,
-    borderWidth: 1,
+    width: '35%',
+    height: 40,
+    borderWidth: 0,
     alignItems: 'center',
     justifyContent: 'center',
+    elevation: 1,
   },
 
   cardContainerChildOne: {
     width: '60%',
     alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
+    justifyContent: 'space-between',
+    borderWidth: 0,
+    height: 90,
   },
 
   cardContainerChildOneRow: {
@@ -160,17 +228,20 @@ const milkStyles = {
     height: 30,
   },
   cardContainerChildOneColLabel: {
-    width: '50%',
-    alignItems: 'center',
+    width: '70%',
     justifyContent: 'center',
-    height: 30,
-    borderWidth: 1,
+    height: 40,
+    borderWidth: 0,
+    paddingLeft: 5,
+    elevation: 1,
   },
   cardContainerChildOneColText: {
-    width: '50%',
+    width: '25%',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 30,
-    borderWidth: 1,
+    height: 40,
+    borderWidth: 0,
+    elevation: 1,
+    marginLeft: 5,
   },
 };

@@ -1,11 +1,13 @@
 import React from "react";
-import { View } from "react-native";
+import { View, StatusBar } from "react-native";
 import color from '../assets/color/Index';
 import {TransparentActivityIndicator} from './TransparentActivityIndicator';
 
 function SmartView(props) {
     return (
       <View style={smartViewStyles.container}>
+      <StatusBar backgroundColor={color.tealDarkGreen}  />
+
         {props.loading && <TransparentActivityIndicator />}
         {props.children}
       </View>
