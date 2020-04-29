@@ -17,3 +17,12 @@ export const addMilk = (body) => ({
 });
 
 
+export const filterMilkData = (body) => ({
+    type: constant.FILTER_MILK_DATA_START,
+    payload: body
+});
+
+export const deleteMilk = (body) => ({
+    type: constant.DELETE_MILK_START,
+    payload: body
+});

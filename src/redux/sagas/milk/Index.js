@@ -1,3 +1,3 @@
 
-export { watchGetMilk } from './GetMilk'
+export { watchGetMilk } from './Milk'
 export { watchAnimal } from './Animal'

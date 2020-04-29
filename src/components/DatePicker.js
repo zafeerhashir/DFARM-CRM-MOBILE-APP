@@ -2,6 +2,8 @@ import React, {forwardRef, useImperativeHandle, useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import color from '../assets/color/Index';
 import DatePicker from 'react-native-datepicker';
+import {formatDate, fromDate, currentDate } from '../conversions/Index';
+
 
 function IDate(props, ref) {
   const [date, setDate] = useState('');
@@ -49,17 +51,21 @@ function IDate(props, ref) {
             }}
           />
           {date == '' ? (
-            <Text style={datePickerStyles.placeholderText}>Select date</Text>
+
+            
+            <Text style={datePickerStyles.placeholderText}>{props.placeholder == undefined ? 'Select date' : props.placeholder }</Text>
           ) : (
             <Text style={datePickerStyles.dateText}>{date}</Text>
           )}
         </View>
       </View>
+      {props.required &&
       <View style={datePickerStyles.errorContainer}>
         {date == '' && (
           <Text style={datePickerStyles.error}>This field is required</Text>
         )}
       </View>
+      }
     </View>
   );
 }

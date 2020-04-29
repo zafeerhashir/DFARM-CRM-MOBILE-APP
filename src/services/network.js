@@ -10,11 +10,16 @@ async function executeRequest(method, pathname, body = {}, headers = {}) {
       'Content-Type': 'application/json',
       ...headers,
     },
+    body: JSON.stringify(body)
   };
 
-  if (method !== 'GET') {
-    fetchInputObject.body = JSON.stringify(body);
+  if(method == 'GET' || method == 'DELETE')
+  {
+    delete fetchInputObject.body;
+
   }
+
+ 
   try
   {
   response = await fetch(

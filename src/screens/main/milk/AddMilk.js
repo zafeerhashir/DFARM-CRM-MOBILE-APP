@@ -31,8 +31,6 @@ function AddMilk() {
   const animalRef = useRef();
 
 
-  const inputMilkPM = useRef(null);
-
   useEffect(() => {
     dispatch(getAnimal());
   },[]);

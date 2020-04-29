@@ -11,13 +11,11 @@ function milk(state = initialState, action) {
     case constant.GET_MILK_START:
       return {...state, milkLoading: true};
     case constant.GET_MILK_SUCCESS:
-      var data = [];
-      for (let i = 0; i < action.payload.length; i++) {
-        data = [...action.payload[i].milk];
-      }
+     
+
       return {
         ...state,
-        milkData: data,
+        milkData: action.payload,
         milkLoading: false,
         milkLoadingError: false,
       };
@@ -42,7 +40,49 @@ function milk(state = initialState, action) {
     case constant.ADD_Milk_FAILURE:
       return {
         ...state,
+        milkLoadingError: true,
+        milkLoading: false,
+      };
+
+      case constant.DELETE_MILK_START:
+      return {
+        ...state,
+        milkLoadingError: false,
+        milkLoading: true,
+      };
+
+    case constant.DELETE_MILK_SUCCESS:
+      return {
+        ...state,
+        milkLoadingError: false,
+        milkLoading: false,
+      };
+
+    case constant.DELETE_MILK_FAILURE:
+      return {
+        ...state,
+        milkLoadingError: true,
+        milkLoading: false,
+      };
+
+    case constant.FILTER_MILK_DATA_START:
+      return {
+        ...state,
+        milkLoading: true,
+        milkLoadingError: false,
+      };
+
+    case constant.FILTER_MILK_DATA_SUCCESS:
+      return {
+        ...state,
         milkData: action.payload,
+        milkLoadingError: false,
+        milkLoading: false,
+      };
+
+    case constant.FILTER_MILK_DATA_FAILURE:
+      return {
+        ...state,
         milkLoadingError: true,
         milkLoading: false,
       };
