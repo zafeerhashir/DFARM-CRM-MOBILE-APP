@@ -1,28 +1,23 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react';
-import {View, TextInput} from 'react-native';
-import {
-  Input,
-  Button,
-  Date, 
-  SmartView,
-  MaterialDropdown,
-} from '../../../components/Index';
-import {literRegex} from '../../../validations/Index';
-import color from '../../../assets/color/Index';
-import {useSelector, useDispatch} from 'react-redux';
-import {addMilk, getMilk, getAnimal} from '../../../redux/actions/Index';
-import { useFocusEffect } from '@react-navigation/native';
+import React, {useEffect, useRef, useState} from 'react';
+import {View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import color from '../assets/color/Index';
+import {Button} from './Button';
+import {Input} from './Input';
+import {SmartView} from './SmartView';
+import {Date} from './DatePicker';
+import {addMilk, getAnimal} from '../redux/actions/Index';
+import {literRegex} from '../validations/Index';
+import { MYModal } from './Modal';
+import { tsPropertySignature } from '@babel/types';
 
-function AddMilk({navigation}) {
+function EditMilk(props) {
   const milkReducerState = useSelector(state => state.milk);
-  const animalReducerState = useSelector(state => state.animal);
-
-  const [animalTagId, setAnimalTagId] = useState('');
-  const [milkAM, setMilkAM] = useState('');
-  const [milkPM, setMilkPM] = useState(0);
+  const [milkPM, setMilkPM] = useState(props.milkPM);
+  const [milkAM, setMilkAM] = useState(props.milkAM);
   const [milkAMError, setMilkAMError] = useState(true);
   const [milkPMError, setMilkPMError] = useState(true);
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(props.date);
   const buttonDisable = validate(milkAMError, milkPMError, date);
   const dispatch = useDispatch();
   const milkAMRef = useRef();
@@ -30,25 +25,21 @@ function AddMilk({navigation}) {
   const dateRef = useRef();
   const animalRef = useRef();
 
-
-
   useEffect(() => {
-    // dispatch(getAnimal());
-    const unsubscribe = navigation.addListener('focus', () => {
-      dispatch(getAnimal());
-    });
-    return unsubscribe;
-  },[navigation]);
+          
+  }, []);
 
   const callApi = () => {
-    const postBodyAddMilk = {
-      milk: [{date, milkProduceAM: milkAM, milkProducePM: milkPM == '' ? 0 : milkPM}],
+    const postBodyEditMilk = {
+      milk: [
+        {date, milkProduceAM: milkAM, milkProducePM: milkPM == '' ? 0 : milkPM},
+      ],
     };
-    const payload ={
-      postBodyAddMilk,
-      animalTagId
-    }
-    console.log(payload,'PostMilkBody')
+    const payload = {
+      postBodyEditMilk,
+      animalTagId,
+    };
+    console.log(payload, 'PostMilkBody');
     dispatch(addMilk(payload));
 
     milkAMRef.current.clear();
@@ -57,8 +48,10 @@ function AddMilk({navigation}) {
     animalRef.current.clear();
   };
 
+
   return (
-    <SmartView loading={milkReducerState.milkLoading}>
+    <MYModal>
+    <SmartView style={addMilkStyles.container}>
       <View style={addMilkStyles.form}>
         <Date
           date={date}
@@ -66,17 +59,6 @@ function AddMilk({navigation}) {
           onDateChange={date => {
             setDate(date);
           }}
-        />
-
-        {console.log(animalReducerState.animalData,'animalData')}
-        <MaterialDropdown
-          ref={animalRef}
-          label={'Animal'}
-          placeholder={'Select Animal'}
-          onChangeText={value => setAnimalTagId(value)}
-          data={animalReducerState.animalData}
-          valueExtractor={values => values._id}
-          labelExtractor={values => values.tag}
         />
 
         <Input
@@ -116,7 +98,8 @@ function AddMilk({navigation}) {
           onPress={() => callApi()}
         />
       </View>
-    </SmartView>
+    </SmartView>  
+  </MYModal> 
   );
 }
 
@@ -125,22 +108,21 @@ function validate(milkAMError, milkPMError, date) {
   else return true;
 }
 
-export {AddMilk};
-
-export {Date};
+export {EditMilk};
 
 const addMilkStyles = {
   container: {
-    width: '100%',
-    flex: 1,
+    width:'95%',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: color.white,
   },
   form: {
-    width: '90%',
+    backgroundColor: color.white,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth:0
+    width:'95%',
+    paddingHorizontal: 20,
+
+    
   },
 };

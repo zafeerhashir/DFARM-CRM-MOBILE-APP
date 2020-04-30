@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {useEffect, useState, useRef} from 'react';
+import {FlatList, Text, View, TouchableOpacity, Alert, RefreshControl, ScrollView} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {SmartView, Row, Date} from '../../../components/Index';
+import {
+  getMilk,
+  filterMilkData,
+  deleteMilk,
+} from '../../../redux/actions/Index';
+import {formatDate, fromDate, toDate} from './../../../conversions/Index';
 import color from '../../../assets/color/Index';
-import { CardLongPressView, Date, Row, SmartView, EditMilk } from '../../../components/Index';
-import { deleteMilk, filterMilkData, getMilk } from '../../../redux/actions/Index';
-import { agoDate, currentDate, formatDate } from './../../../conversions/Index';
 
-
-var _fromDate = ''
-var _toDate = ''
+var _fromDate = '';
+var _toDate = '';
 
 function Milk({navigation}) {
-
   const [toDate] = useState('');
-  const [visible, setVisible] = useState(false);
-  const [editMilkVisible, setEditMilkVisible] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [fromDate] = useState('');
   const milkReducerState = useSelector(state => state.milk);
@@ -23,23 +22,13 @@ function Milk({navigation}) {
 
 
   useEffect(() => {
-
     const unsubscribe = navigation.addListener('focus', () => {
-      setDatesForDefaultData()
-      getFilterMilkData()
+      dispatch(getMilk());
+
     });
-
     return unsubscribe;
-
   },[navigation])
 
-
-
-  const setDatesForDefaultData= async ()=>
-  {
-     _fromDate = await agoDate(7)
-     _toDate = await currentDate()
-  }
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -47,6 +36,11 @@ function Milk({navigation}) {
     setTimeout(()=>setRefreshing(false),1000)
   }, [refreshing]);
 
+
+  
+  // useEffect(() => {
+  //   dispatch(getMilk());
+  // }, [fromDate, toDate]);
 
 
   const getFilterMilkData = () => {
@@ -57,12 +51,18 @@ function Milk({navigation}) {
   };
 
   const _deleteMilk = item => {
-    setVisible(false)
     const payload = {parentId: item.parentId, _id: item._id};
     dispatch(deleteMilk(payload));
     dispatch(getMilk());
   };
 
+  const onLongPress = item =>
+    Alert.alert(
+      'Delete',
+      'Are you sure, you want to delete this record?',
+      [{text: 'Cancel'}, {text: 'OK', onPress: () => _deleteMilk(item)}],
+      {cancelable: false},
+    );
 
   const setFromDateHandler = async date => {
     _fromDate = date;
@@ -88,7 +88,7 @@ function Milk({navigation}) {
   }
 
   return (
-    <SmartView refreshing={milkReducerState.milkLoading} onRefresh={onRefresh} >
+    <SmartView refreshing={refreshing} loading={milkReducerState.milkLoading}>
       <View style={milkStyles.parentContainer}>
         <View style={milkStyles.childOneContainer}>
           <View style={milkStyles.subChildOneContainer}>
@@ -124,36 +124,23 @@ function Milk({navigation}) {
             
         </View>
 
-        {visible && (
-          <CardLongPressView
-            onEditPress={() => setEditMilkVisible(true)}
-            onDeletePress={() => _deleteMilk(selectedItem)}
-            onTabOut={() => setVisible(false)}
-          />
-        )}
-
-       { editMilkVisible && (
-
-            <EditMilk
-             date={'2020-2-2'}
-             milkAM={'13'}
-             milkPM={'2'}
-            />
-       )} 
-       
-
         {milkReducerState.milkData.length == 0 && milkReducerState.milkLoading == false ? (
           <View style={milkStyles.noRecordView}>
             <Text style={milkStyles.noRecordText}>No Record Found</Text>
           </View>
         ) : (
-          
+          <ScrollView
+          // contentContainerStyle={styles.scrollView}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
           <FlatList
             data={milkReducerState.milkData}
             renderItem={({item}) => (
               <TouchableOpacity
                 activeOpacity={0.6}
-                onLongPress={() => {setVisible(true),setSelectedItem(item)}}
+                onLongPress={() => onLongPress(item)}
                 style={milkStyles.cardContainer}>
                 <View style={milkStyles.cardContainerChild}>
                   <Row label={'Date'} value={formatDate(item.date)} />
@@ -174,13 +161,57 @@ function Milk({navigation}) {
               </TouchableOpacity>
             )}
           />
+          </ScrollView>
         )}
       </View>
     </SmartView>
   );
 }
 
-export { Milk };
+// const mapStateToProps = ({ ui }) => ({
+//   ui
+// });
+
+// const mapDispatchToProps =({ dispatch }) => ({
+//   getMilk:()=> dispatch(getMilk)
+// })
+
+// const Milk = connect(
+//   mapStateToProps,
+//   null
+// )(IMilk)
+
+{
+  /*  <View style={milkStyles.cardContainer}>
+            <View style={milkStyles.cardContainerChildOne}>
+              <View style={milkStyles.cardContainerChildOneRow}>
+                <View style={milkStyles.cardContainerChildOneColLabel}>
+                  <Text style={{fontSize: 15}}>Morning Milk (liter)</Text>
+                </View>
+
+                <View style={milkStyles.cardContainerChildOneColText}>
+                  <Text style={{fontSize: 15}}>22</Text>
+                </View>
+              </View>
+
+              <View style={milkStyles.cardContainerChildOneRow}>
+                <View style={milkStyles.cardContainerChildOneColLabel}>
+                  <Text style={{fontSize: 15}}>Evening Milk (liter)</Text>
+                </View>
+
+                <View style={milkStyles.cardContainerChildOneColText}>
+                  <Text style={{fontSize: 16}}>22</Text>
+                </View>
+              </View>
+            </View>
+
+            <View style={milkStyles.cardContainerChildTwo}>
+              <Text style={{fontSize: 18, fontWeight: 'bold'}}>2020/04/28</Text>
+            </View>
+        </View>*/
+}
+
+export {Milk};
 
 const milkStyles = {
   parentContainer: {
@@ -297,9 +328,9 @@ const milkStyles = {
     marginLeft: 5,
   },
   noRecordView: {
-    marginTop: '25%',
-    height: 30,
-    borderWidth: 0
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: '25%'
 
   },
   noRecordText: {

@@ -4,9 +4,10 @@ import color from '../assets/color/Index';
 import DatePicker from 'react-native-datepicker';
 import {formatDate, fromDate, currentDate } from '../conversions/Index';
 
-
 function IDate(props, ref) {
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(props.date == '' ? '' : props.date);
+ 
+
 
   useImperativeHandle(ref, () => ({
     clear: () => {
@@ -25,6 +26,7 @@ function IDate(props, ref) {
             iconSource={require('../assets/img/calendar.png')}
             mode="date"
             format="YYYY-MM-DD"
+            maxDate={new window.Date()}
             hideText={true}
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
@@ -59,7 +61,7 @@ function IDate(props, ref) {
           )}
         </View>
       </View>
-      {props.required &&
+      {props.required !== false &&
       <View style={datePickerStyles.errorContainer}>
         {date == '' && (
           <Text style={datePickerStyles.error}>This field is required</Text>

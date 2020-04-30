@@ -19,7 +19,6 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {
   SignInScreen,
   AddMilk,
-  EditMilk,
   Milk,
   DeleteMilk,
 } from '../screens/Index';
@@ -39,7 +38,6 @@ function MilkTab() {
       }}>
       <Tab.Screen name="Milk" component={Milk} />
       <Tab.Screen name="Add" component={AddMilk} />
-      <Tab.Screen name="Edit" component={EditMilk} />
       <Tab.Screen name="Delete" component={DeleteMilk} />
     </Tab.Navigator>
   );
