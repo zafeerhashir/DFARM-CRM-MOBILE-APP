@@ -1,91 +1,107 @@
 import React, {useState, useEffect, useRef, useCallback} from 'react';
-import {View, TextInput} from 'react-native';
+import {View, TextInput, Keyboard} from 'react-native';
 import {
   Input,
   Button,
-  Date, 
+  Date,
   SmartView,
-  MaterialDropdown,
+  SelectAnimalTag,
 } from '../../../components/Index';
 import {literRegex} from '../../../validations/Index';
 import color from '../../../assets/color/Index';
 import {useSelector, useDispatch} from 'react-redux';
-import {addMilk, getMilk, getAnimal} from '../../../redux/actions/Index';
-import { useFocusEffect } from '@react-navigation/native';
+import {
+  addMilk,
+  getMilk,
+  getAnimal,
+  selectAnimalTagVisible,
+  getAnimalTags,
+  selectAnimalTagItem
+} from '../../../redux/actions/Index';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { MYModal } from '../../../components/Modal';
+
+
 
 function AddMilk({navigation}) {
   const milkReducerState = useSelector(state => state.milk);
-  const animalReducerState = useSelector(state => state.animal);
-
-  const [animalTagId, setAnimalTagId] = useState('');
   const [milkAM, setMilkAM] = useState('');
-  const [milkPM, setMilkPM] = useState(0);
+  const [milkPM, setMilkPM] = useState('');
+  const [date, setDate] = useState('');
+  const dispatch = useDispatch();
   const [milkAMError, setMilkAMError] = useState(true);
   const [milkPMError, setMilkPMError] = useState(true);
-  const [date, setDate] = useState('');
-  const buttonDisable = validate(milkAMError, milkPMError, date);
-  const dispatch = useDispatch();
+  const [animalTagError,setAnimalTagError]= useState(true);
+  const [dateError,setDateError]= useState(true);
   const milkAMRef = useRef();
   const milkPMRef = useRef();
   const dateRef = useRef();
-  const animalRef = useRef();
+  const animalTagRef = useRef();
+
 
 
 
   useEffect(() => {
-    // dispatch(getAnimal());
-    const unsubscribe = navigation.addListener('focus', () => {
-      dispatch(getAnimal());
+      dispatch(getAnimalTags())
+      const unsubscribe = navigation.addListener('focus', () => {
+      dispatch(getAnimalTags())
     });
     return unsubscribe;
-  },[navigation]);
+  }, [navigation]);
 
   const callApi = () => {
     const postBodyAddMilk = {
-      milk: [{date, milkProduceAM: milkAM, milkProducePM: milkPM == '' ? 0 : milkPM}],
+      milk: [
+        {date, milkProduceAM: milkAM, milkProducePM: milkPM == '' ? 0 : milkPM},
+      ],
     };
-    const payload ={
+    const payload = {
       postBodyAddMilk,
-      animalTagId
-    }
-    console.log(payload,'PostMilkBody')
-    dispatch(addMilk(payload));
-
+      animalTagId:milkReducerState.selectAnimalTagItem.id,
+    };
     milkAMRef.current.clear();
     milkPMRef.current.clear();
-    dateRef.current.clear();
-    animalRef.current.clear();
+    animalTagRef.current.clear()
+    // dateRef.current.clear();
+    dispatch(addMilk(payload));
   };
 
   return (
-    <SmartView loading={milkReducerState.milkLoading}>
-      <View style={addMilkStyles.form}>
+    <SmartView>
         <Date
           date={date}
           ref={dateRef}
           onDateChange={date => {
             setDate(date);
           }}
+          error={error => {
+            setDateError(error);
+          }}
+        />
+        
+        <Input
+          displayOnly={true}
+          label={'Animal Tag'}
+          ref={animalTagRef}
+          value={milkReducerState.selectAnimalTagItem.tag}
+          onChangeText={value => dispatch(dispatch(selectAnimalTagItem({tag: value, id: value})))}
+          placeholder={'Select Animal Tag'}
+          onPress={() => navigation.navigate('Animal Tag')}
+          errorMessage={'The value must be numeric'}
+          error={error => {
+            setAnimalTagError(error);
+          }}
         />
 
-        {console.log(animalReducerState.animalData,'animalData')}
-        <MaterialDropdown
-          ref={animalRef}
-          label={'Animal'}
-          placeholder={'Select Animal'}
-          onChangeText={value => setAnimalTagId(value)}
-          data={animalReducerState.animalData}
-          valueExtractor={values => values._id}
-          labelExtractor={values => values.tag}
-        />
+     
 
         <Input
-          label={'Milk Produce AM'}
+          label={'Morning Milk'}
           keyboardType={'number-pad'}
           maxLength={2}
           ref={milkAMRef}
           value={milkAM}
-          placeholder={'Enter Milk Produce AM'}
+          placeholder={'Enter Morning Milk'}
           errorMessage={'The value must be numeric'}
           onChangeText={value => setMilkAM(value)}
           error={error => {
@@ -95,13 +111,13 @@ function AddMilk({navigation}) {
         />
 
         <Input
-          label={'Milk Produce PM'}
+          label={'Evening Milk'}
           keyboardType={'number-pad'}
           required={false}
           maxLength={2}
           ref={milkPMRef}
           value={milkPM}
-          placeholder={'Enter Milk Produce PM'}
+          placeholder={'Enter Evening Milk'}
           errorMessage={'The value must be numeric'}
           onChangeText={value => setMilkPM(value)}
           error={error => {
@@ -111,18 +127,23 @@ function AddMilk({navigation}) {
         />
 
         <Button
-          disabled={buttonDisable}
+          loading={milkReducerState.milkLoading}
+          error={[milkAMError,milkPMError,dateError]}
           title={'Submit'}
           onPress={() => callApi()}
         />
-      </View>
     </SmartView>
   );
 }
 
-function validate(milkAMError, milkPMError, date) {
-  if (!milkAMError && !milkPMError && date !== '') return false;
-  else return true;
+ function validate(milkAMError, milkPMError, date, tag) {
+
+  if ( milkAMError == false && milkPMError == false && date !== '', tag!=='') 
+  {
+    return  false;
+  }
+  else {
+    return  true;}
 }
 
 export {AddMilk};
@@ -138,9 +159,8 @@ const addMilkStyles = {
     backgroundColor: color.white,
   },
   form: {
-    width: '90%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth:0
+    borderWidth: 0,
   },
 };

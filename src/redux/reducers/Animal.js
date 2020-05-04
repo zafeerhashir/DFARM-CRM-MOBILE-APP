@@ -37,7 +37,6 @@ const initialState = {
 
 			return {
 				...state,
-				animalData:action.payload,
 				animalLoadingError: false, 
 				animalLoading: false 
 			}
@@ -45,7 +44,6 @@ const initialState = {
 			case constant.ADD_ANIMAL_FAILURE:
 			return {
 				...state,
-				animalData:action.payload,
 				animalLoadingError: true, 
 				animalLoading: false
 			}

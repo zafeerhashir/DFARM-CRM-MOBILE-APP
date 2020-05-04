@@ -1,63 +1,66 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {View} from 'react-native';
+import React, {useEffect, useRef, useState, useCallback} from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import color from '../assets/color/Index';
-import {Button} from './Button';
-import {Input} from './Input';
-import {SmartView} from './SmartView';
-import {Date} from './DatePicker';
-import {addMilk, getAnimal} from '../redux/actions/Index';
+import {editMilk, editMilkVisible} from '../redux/actions/Index';
 import {literRegex} from '../validations/Index';
-import { MYModal } from './Modal';
-import { tsPropertySignature } from '@babel/types';
+import {Button} from './Button';
+import {Date} from './DatePicker';
+import {Input} from './Input';
+import {MYModal} from './Modal';
+import {SmartView} from './SmartView';
+import {formatDate} from '../conversions/Index';
+import styles from '../assets/styles/Index';
 
 function EditMilk(props) {
-  const milkReducerState = useSelector(state => state.milk);
-  const [milkPM, setMilkPM] = useState(props.milkPM);
-  const [milkAM, setMilkAM] = useState(props.milkAM);
+  const animalTagId = props.selectedItem.animalTagId;
+  const milkId = props.selectedItem._id;
+  const [milkAM, setMilkAM] = useState(props.selectedItem.milkProduceAM);
+  const [milkPM, setMilkPM] = useState(props.selectedItem.milkProducePM);
+  const [date, setDate] = useState(formatDate(props.selectedItem.date));
+  const buttonDisable = validate(milkAMError, milkPMError, date);
   const [milkAMError, setMilkAMError] = useState(true);
   const [milkPMError, setMilkPMError] = useState(true);
-  const [date, setDate] = useState(props.date);
-  const buttonDisable = validate(milkAMError, milkPMError, date);
+  const [dateError, setDateError] = useState(true);
   const dispatch = useDispatch();
-  const milkAMRef = useRef();
-  const milkPMRef = useRef();
-  const dateRef = useRef();
-  const animalRef = useRef();
 
-  useEffect(() => {
-          
-  }, []);
+  useEffect(() => {}, []);
 
   const callApi = () => {
     const postBodyEditMilk = {
-      milk: [
-        {date, milkProduceAM: milkAM, milkProducePM: milkPM == '' ? 0 : milkPM},
-      ],
+      date,
+      milkProduceAM: parseInt(milkAM),
+      milkProducePM: milkPM == '' ? 0 : parseInt(milkPM),
     };
+
     const payload = {
       postBodyEditMilk,
       animalTagId,
+      milkId,
     };
-    console.log(payload, 'PostMilkBody');
-    dispatch(addMilk(payload));
-
-    milkAMRef.current.clear();
-    milkPMRef.current.clear();
-    dateRef.current.clear();
-    animalRef.current.clear();
+    dispatch(editMilk(payload));
   };
 
+  const onLayout = useCallback();
 
   return (
     <MYModal>
-    <SmartView style={addMilkStyles.container}>
-      <View style={addMilkStyles.form}>
+      <View style={addMilkStyles.modalView}>
+        <View style={addMilkStyles.dismissRow}>
+          <TouchableOpacity
+            style={addMilkStyles.dismissTextContainer}
+            onPress={() => dispatch(editMilkVisible({visible: false}))}>
+            <Text style={{color: color.lightGrey}}>Dismiss</Text>
+          </TouchableOpacity>
+        </View>
+
         <Date
           date={date}
-          ref={dateRef}
           onDateChange={date => {
             setDate(date);
+          }}
+          error={error => {
+            setDateError(error);
           }}
         />
 
@@ -65,7 +68,6 @@ function EditMilk(props) {
           label={'Milk Produce AM'}
           keyboardType={'number-pad'}
           maxLength={2}
-          ref={milkAMRef}
           value={milkAM}
           placeholder={'Enter Milk Produce AM'}
           errorMessage={'The value must be numeric'}
@@ -81,7 +83,6 @@ function EditMilk(props) {
           keyboardType={'number-pad'}
           required={false}
           maxLength={2}
-          ref={milkPMRef}
           value={milkPM}
           placeholder={'Enter Milk Produce PM'}
           errorMessage={'The value must be numeric'}
@@ -93,13 +94,13 @@ function EditMilk(props) {
         />
 
         <Button
+          error={[milkAMError, milkAMError, dateError]}
           disabled={buttonDisable}
-          title={'Submit'}
+          title={'Edit'}
           onPress={() => callApi()}
         />
       </View>
-    </SmartView>  
-  </MYModal> 
+    </MYModal>
   );
 }
 
@@ -111,8 +112,29 @@ function validate(milkAMError, milkPMError, date) {
 export {EditMilk};
 
 const addMilkStyles = {
+  modalView: {
+    width: '90%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  dismissRow: {
+    borderWidth: 0,
+    height: 40,
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  dismissTextContainer: {
+    borderWidth: 0,
+    height: 35,
+    width: '25%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
-    width:'95%',
+    width: '95%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -120,9 +142,9 @@ const addMilkStyles = {
     backgroundColor: color.white,
     justifyContent: 'center',
     alignItems: 'center',
-    width:'95%',
+    width: '95%',
     paddingHorizontal: 20,
-
-    
+    paddingVertical: 10,
+    borderRadius: styles.borderRadius,
   },
 };

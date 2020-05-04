@@ -1,35 +1,59 @@
-import React from 'react';
-import {Text, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import color from '../assets/color/Index';
 
 function Button(props) {
+  const [disable, setDisable] = useState(true);
+
+  useEffect(() => {
+    validate();
+  }, [props.error]);
+
+
+  const validate =  () =>
+  {
+    const error = [];
+    for (let e of props.error) {
+      if (e == false) {
+         error.push(e);
+      }
+      
+    }
+    if (error.length == props.error.length)      
+    setDisable(false);
+    else setDisable(true)
+  }
 
 
   return (
     <TouchableOpacity
-      style={[buttonStyles.container ]}
-      disabled={props.disabled}
+      style={[buttonStyles.container]}
+      disabled={disable}
       onPress={props.onPress}>
-      <Text style={[buttonStyles.title,props.disabled &&  buttonStyles.disabled ]}>{props.title}</Text>
+      {props.loading ? (
+        <ActivityIndicator color={color.black} size="large" />
+      ) : (
+        <Text style={[buttonStyles.title, disable && buttonStyles.disabled]}>
+          {props.title}
+        </Text>
+      )}
     </TouchableOpacity>
   );
-
 }
 
 export {Button};
 
 const buttonStyles = {
   container: {
-    width: '100%',
+    width: '90%',
     backgroundColor: color.tealDarkGreen,
     height: 50,
     marginVertical: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  disabled:{
+  disabled: {
     color: color.lightGrey,
-
   },
   title: {
     color: color.black,

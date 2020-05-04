@@ -16,10 +16,8 @@ async function executeRequest(method, pathname, body = {}, headers = {}) {
   if(method == 'GET' || method == 'DELETE')
   {
     delete fetchInputObject.body;
-
   }
 
- 
   try
   {
   response = await fetch(
@@ -29,16 +27,21 @@ async function executeRequest(method, pathname, body = {}, headers = {}) {
   }
   catch(e)
   {
-    console.log(e,'sdsd')
-  console.log(response, 'executeRequestresponse');
+    return await { error: true, errorMessage: 'Network failed',  }    
   }
 
   const statusCode = response.status;
   const data = await response.json();
 
-  console.log(data, 'executeRequestresponse');
+  if(statusCode == 200)
+  {
+    return await { error: false , data: data }    
+  }
+  else
+  {
+    return await { error: true, errorMessage: 'Were are sorry something is wrong', }    
 
-  return await data
+  }
 }
 
 export default {

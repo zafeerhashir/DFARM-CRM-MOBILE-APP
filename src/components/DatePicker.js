@@ -1,13 +1,41 @@
-import React, {forwardRef, useImperativeHandle, useState} from 'react';
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useState,
+  useEffect,
+} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import color from '../assets/color/Index';
 import DatePicker from 'react-native-datepicker';
-import {formatDate, fromDate, currentDate } from '../conversions/Index';
+import {formatDate, fromDate, currentDate} from '../conversions/Index';
+import {requireFieldValidator} from '../validations/Index';
+import { onChange } from 'react-native-reanimated';
 
 function IDate(props, ref) {
-  const [date, setDate] = useState(props.date == '' ? '' : props.date);
- 
+  const [date, setDate] = useState(props.date);
+  const [error, setError] = useState(true);
 
+  useEffect(() => {
+    setDate(props.date);
+    onDateChange(props.date)
+  }, [props.date]);
+
+  const onDateChange = async (d) => {
+    try {
+      const  _requireFieldValidator = await requireFieldValidator(d)
+      if (_requireFieldValidator) {
+        setError(false);
+        props.onDateChange(d);
+        await props.error(false);
+        setDate(d)
+      } else {
+        setDate(d)
+        setError(true);
+        props.onDateChange(d);
+        await props.error(true);
+      }
+    } catch (e) {}
+  };
 
   useImperativeHandle(ref, () => ({
     clear: () => {
@@ -27,6 +55,7 @@ function IDate(props, ref) {
             mode="date"
             format="YYYY-MM-DD"
             maxDate={new window.Date()}
+            minDate={props.minDate}
             hideText={true}
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
@@ -48,26 +77,26 @@ function IDate(props, ref) {
                 paddingLeft: 0,
               },
             }}
-            onDateChange={date => {
-              setDate(date), props.onDateChange(date);
-            }}
+            onDateChange={date => onDateChange(date)}
           />
           {date == '' ? (
-
-            
-            <Text style={datePickerStyles.placeholderText}>{props.placeholder == undefined ? 'Select date' : props.placeholder }</Text>
+            <Text style={datePickerStyles.placeholderText}>
+              {props.placeholder == undefined
+                ? 'Select date'
+                : props.placeholder}
+            </Text>
           ) : (
             <Text style={datePickerStyles.dateText}>{date}</Text>
           )}
         </View>
       </View>
-      {props.required !== false &&
-      <View style={datePickerStyles.errorContainer}>
-        {date == '' && (
-          <Text style={datePickerStyles.error}>This field is required</Text>
-        )}
-      </View>
-      }
+      {props.required !== false && (
+        <View style={datePickerStyles.errorContainer}>
+          {error && (
+            <Text style={datePickerStyles.error}>This field is required</Text>
+          )}
+        </View>
+      )}
     </View>
   );
 }
@@ -76,13 +105,13 @@ export const Date = forwardRef(IDate);
 
 const datePickerStyles = {
   pickerContainer: {
-    width: '100%',
+    width: '90%',
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: color.grey.color,
     borderWidth: 0,
     height: 85,
-    marginTop: 20
+    marginTop: 20,
   },
   datePickerStyle: {
     width: 50,

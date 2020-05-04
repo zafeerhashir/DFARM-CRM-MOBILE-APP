@@ -15,12 +15,13 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import {
   SignInScreen,
   AddMilk,
   Milk,
   DeleteMilk,
+  SelectAnimalTag
 } from '../screens/Index';
 import color from '../assets/color/Index';
 
@@ -33,12 +34,17 @@ function MilkTab() {
     <Tab.Navigator
       tabBarOptions={{
         activeTintColor: color.black,
-        indicatorStyle: {backgroundColor: color.black, height: 5},
+        indicatorStyle: {backgroundColor: color.white, height: '100%'},
         style: {backgroundColor: color.tealDarkGreen},
       }}>
-      <Tab.Screen name="Milk" component={Milk} />
-      <Tab.Screen name="Add" component={AddMilk} />
-      <Tab.Screen name="Delete" component={DeleteMilk} />
+      <Tab.Screen  
+       name="Milk" 
+       component={Milk} 
+       />
+      <Tab.Screen 
+      name="Add" 
+      component={AddMilk} 
+      />
     </Tab.Navigator>
   );
 }
@@ -46,6 +52,8 @@ function MilkTab() {
 function MilkStack({navigation}) {
   return (
     <Stack.Navigator>
+
+  
       <Stack.Screen
         name="Milk"
         component={MilkTab}
@@ -65,6 +73,17 @@ function MilkStack({navigation}) {
           ),
         }}
       />
+
+      <Stack.Screen
+      name="Animal Tag"
+      component={SelectAnimalTag}
+      options={{
+        headerStyle: {
+          backgroundColor: color.tealDarkGreen,
+        },
+      }}
+    />
+    
     </Stack.Navigator>
   );
 }

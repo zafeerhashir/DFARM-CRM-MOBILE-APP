@@ -1,94 +1,85 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {useEffect, useState, useCallback} from 'react';
+import {FlatList, Text, TouchableOpacity, View,} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import color from '../../../assets/color/Index';
-import { CardLongPressView, Date, Row, SmartView, EditMilk } from '../../../components/Index';
-import { deleteMilk, filterMilkData, getMilk } from '../../../redux/actions/Index';
-import { agoDate, currentDate, formatDate } from './../../../conversions/Index';
+import {
+  CardLongPressView,
+  Date,
+  Row,
+  SmartView,
+  EditMilk,
+} from '../../../components/Index';
+import {
+  deleteMilk,
+  filterMilkData,
+  getMilk,
+  editMilkVisible,
+} from '../../../redux/actions/Index';
+import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
 
-
-var _fromDate = ''
-var _toDate = ''
+var _fromDate = '';
+var _toDate = '';
 
 function Milk({navigation}) {
-
-  const [toDate] = useState('');
+  const [toDate, setToDate] = useState(currentDate());
+  const [fromDate, setFromDate] = useState(agoDate(7));
   const [visible, setVisible] = useState(false);
-  const [editMilkVisible, setEditMilkVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
-  const [fromDate] = useState('');
   const milkReducerState = useSelector(state => state.milk);
   const dispatch = useDispatch();
 
-
   useEffect(() => {
-
+    
+    getFilterMilkData();
     const unsubscribe = navigation.addListener('focus', () => {
-      setDatesForDefaultData()
-      getFilterMilkData()
+      getFilterMilkData();
     });
+    return (unsubscribe);
+  }, [navigation, fromDate, toDate, milkReducerState.editMilkVisible]);
 
-    return unsubscribe;
+  const dataHelper = async () => {
+    await setDatesForDefaultData();
+    await getFilterMilkData();
+  };
 
-  },[navigation])
+  const setDatesForDefaultData = async () => {
+    const _fromDate = await agoDate(7);
+    const _toDate = await currentDate();
+    setFromDate(_fromDate);
+    setToDate(_toDate);
+  };
 
-
-
-  const setDatesForDefaultData= async ()=>
-  {
-     _fromDate = await agoDate(7)
-     _toDate = await currentDate()
-  }
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    dispatch(getMilk());
-    setTimeout(()=>setRefreshing(false),1000)
-  }, [refreshing]);
-
-
+  const onRefresh = useCallback(() => {
+    getFilterMilkData();
+  }, [milkReducerState.milkLoading]);
 
   const getFilterMilkData = () => {
-    if (_fromDate !== '' && _toDate !== '') {
-      const body = {toDate: _toDate, fromDate: _fromDate};
+    if (fromDate !== '' && toDate !== '') {
+      const body = {toDate: toDate, fromDate: fromDate};
       dispatch(filterMilkData(body));
     }
   };
 
   const _deleteMilk = item => {
-    setVisible(false)
-    const payload = {parentId: item.parentId, _id: item._id};
+    setVisible(false);
+    const payload = {animalTagId: item.animalTagId, _id: item._id};
     dispatch(deleteMilk(payload));
-    dispatch(getMilk());
+    getFilterMilkData()
+
   };
 
+  const getTotalMilk = () => {
+    var total = 0;
 
-  const setFromDateHandler = async date => {
-    _fromDate = date;
-    getFilterMilkData();
-  };
-
-  const setToDateHandler = async date => {
-    _toDate = date;
-    getFilterMilkData();
-  };
-
-
-  const getTotalMilk = () =>
-  {
-    var total = 0
-
-    for(let e of milkReducerState.milkData)
-    {
-      total = total + (e.milkProduceAM + e.milkProducePM)
+    for (let e of milkReducerState.milkData) {
+      total = total + (e.milkProduceAM + e.milkProducePM);
     }
-  
-    return total
-  }
+
+    return total;
+  };
 
   return (
-    <SmartView refreshing={milkReducerState.milkLoading} onRefresh={onRefresh} >
+    <SmartView>
       <View style={milkStyles.parentContainer}>
         <View style={milkStyles.childOneContainer}>
           <View style={milkStyles.subChildOneContainer}>
@@ -97,63 +88,66 @@ function Milk({navigation}) {
                 required={false}
                 date={fromDate}
                 placeholder={'Select from date'}
-                onDateChange={date => setFromDateHandler(date)}
+                onDateChange={date => setFromDate(date)}
               />
             </View>
 
             <View style={milkStyles.subSubChildOneContainer}>
               <Date
                 required={false}
+                minDate={fromDate}
                 date={toDate}
                 placeholder={'Select to date'}
-                onDateChange={date => setToDateHandler(date)}
+                onDateChange={date => setToDate(date)}
               />
             </View>
           </View>
 
-           
-            <View style={milkStyles.subChildTwoContainer}>
-              <View style={milkStyles.subSubChildTwoContainer}>
-                <Text>Total Milk</Text>
-              </View>
-  
-              <View style={milkStyles.subSubChildTwoContainerLabel}>
-                <Text>{milkReducerState.milkData.length == 0 ? '0' : getTotalMilk() }</Text>
-              </View>
+          <View style={milkStyles.subChildTwoContainer}>
+            <View style={milkStyles.subSubChildTwoContainer}>
+              <Text>Total Milk</Text>
             </View>
-            
+
+            <View style={milkStyles.subSubChildTwoContainerLabel}>
+              <Text>
+                {milkReducerState.milkData.length == 0 ? '0' : getTotalMilk()}
+              </Text>
+            </View>
+          </View>
         </View>
+
 
         {visible && (
           <CardLongPressView
-            onEditPress={() => setEditMilkVisible(true)}
+            onEditPress={() => {
+              dispatch(editMilkVisible({visible: true})), setVisible(false);
+            }}
             onDeletePress={() => _deleteMilk(selectedItem)}
             onTabOut={() => setVisible(false)}
           />
         )}
 
-       { editMilkVisible && (
+        {milkReducerState.editMilkVisible && (
+          <EditMilk selectedItem={selectedItem} />
+        )}
+        {console.log(selectedItem, 'selectedItem')}
 
-            <EditMilk
-             date={'2020-2-2'}
-             milkAM={'13'}
-             milkPM={'2'}
-            />
-       )} 
-       
-
-        {milkReducerState.milkData.length == 0 && milkReducerState.milkLoading == false ? (
+        {milkReducerState.milkData.length == 0 &&
+        milkReducerState.milkLoading == false ? (
           <View style={milkStyles.noRecordView}>
             <Text style={milkStyles.noRecordText}>No Record Found</Text>
           </View>
         ) : (
-          
           <FlatList
+            refreshing={milkReducerState.milkLoading}
+            onRefresh={() => onRefresh()}
             data={milkReducerState.milkData}
             renderItem={({item}) => (
               <TouchableOpacity
                 activeOpacity={0.6}
-                onLongPress={() => {setVisible(true),setSelectedItem(item)}}
+                onLongPress={() => {
+                  setVisible(true), setSelectedItem(item);
+                }}
                 style={milkStyles.cardContainer}>
                 <View style={milkStyles.cardContainerChild}>
                   <Row label={'Date'} value={formatDate(item.date)} />
@@ -180,7 +174,7 @@ function Milk({navigation}) {
   );
 }
 
-export { Milk };
+export {Milk};
 
 const milkStyles = {
   parentContainer: {
@@ -197,7 +191,6 @@ const milkStyles = {
     alignItems: 'center',
     width: '95%',
     borderWidth: 0,
-    paddingHorizontal: 10,
   },
 
   subChildOneContainer: {
@@ -209,7 +202,7 @@ const milkStyles = {
 
   subSubChildOneContainer: {
     height: 70,
-    width: '40%',
+    width: '45%',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0,
@@ -299,8 +292,7 @@ const milkStyles = {
   noRecordView: {
     marginTop: '25%',
     height: 30,
-    borderWidth: 0
-
+    borderWidth: 0,
   },
   noRecordText: {
     color: color.black,

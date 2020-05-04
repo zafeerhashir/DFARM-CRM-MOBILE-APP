@@ -100,7 +100,7 @@ export const descriptionRegex = '^\s*([0-9a-zA-Z ]*)\s*$'
    export const requireFieldValidator = async (value)=>
    {
 
-       if(value == null || value == undefined || value.trim() == '' )   
+       if(value == null || value == undefined || value == '' )   
        {
            return await false;
        }

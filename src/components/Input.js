@@ -4,42 +4,39 @@ import React, {
   useState,
   useEffect,
 } from 'react';
-import {Text, TextInput, View} from 'react-native';
+import {Text, TextInput, View, TouchableWithoutFeedback} from 'react-native';
 import color from '../assets/color/Index';
 import {requireFieldValidator} from '../validations/Index';
 
 function IInput(props, ref) {
-  const [value, setValue] = useState(props.value);
+  const [value, setValue] = useState(String(props.value));
   const [error, setError] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   useImperativeHandle((props, ref), () => ({
     clear: () => {
       props.onChangeText('');
-      onChangeRowInput();
       setValue('');
     },
   }));
 
   useEffect(() => {
     setValue(props.value);
+    onChangeTextValidation(props.value);
   }, [props.value]);
 
   const onChangeRowInput = async (v = null) => {
     setValue(v);
-    onChangeTextValidation(v)
-
-  }
+    onChangeTextValidation(v);
+  };
 
   const onChangeTextValidation = async (v = null) => {
-
-
     var regex = new RegExp(props.regex);
-    var requireField;
+    var _requireFieldValidator;
 
     // not using required Filed Validator
     if (props.required == false) {
-      // requireField = true // let validator in the if clause
+      // _requireFieldValidator = true // let validator in the if clause
       if ((await requireFieldValidator(v)) == false) {
         // this.setState({error: false});
         setError(false);
@@ -49,29 +46,32 @@ function IInput(props, ref) {
         await props.error(false);
         return;
       } else {
-        requireField = await requireFieldValidator(v);
+        _requireFieldValidator = await requireFieldValidator(v);
       }
     } else {
-      requireField = await requireFieldValidator(v);
+      _requireFieldValidator = await requireFieldValidator(v);
     }
 
     var regexValidator = regex.test(v);
 
-    if (requireField) {
+    if (_requireFieldValidator) {
       setError(false);
       setValue(v);
-      await props.onChangeText(v);
+      (await !props.displayOnly) && props.onChangeText(v);
       await props.error(false);
 
-      if (regexValidator) {
-        setError(false);
-        setValue(v);
-        await props.onChangeText(v);
-        await props.error(false);
-      } else {
-        setError(true);
-        await props.error(true);
-        setErrorMessage(props.errorMessage);
+      // if regex have 
+      if (props.regex) {
+        if (regexValidator) {
+          setError(false);
+          setValue(v);
+          (await !props.displayOnly) && props.onChangeText(v);
+          await props.error(false);
+        } else {
+          setError(true);
+          await props.error(true);
+          setErrorMessage(props.errorMessage);
+        }
       }
     } else {
       setError(true);
@@ -108,15 +108,30 @@ function IInput(props, ref) {
         <Text>{props.label}</Text>
       </View>
       <View style={inputStyles.inputContainer}>
-        <TextInput
-          style={inputStyles.input}
-          keyboardType={props.keyboardType}
-          onChangeText={value => onChangeRowInput(value)}
-          //   onFocus={onChangeRowInput(value)}
-          placeholder={props.placeholder}
-          value={value}
-          maxLength={props.maxLength}
-        />
+        {props.displayOnly == true ? (
+          <TouchableWithoutFeedback onPress={props.onPress}>
+            <View style={inputStyles.input}>
+              {value == '' ? (
+                <Text style={inputStyles.placeholderText}>
+                  {props.placeholder}
+                </Text>
+              ) : (
+                <Text>{value}</Text>
+              )}
+            </View>
+          </TouchableWithoutFeedback>
+        ) : (
+          <TextInput
+            style={inputStyles.input}
+            keyboardType={props.keyboardType}
+            onChangeText={value => onChangeRowInput(value)}
+            onFocus={props.onFocus}
+            placeholder={props.placeholder}
+            placeholderTextColor={color.grey}
+            value={String(value)}
+            maxLength={props.maxLength}
+          />
+        )}
       </View>
       <View style={inputStyles.errorContainer}>
         <Text style={inputStyles.error}>{error && errorMessage}</Text>
@@ -128,8 +143,12 @@ function IInput(props, ref) {
 export const Input = forwardRef(IInput);
 
 const inputStyles = {
+  placeholderText: {
+    color: color.grey,
+  },
+
   container: {
-    width: '100%',
+    width: '90%',
     justifyContent: 'space-between',
     alignItems: 'center',
     borderWidth: 0,
@@ -162,6 +181,7 @@ const inputStyles = {
     width: '100%',
     borderBottomWidth: 0.5,
     borderWidth: 0,
+    justifyContent: 'center',
   },
   error: {
     color: color.red,
