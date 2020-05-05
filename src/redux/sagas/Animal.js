@@ -24,6 +24,7 @@ function* getAnimal() {
 }
 
 function* getAnimalMilk(action) {
+
   const response = yield call(network.get, 'modules/animal');
   if (response.error) {
     serverErrorDialogue(response.errorMessage);
@@ -32,14 +33,14 @@ function* getAnimalMilk(action) {
       payload: response.errorMessage,
     });
   } else {
-    var filterData = response.Data.Filter(
-      x => x._id == action.payload.selectedAnimalId,
+    var filterData = response.data.filter(
+      x => x._id == action.payload.animalTagId,
     );
-    console.log(filterData, 'modifyMilkData');
+    console.log(filterData, 'modifyMfilterDatailkData');
     const fromDate = new Date(action.payload.fromDate);
     const toDate = new Date(action.payload.toDate);
 
-    const data = filterData.filter(x => {
+    const data = filterData.pop().milk.filter(x => {
       const currentDate = new Date(x.date);
       if (currentDate >= fromDate && currentDate <= toDate) {
         return x;
@@ -73,7 +74,7 @@ function* deleteAnimal(action) {
 
   const response = yield call(
     network.delete,
-    `modules/animal/${action.payload.animalId}`,
+    `modules/animal/${action.payload.animalTagId}`,
   );
   if (response.error) {
     serverErrorDialogue(response.errorMessage);
@@ -93,9 +94,12 @@ function* editAnimal(action) {
 
   const response = yield call(
     network.patch,
-    `modules/animal/${action.payload.animalId}`,
-    action.payload.postBodyEditMilk,
+    `modules/animal/${action.payload.animalTagId}`,
+    action.payload.postBodyEditAnimal,
   );
+
+
+  console.log(response, 'editAnimalresponse');
 
   if (response.error) {
     serverErrorDialogue(response.errorMessage);

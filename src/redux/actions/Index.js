@@ -78,3 +78,12 @@ export const editAnimalVisible = body => ({
   type: constant.EDIT_ANIMAL_VISIBLE,
   payload: body,
 });
+
+
+
+export const selectedAnimal = body => ({
+  type: constant.SELECTED_ANIMAL,
+  payload: body,
+});
+
+

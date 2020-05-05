@@ -9,6 +9,7 @@ const initialState = {
   animalMilkLoadingError: false,
   editAnimalLoading: false,
   editAnimalVisible: false,
+  selectedAnimal: ''
 };
 
 function animal(state = initialState, action) {
@@ -34,7 +35,7 @@ function animal(state = initialState, action) {
 
     case constant.GET_ANIMAL_MILK_START:
       return {...state, animalMilkLoading: true};
-    case constant.GET_ANIMAL_MILK_START:
+    case constant.GET_ANIMAL_MILK_SUCCESS:
       return {
         ...state,
         animalMilkData: action.payload,
@@ -114,6 +115,13 @@ function animal(state = initialState, action) {
         ...state,
         editAnimalVisible: action.payload.visible,
       };
+
+      case constant.SELECTED_ANIMAL:
+      return {
+        ...state,
+        selectedAnimal: action.payload.selectedAnimal,
+      };
+
 
     default:
       return state;

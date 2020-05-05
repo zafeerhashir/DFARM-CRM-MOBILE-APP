@@ -1,11 +1,25 @@
 
 import color from '../color/Index'
+import { ColorPropType } from 'react-native';
 
 export default {
 borderRadius: 5,
 fontOne:{
 fontSize: 18,
 },
+
+abstractCardStyles:{
+  borderBottomWidth: 0.5,
+  borderColor: color.lightGrey,
+  backgroundColor: '#FDFEFE'
+},
+
+abstractCountCardStyles:{
+  borderWidth: 0.5,
+  borderColor: color.lightGrey,
+  backgroundColor: '#FDFEFE'
+},
+
 
 shadow:{
   shadowColor: "#000",
@@ -25,7 +39,8 @@ searchBarContainerStyle: {
     borderLeftWidth: 0,
     borderRightWidth: 0,
     backgroundColor: color.white,
-    marginBottom: 20
+    marginVertical: 20,
+    
 
   },
   searchBarInputStyle: {
@@ -37,7 +52,7 @@ searchBarContainerStyle: {
     shadowOpacity: 0.6,
     borderBottomWidth: 0.5,
     borderColor:color.black,
-    height: 60,
+    height: 50,
   },
   searchContainerStyle: {
     flex: 1,

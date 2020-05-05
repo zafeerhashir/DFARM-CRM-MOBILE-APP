@@ -24,6 +24,7 @@ import {
   SelectAnimalTag,
   AddAnimal,
   Animal,
+  AnimalDetail
 } from '../screens/Index';
 import color from '../assets/color/Index';
 
@@ -98,6 +99,9 @@ function AnimalTab() {
   );
 }
 
+
+
+
 function AnimalStack({navigation}) {
   return (
     <Stack.Navigator>
@@ -120,6 +124,15 @@ function AnimalStack({navigation}) {
           ),
         }}
       />
+      <Stack.Screen
+      name="Animal Milk Detail"
+      component={AnimalDetail}
+      options={{
+        headerStyle: {
+          backgroundColor: color.tealDarkGreen,
+        },
+      }}
+    />
     </Stack.Navigator>
   );
 }

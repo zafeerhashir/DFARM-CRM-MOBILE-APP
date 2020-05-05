@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import {FlatList, Text, TouchableOpacity, View,} from 'react-native';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import color from '../../../assets/color/Index';
 import {
@@ -9,71 +9,42 @@ import {
   SmartView,
   EditMilk,
 } from '../../../components/Index';
-import {
-  deleteMilk,
-  filterMilkData,
-  getMilk,
-  editMilkVisible,
-} from '../../../redux/actions/Index';
+import {getAnimalMilk} from '../../../redux/actions/Index';
 import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
 import styles from '../../../assets/styles/Index';
 
-
-var _fromDate = '';
-var _toDate = '';
-
-function Milk({navigation}) {
+function AnimalDetail({navigation}) {
   const [toDate, setToDate] = useState(currentDate());
   const [fromDate, setFromDate] = useState(agoDate(7));
-  const [visible, setVisible] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(false);
-  const milkReducerState = useSelector(state => state.milk);
+  const animalReducerState = useSelector(state => state.animal);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    
-    getFilterMilkData();
     const unsubscribe = navigation.addListener('focus', () => {
-      getFilterMilkData();
+      getAnimalMilkData()
     });
-    return (unsubscribe);
-  }, [navigation, fromDate, toDate, milkReducerState.editMilkVisible]);
-
-  const dataHelper = async () => {
-    await setDatesForDefaultData();
-    await getFilterMilkData();
-  };
-
-  const setDatesForDefaultData = async () => {
-    const _fromDate = await agoDate(7);
-    const _toDate = await currentDate();
-    setFromDate(_fromDate);
-    setToDate(_toDate);
-  };
+    return unsubscribe;
+  }, [navigation, fromDate, toDate]);
 
   const onRefresh = useCallback(() => {
-    getFilterMilkData();
-  }, [milkReducerState.milkLoading]);
+    getAnimalMilkData();
+  }, [animalReducerState.animalMilkLoading]);
 
-  const getFilterMilkData = () => {
+  const getAnimalMilkData = () => {
     if (fromDate !== '' && toDate !== '') {
-      const body = {toDate: toDate, fromDate: fromDate};
-      dispatch(filterMilkData(body));
+      const body = {
+        toDate: toDate,
+        fromDate: fromDate,
+        animalTagId: animalReducerState.selectedAnimal.animalTagId,
+      };
+      dispatch(getAnimalMilk(body));
     }
-  };
-
-  const _deleteMilk = item => {
-    setVisible(false);
-    const payload = {animalTagId: item.animalTagId, _id: item._id};
-    dispatch(deleteMilk(payload));
-    getFilterMilkData()
-
   };
 
   const getTotalMilk = () => {
     var total = 0;
 
-    for (let e of milkReducerState.milkData) {
+    for (let e of animalReducerState.animalMilkData) {
       total = total + (e.milkProduceAM + e.milkProducePM);
     }
 
@@ -82,10 +53,10 @@ function Milk({navigation}) {
 
   return (
     <SmartView>
-      <View style={milkStyles.parentContainer}>
-        <View style={milkStyles.childOneContainer}>
-          <View style={milkStyles.subChildOneContainer}>
-            <View style={milkStyles.subSubChildOneContainer}>
+      <View style={animalStyles.parentContainer}>
+        <View style={animalStyles.childOneContainer}>
+          <View style={animalStyles.subChildOneContainer}>
+            <View style={animalStyles.subSubChildOneContainer}>
               <Date
                 required={false}
                 date={fromDate}
@@ -94,7 +65,7 @@ function Milk({navigation}) {
               />
             </View>
 
-            <View style={milkStyles.subSubChildOneContainer}>
+            <View style={animalStyles.subSubChildOneContainer}>
               <Date
                 required={false}
                 minDate={fromDate}
@@ -105,52 +76,34 @@ function Milk({navigation}) {
             </View>
           </View>
 
-          <View style={milkStyles.subChildTwoContainer}>
-            <View style={milkStyles.subSubChildTwoContainer}>
-              <Text>Total Milk</Text>
+          <View style={animalStyles.subChildTwoContainer}>
+            <View style={animalStyles.subSubChildTwoContainer}>
+              <Text>Total milk</Text>
             </View>
 
-            <View style={milkStyles.subSubChildTwoContainerLabel}>
+            <View style={animalStyles.subSubChildTwoContainerLabel}>
               <Text>
-                {milkReducerState.milkData.length == 0 ? '0' : getTotalMilk()}
+                {animalReducerState.animalMilkData.length == 0
+                  ? '0'
+                  : getTotalMilk()}
               </Text>
             </View>
           </View>
         </View>
 
-
-        {visible && (
-          <CardLongPressView
-            onEditPress={() => {
-              dispatch(editMilkVisible({visible: true})), setVisible(false);
-            }}
-            onDeletePress={() => _deleteMilk(selectedItem)}
-            onTabOut={() => setVisible(false)}
-          />
-        )}
-
-        {milkReducerState.editMilkVisible && (
-          <EditMilk selectedItem={selectedItem} />
-        )}
-        {console.log(selectedItem, 'selectedItem')}
-
-        {milkReducerState.milkData.length == 0 &&
-        milkReducerState.milkLoading == false ? (
-          <View style={milkStyles.noRecordView}>
-            <Text style={milkStyles.noRecordText}>No Record Found</Text>
+        {animalReducerState.animalMilkData.length == 0 &&
+        animalReducerState.animalMilkLoading == false ? (
+          <View style={animalStyles.noRecordView}>
+            <Text style={animalStyles.noRecordText}>No Record Found</Text>
           </View>
         ) : (
           <FlatList
-            refreshing={milkReducerState.milkLoading}
+            refreshing={animalReducerState.animalMilkLoading}
             onRefresh={() => onRefresh()}
-            data={milkReducerState.milkData}
+            data={animalReducerState.animalMilkData}
             renderItem={({item}) => (
-              <TouchableOpacity
-                onLongPress={() => {
-                  setVisible(true), setSelectedItem(item);
-                }}
-                style={milkStyles.cardContainer}>
-                <View style={milkStyles.cardContainerChild}>
+              <TouchableOpacity style={animalStyles.cardContainer}>
+                <View style={animalStyles.cardContainerChild}>
                   <Row label={'Date'} value={formatDate(item.date)} />
                   <Row label={'Animal Tag'} value={item.tag} />
                   <Row
@@ -175,9 +128,9 @@ function Milk({navigation}) {
   );
 }
 
-export {Milk};
+export {AnimalDetail};
 
-const milkStyles = {
+const animalStyles = {
   parentContainer: {
     flex: 1,
     width: '100%',
@@ -220,7 +173,7 @@ const milkStyles = {
     width: '25%',
     justifyContent: 'center',
     alignItems: 'center',
-    ...styles.shadow
+    ...styles.shadow,
   },
 
   subSubChildTwoContainerLabel: {
@@ -229,7 +182,7 @@ const milkStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0,
-    ...styles.shadow
+    ...styles.shadow,
   },
 
   cardContainer: {
@@ -246,7 +199,7 @@ const milkStyles = {
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 0,
-    ...styles.abstractCardStyles
+    ...styles.abstractCardStyles,
   },
 
   cardContainerChildTwo: {
@@ -255,7 +208,7 @@ const milkStyles = {
     borderWidth: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    ...styles.shadow
+    ...styles.shadow,
   },
 
   cardContainerChildOne: {
@@ -279,7 +232,7 @@ const milkStyles = {
     height: 40,
     borderWidth: 0,
     paddingLeft: 5,
-    ...styles.shadow
+    ...styles.shadow,
   },
   cardContainerChildOneColText: {
     width: '25%',
@@ -288,8 +241,7 @@ const milkStyles = {
     height: 40,
     borderWidth: 0,
     marginLeft: 5,
-    ...styles.shadow
-
+    ...styles.shadow,
   },
   noRecordView: {
     marginTop: '25%',

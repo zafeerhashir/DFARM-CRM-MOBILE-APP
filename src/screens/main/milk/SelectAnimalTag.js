@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useCallback} from 'react';
-import {FlatList, Text, TouchableOpacity, View,} from 'react-native';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import color from '../../../assets/color/Index';
 import styles from '../../../assets/styles/Index';
@@ -30,78 +30,71 @@ function SelectAnimalTag({navigation}) {
   const [searchTerm, setSearchTerm] = useState('');
   const [data, setData] = useState(milkReducerState.animalTagData);
 
-
   useEffect(() => {}, []);
 
   const onChangeText = async searchTerm => {
     setSearchTerm(searchTerm);
 
-    if (
-      searchTerm.trim().length >= 1 &&
-      data.length != 0
-    ) {
+    if (searchTerm.trim().length >= 1 && data.length != 0) {
       try {
-        var suggestion = await data
-          .sort()
-          .filter(x => {
-            return new RegExp(searchTerm, 'i').test(x.tag);
-          });
+        var suggestion = await data.sort().filter(x => {
+          return new RegExp(searchTerm, 'i').test(x.tag);
+        });
       } catch (e) {
         // this.setState({searchFound: false});
       }
 
       if (suggestion.length == 0) {
-        setData(suggestion)
+        setData(suggestion);
       } else {
-        setData(suggestion)
+        setData(suggestion);
       }
     } else {
-      setData(milkReducerState.animalTagData)
-
+      setData(milkReducerState.animalTagData);
     }
   };
 
   return (
-      <SmartView>
-        <View style={selectAnimalTagStyles.form}>
-          
-          <SearchBar
-            lightTheme
-            placeholder="Search"
-            containerStyle={styles.searchBarContainerStyle}
-            inputContainerStyle={styles.searchBarInputContainerStyle}
-            inputStyle={styles.searchBarInputStyle}
-            onChangeText={searchTerm => onChangeText(searchTerm)}
-            value={searchTerm}
-          />
+    <SmartView>
+      <View style={selectAnimalTagStyles.form}>
+        <SearchBar
+          lightTheme
+          placeholder="Search"
+          containerStyle={styles.searchBarContainerStyle}
+          inputContainerStyle={styles.searchBarInputContainerStyle}
+          inputStyle={styles.searchBarInputStyle}
+          onChangeText={searchTerm => onChangeText(searchTerm)}
+          value={searchTerm}
+          placeholderTextColor={color.grey}
+          clearIcon={false}
+          searchIcon={false}
+        />
 
-          {data.length == 0 &&
-          milkReducerState.milkLoading == false ? (
-            <View style={selectAnimalTagStyles.noRecordView}>
-              <Text style={selectAnimalTagStyles.noRecordText}>
-                No Record Found
-              </Text>
-            </View>
-          ) : (
-            <FlatList
-              data={data}
-              renderItem={({item}) => (
-                <TouchableOpacity
-                  onPress={() =>{
-                    dispatch(selectAnimalTagItem({tag: item.tag, id: item._id}))
-                    navigation.goBack()
-                  }}
-                  style={selectAnimalTagStyles.cardContainer}>
-                  <View style={[selectAnimalTagStyles.cardContainerChild,]}>
-                    <Row label={'Animal Tag'} value={item.tag} />
-                  
-                  </View>
-                </TouchableOpacity>
-              )}
-            />
-          )}
-        </View>
-      </SmartView>
+        {data.length == 0 && milkReducerState.milkLoading == false ? (
+          <View style={selectAnimalTagStyles.noRecordView}>
+            <Text style={selectAnimalTagStyles.noRecordText}>
+              No Record Found
+            </Text>
+          </View>
+        ) : (
+          <FlatList
+            data={data}
+            renderItem={({item}) => (
+              <TouchableOpacity
+                onPress={() => {
+                  dispatch(selectAnimalTagItem({tag: item.tag, id: item._id}));
+                  navigation.goBack();
+                }}
+                style={selectAnimalTagStyles.cardContainer}>
+                <View style={[selectAnimalTagStyles.cardContainerChild]}>
+                  <Row label={'Animal Tag'} value={item.tag} />
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+        )}
+      </View>
+    </SmartView>
   );
 }
 
@@ -130,7 +123,6 @@ const selectAnimalTagStyles = {
     width: '100%',
     borderRadius: styles.borderRadius,
     flex: 1,
-
   },
 
   parentContainer: {
@@ -193,7 +185,6 @@ const selectAnimalTagStyles = {
     paddingHorizontal: 8,
     marginBottom: 15,
 
-
   },
 
   cardContainerChild: {
@@ -201,8 +192,7 @@ const selectAnimalTagStyles = {
     alignItems: 'center',
     justifyContent: 'center',
     height: 50,
-     ...styles.shadow
-   
+    ...styles.abstractCardStyles,
   },
 
   cardContainerChildTwo: {

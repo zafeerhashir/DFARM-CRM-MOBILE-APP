@@ -3,7 +3,7 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import color from '../assets/color/Index';
 import styles from '../assets/styles/Index';
-import {editAnimal, editAnimalVisible} from '../redux/actions/Index';
+import {editAnimal, editAnimalVisible, getAnimal } from '../redux/actions/Index';
 import {animalTagRegex} from '../validations/Index';
 import {Button} from './Button';
 import {Input} from './Input';
@@ -29,7 +29,8 @@ function EditAnimal(props) {
       postBodyEditAnimal,
       animalTagId,
     };
-    dispatch(editAnimal(payload));
+    dispatch(editAnimal(payload))
+    dispatch(getAnimal());
   };
 
 
