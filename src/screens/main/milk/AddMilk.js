@@ -1,25 +1,9 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react';
-import {View, TextInput, Keyboard} from 'react-native';
-import {
-  Input,
-  Button,
-  Date,
-  SmartView,
-  SelectAnimalTag,
-} from '../../../components/Index';
-import {literRegex} from '../../../validations/Index';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import color from '../../../assets/color/Index';
-import {useSelector, useDispatch} from 'react-redux';
-import {
-  addMilk,
-  getMilk,
-  getAnimal,
-  selectAnimalTagVisible,
-  getAnimalTags,
-  selectAnimalTagItem
-} from '../../../redux/actions/Index';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import { MYModal } from '../../../components/Modal';
+import { Button, Date, Input, SmartView } from '../../../components/Index';
+import { addMilk, getAnimalTags, selectAnimalTagItem } from '../../../redux/actions/Index';
+import { literRegex } from '../../../validations/Index';
 
 
 
@@ -146,9 +130,9 @@ function AddMilk({navigation}) {
     return  true;}
 }
 
-export {AddMilk};
+export { AddMilk };
+export { Date };
 
-export {Date};
 
 const addMilkStyles = {
   container: {

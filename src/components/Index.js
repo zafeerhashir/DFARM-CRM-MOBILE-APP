@@ -7,4 +7,4 @@ export { Row } from './Row'
 export { CardLongPressView } from './CardLongPressView'
 export { EditMilk } from './EditMilk'
 export { SelectAnimalTag } from './SelectAnimalTag'
-
+export { EditAnimal } from './EditAnimal'

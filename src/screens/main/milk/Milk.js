@@ -16,6 +16,8 @@ import {
   editMilkVisible,
 } from '../../../redux/actions/Index';
 import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
+import styles from '../../../assets/styles/Index';
+
 
 var _fromDate = '';
 var _toDate = '';
@@ -144,7 +146,6 @@ function Milk({navigation}) {
             data={milkReducerState.milkData}
             renderItem={({item}) => (
               <TouchableOpacity
-                activeOpacity={0.6}
                 onLongPress={() => {
                   setVisible(true), setSelectedItem(item);
                 }}
@@ -219,7 +220,7 @@ const milkStyles = {
     width: '25%',
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 1,
+    ...styles.shadow
   },
 
   subSubChildTwoContainerLabel: {
@@ -228,7 +229,7 @@ const milkStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0,
-    elevation: 1,
+    ...styles.shadow
   },
 
   cardContainer: {
@@ -244,8 +245,8 @@ const milkStyles = {
     width: '95%',
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 3,
     borderWidth: 0,
+    ...styles.shadow
   },
 
   cardContainerChildTwo: {
@@ -254,7 +255,7 @@ const milkStyles = {
     borderWidth: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 1,
+    ...styles.shadow
   },
 
   cardContainerChildOne: {
@@ -278,7 +279,7 @@ const milkStyles = {
     height: 40,
     borderWidth: 0,
     paddingLeft: 5,
-    elevation: 1,
+    ...styles.shadow
   },
   cardContainerChildOneColText: {
     width: '25%',
@@ -286,8 +287,9 @@ const milkStyles = {
     justifyContent: 'center',
     height: 40,
     borderWidth: 0,
-    elevation: 1,
     marginLeft: 5,
+    ...styles.shadow
+
   },
   noRecordView: {
     marginTop: '25%',

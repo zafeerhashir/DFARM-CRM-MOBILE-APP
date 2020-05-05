@@ -15,13 +15,15 @@ import {
   DrawerItemList,
   DrawerItem,
 } from '@react-navigation/drawer';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {
   SignInScreen,
   AddMilk,
   Milk,
   DeleteMilk,
-  SelectAnimalTag
+  SelectAnimalTag,
+  AddAnimal,
+  Animal,
 } from '../screens/Index';
 import color from '../assets/color/Index';
 
@@ -34,28 +36,22 @@ function MilkTab() {
     <Tab.Navigator
       tabBarOptions={{
         activeTintColor: color.black,
-        indicatorStyle: {backgroundColor: color.white, height: '100%'},
+        indicatorStyle: {backgroundColor: color.tealGreen, height: '100%'},
         style: {backgroundColor: color.tealDarkGreen},
       }}>
-      <Tab.Screen  
-       name="Milk" 
-       component={Milk} 
-       />
-      <Tab.Screen 
-      name="Add" 
-      component={AddMilk} 
-      />
+      <Tab.Screen name="Milks" component={Milk} />
+      <Tab.Screen name="Add" component={AddMilk} />
     </Tab.Navigator>
   );
 }
 
+
+
 function MilkStack({navigation}) {
   return (
     <Stack.Navigator>
-
-  
       <Stack.Screen
-        name="Milk"
+        name="Milks"
         component={MilkTab}
         options={{
           headerStyle: {
@@ -75,15 +71,55 @@ function MilkStack({navigation}) {
       />
 
       <Stack.Screen
-      name="Animal Tag"
-      component={SelectAnimalTag}
-      options={{
-        headerStyle: {
-          backgroundColor: color.tealDarkGreen,
-        },
-      }}
-    />
-    
+        name="Animal Tag"
+        component={SelectAnimalTag}
+        options={{
+          headerStyle: {
+            backgroundColor: color.tealDarkGreen,
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+
+function AnimalTab() {
+  return (
+    <Tab.Navigator
+      tabBarOptions={{
+        activeTintColor: color.black,
+        indicatorStyle: {backgroundColor: color.tealGreen, height: '100%'},
+        style: {backgroundColor: color.tealDarkGreen},
+      }}>
+      <Tab.Screen name="Animals" component={Animal} />
+      <Tab.Screen name="Add" component={AddAnimal} />
+    </Tab.Navigator>
+  );
+}
+
+function AnimalStack({navigation}) {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Animal"
+        component={AnimalTab}
+        options={{
+          headerStyle: {
+            backgroundColor: color.tealDarkGreen,
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.openDrawer()}
+              style={navigationStyles.headerLeft}>
+              <Image
+                style={navigationStyles.headerLeftImage}
+                source={require('../assets/img/menu.png')}
+              />
+            </TouchableOpacity>
+          ),
+        }}
+      />
     </Stack.Navigator>
   );
 }
@@ -91,9 +127,9 @@ function MilkStack({navigation}) {
 function MainDrawer() {
   return (
     <Drawer.Navigator>
+      <Drawer.Screen name="Animal" component={AnimalStack} />
       <Drawer.Screen name="Milk" component={MilkStack} />
       <Drawer.Screen name="Feed" component={MilkStack} />
-      <Drawer.Screen name="Animal" component={MilkStack} />
     </Drawer.Navigator>
   );
 }

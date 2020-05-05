@@ -82,7 +82,7 @@ function IDate(props, ref) {
           {date == '' ? (
             <Text style={datePickerStyles.placeholderText}>
               {props.placeholder == undefined
-                ? 'Select date'
+                ? 'Select Date'
                 : props.placeholder}
             </Text>
           ) : (

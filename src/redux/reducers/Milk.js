@@ -2,7 +2,7 @@ import constant from '../constant/Index';
 import {gainsboro} from 'color-name';
 
 const initialState = {
-  selectAnimalTagItem: {tag:'',id:''},
+  selectAnimalTagItem: {tag: '', id: ''},
   animalTagData: [],
   milkData: [],
   milkLoading: false,
@@ -17,7 +17,7 @@ function milk(state = initialState, action) {
     case constant.GET_ANIMAL_TAG_START:
       return {...state, milkLoading: true};
     case constant.GET_ANIMAL_TAG_SUCCESS:
-      console.log(action.payload,'.GET_ANIMAL_TAG_SUCCESS')
+      console.log(action.payload, '.GET_ANIMAL_TAG_SUCCESS');
       return {
         ...state,
         animalTagData: action.payload,
@@ -55,6 +55,13 @@ function milk(state = initialState, action) {
       return {
         ...state,
         milkLoadingError: false,
+        milkLoading: false,
+      };
+
+    case constant.ADD_Milk_FAILURE:
+      return {
+        ...state,
+        milkLoadingError: true,
         milkLoading: false,
       };
 
@@ -100,13 +107,6 @@ function milk(state = initialState, action) {
         editMilkVisible: false,
       };
 
-    case constant.ADD_Milk_FAILURE:
-      return {
-        ...state,
-        milkLoadingError: true,
-        milkLoading: false,
-      };
-
     case constant.DELETE_MILK_START:
       return {
         ...state,
@@ -149,7 +149,6 @@ function milk(state = initialState, action) {
         milkLoadingError: true,
         milkLoading: false,
         milkData: [],
-
       };
 
     default:

@@ -4,6 +4,10 @@ export const literRegex = '^\\d+(\\.\\d{1,2})?$'
 
 export const descriptionRegex = '^\s*([0-9a-zA-Z ]*)\s*$'
 
+export const animalTagRegex = "^[a-zA-Z0-9]*$"
+
+
+
 
    export const validationHandler= async (value, type)=>
    {

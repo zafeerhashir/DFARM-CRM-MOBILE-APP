@@ -26,6 +26,7 @@ function CardLongPressView(props) {
             <Text style={{color: color.tealDarkGreen}}>Edit</Text>
           </View>
         </TouchableOpacity>
+        
         {visible && 
           <ConfirmationModel 
           message={'Are you sure, You want to delete this record?'} 
@@ -39,6 +40,15 @@ function CardLongPressView(props) {
           <Text style={{color: color.tealDarkGreen}}>Delete</Text>
           </View>
         </TouchableOpacity>
+        {props.viewDetails &&
+        <TouchableOpacity
+          onPress={props.onDetailsPress}
+          style={cardLongPressViewStyles.Container}>
+          <View style={cardLongPressViewStyles.row}>
+            <Text style={{color: color.tealDarkGreen}}>View Details</Text>
+          </View>
+        </TouchableOpacity>
+        }
       </View>
     </MYModal>
   );

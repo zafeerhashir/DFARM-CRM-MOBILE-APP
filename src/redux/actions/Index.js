@@ -4,9 +4,6 @@ export const getMilk = () => ({
   type: constant.GET_MILK_START,
 });
 
-export const getAnimal = () => ({
-  type: constant.GET_ANIMAL_START,
-});
 
 export const addMilk = body => ({
   type: constant.ADD_MILK_START,
@@ -44,5 +41,40 @@ export const getAnimalTags = () => ({
 
 export const selectAnimalTagItem = body => ({
   type: constant.SELECT_ANIMAL_TAG_ITEM,
+  payload: body,
+});
+
+
+ // Animals //
+ 
+
+export const addAnimal = body => ({
+  type: constant.ADD_ANIMAL_START,
+  payload: body,
+});
+
+export const deleteAnimal = body => ({
+  type: constant.DELETE_ANIMAL_START,
+  payload: body,
+});
+
+export const editAnimal = body => ({
+  type: constant.EDIT_ANIMAL_START,
+  payload: body,
+});
+
+export const getAnimal = body => ({
+  type: constant.GET_ANIMAL_START,
+  payload: body,
+});
+
+export const getAnimalMilk = body => ({
+  type: constant.GET_ANIMAL_MILK_START,
+  payload: body,
+});
+
+
+export const editAnimalVisible = body => ({
+  type: constant.EDIT_ANIMAL_VISIBLE,
   payload: body,
 });

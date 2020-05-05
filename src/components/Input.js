@@ -103,7 +103,7 @@ function IInput(props, ref) {
   };
 
   return (
-    <View style={inputStyles.container}>
+    <View style={[inputStyles.container,props.containerStyles]}>
       <View style={inputStyles.labelContainer}>
         <Text>{props.label}</Text>
       </View>
@@ -177,10 +177,8 @@ const inputStyles = {
   },
   input: {
     height: 45,
-    borderWidth: 0,
     width: '100%',
     borderBottomWidth: 0.5,
-    borderWidth: 0,
     justifyContent: 'center',
   },
   error: {

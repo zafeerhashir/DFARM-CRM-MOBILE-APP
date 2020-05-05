@@ -7,6 +7,17 @@ fontOne:{
 fontSize: 18,
 },
 
+shadow:{
+  shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 12,
+  },
+  shadowOpacity: 0.58,
+  shadowRadius: 16.00,
+  elevation: 0.4111
+},
+
 searchBarContainerStyle: {
     width: "95%",
     borderTopWidth: 0,
@@ -26,7 +37,7 @@ searchBarContainerStyle: {
     shadowOpacity: 0.6,
     borderBottomWidth: 0.5,
     borderColor:color.black,
-    height: 60
+    height: 60,
   },
   searchContainerStyle: {
     flex: 1,

@@ -1,7 +1,7 @@
-import {call, put, takeLatest} from 'redux-saga/effects';
-import network from '../../../services/network';
-import constant from '../../constant/Index';
-import {View, StyleSheet, Button, Alert} from 'react-native';
+import { Alert } from 'react-native';
+import { call, put, takeLatest } from 'redux-saga/effects';
+import network from '../../services/network';
+import constant from '../constant/Index';
 
 async function serverErrorDialogue(message) {
   Alert.alert('Sorry', message, [{text: 'OK'}], {cancelable: false});
@@ -150,7 +150,7 @@ function* getAnimalTag() {
   }
 }
 
-function* watchGetMilk() {
+function* milkWatcherSaga() {
   yield takeLatest(constant.FILTER_MILK_DATA_START, filterMilkData);
   yield takeLatest(constant.GET_MILK_START, getMilk);
   yield takeLatest(constant.ADD_MILK_START, addMilk);
@@ -159,4 +159,5 @@ function* watchGetMilk() {
   yield takeLatest(constant.GET_ANIMAL_TAG_START, getAnimalTag);
 }
 
-export {watchGetMilk};
+export { milkWatcherSaga };
+

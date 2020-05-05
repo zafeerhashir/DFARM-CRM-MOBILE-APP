@@ -1,37 +1,44 @@
-import React, {useEffect, useState, useCallback} from 'react';
-import {FlatList, Text, TouchableOpacity, View,} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useEffect, useState, useCallback } from 'react';
+import { FlatList, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { SearchBar } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
 import color from '../../../assets/color/Index';
 import styles from '../../../assets/styles/Index';
+import { Row, SmartView, CardLongPressView, EditAnimal } from '../../../components/Index';
+import { getAnimal, deleteAnimal, editAnimal, editAnimalVisible  } from '../../../redux/actions/Index';
 
-import {
-  CardLongPressView,
-  Date,
-  Row,
-  SmartView,
-  EditMilk,
-} from '../../../components/Index';
-import {
-  deleteMilk,
-  filterMilkData,
-  getMilk,
-  editMilkVisible,
-} from '../../../redux/actions/Index';
-import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
-import {SearchBar} from 'react-native-elements';
-import {
-  selectAnimalTagItem,
-  selectAnimalTagVisible,
-} from '../../../redux/actions/Index';
 
-function SelectAnimalTag({navigation}) {
-  const milkReducerState = useSelector(state => state.milk);
-  const dispatch = useDispatch();
+function Animal({navigation}) {
+  const animalReducerState = useSelector(state => state.animal);
+
+  const [visible, setVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [data, setData] = useState(milkReducerState.animalTagData);
+  const [selectedItem, setSelectedItem] = useState(false);
+  const [data, setData] = useState(animalReducerState.animalData);
+  const dispatch = useDispatch();
 
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    
+    getAnimals();
+    const unsubscribe = navigation.addListener('focus', () => {
+      getAnimals();
+    });
+    return (unsubscribe);
+  }, [navigation]);
+
+  const onRefresh = useCallback(() => {
+    getAnimals();
+  }, [animalReducerState.animalLoading]);
+
+
+  const getAnimals = () => {
+      dispatch(getAnimal());
+  };
+
+
+
+
 
   const onChangeText = async searchTerm => {
     setSearchTerm(searchTerm);
@@ -56,14 +63,32 @@ function SelectAnimalTag({navigation}) {
         setData(suggestion)
       }
     } else {
-      setData(milkReducerState.animalTagData)
+      setData(animalReducerState.animalData)
 
     }
   };
 
+  
+  const _deleteAnimal = item => {
+    setVisible(false);
+    const payload = {animalTagId: item._id};
+    dispatch(deleteAnimal(payload));
+
+  };
+
+  const getTotalMilk = () => {
+    var total = 0;
+
+    for (let e of data) {
+      total = total + (e.milkProduceAM + e.milkProducePM);
+    }
+
+    return total;
+  };
+
   return (
       <SmartView>
-        <View style={selectAnimalTagStyles.form}>
+        <View style={animalStyles.form}>
           
           <SearchBar
             lightTheme
@@ -75,26 +100,46 @@ function SelectAnimalTag({navigation}) {
             value={searchTerm}
           />
 
-          {data.length == 0 &&
-          milkReducerState.milkLoading == false ? (
-            <View style={selectAnimalTagStyles.noRecordView}>
-              <Text style={selectAnimalTagStyles.noRecordText}>
+
+          {visible && (
+            <CardLongPressView
+              viewDetails={true}
+              onEditPress={() => {
+                dispatch(editAnimalVisible({visible: true})), setVisible(false);
+              }}
+              onDeletePress={() => _deleteAnimal(selectedItem)}
+              onDetailsPress={() => navigation.navigate('Animal Milk Detail')}
+              onTabOut={() => setVisible(false)}
+            />
+          )}
+
+          {animalReducerState.editAnimalVisible && (
+            <EditAnimal selectedItem={selectedItem} />
+          )}
+          {console.log(selectedItem, 'selectedItem')}
+
+          {animalReducerState.animalData.length == 0 &&
+            animalReducerState.animalLoading == false ? (
+            <View style={animalStyles.noRecordView}>
+              <Text style={animalStyles.noRecordText}>
                 No Record Found
               </Text>
             </View>
           ) : (
             <FlatList
+              refreshing={animalReducerState.animalLoading}
+              onRefresh={() => onRefresh()}
               data={data}
               renderItem={({item}) => (
                 <TouchableOpacity
-                  onPress={() =>{
-                    dispatch(selectAnimalTagItem({tag: item.tag, id: item._id}))
-                    navigation.goBack()
-                  }}
-                  style={selectAnimalTagStyles.cardContainer}>
-                  <View style={[selectAnimalTagStyles.cardContainerChild,]}>
+                onLongPress={() => {
+                  setVisible(true), setSelectedItem({tag:item.tag,animalTagId:item._id});
+                }}
+                  style={animalStyles.cardContainer}>
+                  <View style={[animalStyles.cardContainerChild,]}>
                     <Row label={'Animal Tag'} value={item.tag} />
-                  
+                    
+
                   </View>
                 </TouchableOpacity>
               )}
@@ -105,9 +150,9 @@ function SelectAnimalTag({navigation}) {
   );
 }
 
-export {SelectAnimalTag};
+export { Animal };
 
-const selectAnimalTagStyles = {
+const animalStyles = StyleSheet.create({
   dismissRow: {
     borderWidth: 0,
     height: 40,
@@ -192,8 +237,7 @@ const selectAnimalTagStyles = {
     borderWidth: 0,
     paddingHorizontal: 8,
     marginBottom: 15,
-
-
+    
   },
 
   cardContainerChild: {
@@ -201,8 +245,9 @@ const selectAnimalTagStyles = {
     alignItems: 'center',
     justifyContent: 'center',
     height: 50,
-     ...styles.shadow
-   
+    ...styles.shadow
+    
+
   },
 
   cardContainerChildTwo: {
@@ -253,4 +298,4 @@ const selectAnimalTagStyles = {
     color: color.black,
     fontSize: 18,
   },
-};
+});

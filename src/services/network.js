@@ -2,6 +2,8 @@ import { tryStatement } from "@babel/types";
 
 async function executeRequest(method, pathname, body = {}, headers = {}) {
   console.log(body, 'executeRequest');
+  console.log(pathname, 'pathname');
+
 
   fetchInputObject = {
     method: method,
