@@ -130,7 +130,8 @@ function Animal({navigation}) {
             onRefresh={() => onRefresh()}
             data={data}
             renderItem={({item}) => (
-              <TouchableOpacity
+
+             <TouchableOpacity
                 onLongPress={() => {
                   setVisible(true),
                     dispatch(
@@ -143,7 +144,7 @@ function Animal({navigation}) {
                 <View style={[animalStyles.cardContainerChild]}>
                   <Row label={'Animal Tag'} value={item.tag} />
                 </View>
-              </TouchableOpacity>
+              </TouchableOpacity> 
             )}
           />
         )}
@@ -163,17 +164,20 @@ const animalStyles = StyleSheet.create({
     marginBottom: 20
   },
   countLabelContainer:{
-    width:'25%',
+    paddingHorizontal:10,
     alignItems:'center',
-    justifyContent:'center'
+    justifyContent:'center',
+    height: 40,
+    ...styles.abstractCardStyles,
+
   },
   countValueContainer:{
-    width:'35%',
+    paddingHorizontal:10,
     alignItems:'center',
     justifyContent:'center',
     height: 40,
     marginLeft: 20,
-    ...styles.abstractCountCardStyles
+    ...styles.abstractCardStyles,
   
 
   },

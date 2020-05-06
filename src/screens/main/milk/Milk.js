@@ -1,26 +1,21 @@
-import React, {useEffect, useState, useCallback} from 'react';
-import {FlatList, Text, TouchableOpacity, View,} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import color from '../../../assets/color/Index';
+import styles from '../../../assets/styles/Index';
 import {
   CardLongPressView,
   Date,
+  EditMilk,
   Row,
   SmartView,
-  EditMilk,
 } from '../../../components/Index';
 import {
   deleteMilk,
-  filterMilkData,
-  getMilk,
   editMilkVisible,
+  filterMilkData,
 } from '../../../redux/actions/Index';
 import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
-import styles from '../../../assets/styles/Index';
-
-
-var _fromDate = '';
-var _toDate = '';
 
 function Milk({navigation}) {
   const [toDate, setToDate] = useState(currentDate());
@@ -31,18 +26,13 @@ function Milk({navigation}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    
-    getFilterMilkData();
+    // getFilterMilkData();
+
     const unsubscribe = navigation.addListener('focus', () => {
       getFilterMilkData();
     });
-    return (unsubscribe);
+    return unsubscribe;
   }, [navigation, fromDate, toDate, milkReducerState.editMilkVisible]);
-
-  const dataHelper = async () => {
-    await setDatesForDefaultData();
-    await getFilterMilkData();
-  };
 
   const setDatesForDefaultData = async () => {
     const _fromDate = await agoDate(7);
@@ -66,8 +56,7 @@ function Milk({navigation}) {
     setVisible(false);
     const payload = {animalTagId: item.animalTagId, _id: item._id};
     dispatch(deleteMilk(payload));
-    getFilterMilkData()
-
+    getFilterMilkData();
   };
 
   const getTotalMilk = () => {
@@ -83,41 +72,41 @@ function Milk({navigation}) {
   return (
     <SmartView>
       <View style={milkStyles.parentContainer}>
-        <View style={milkStyles.childOneContainer}>
-          <View style={milkStyles.subChildOneContainer}>
-            <View style={milkStyles.subSubChildOneContainer}>
-              <Date
-                required={false}
-                date={fromDate}
-                placeholder={'Select from date'}
-                onDateChange={date => setFromDate(date)}
-              />
-            </View>
-
-            <View style={milkStyles.subSubChildOneContainer}>
-              <Date
-                required={false}
-                minDate={fromDate}
-                date={toDate}
-                placeholder={'Select to date'}
-                onDateChange={date => setToDate(date)}
-              />
-            </View>
+        <View style={milkStyles.pickerRow}>
+          <View style={milkStyles.pickerColumnLeft}>
+            <Date
+              required={false}
+              date={fromDate}
+              placeholder={'Select from date'}
+              onDateChange={date => {
+                setFromDate(date), getFilterMilkData();
+              }}
+            />
           </View>
-
-          <View style={milkStyles.subChildTwoContainer}>
-            <View style={milkStyles.subSubChildTwoContainer}>
-              <Text>Total Milk</Text>
-            </View>
-
-            <View style={milkStyles.subSubChildTwoContainerLabel}>
-              <Text>
-                {milkReducerState.milkData.length == 0 ? '0' : getTotalMilk()}
-              </Text>
-            </View>
+          <View style={milkStyles.pickerColumnRight}>
+            <Date
+              required={false}
+              minDate={fromDate}
+              date={toDate}
+              placeholder={'Select to date'}
+              onDateChange={date => {
+                setToDate(date), getFilterMilkData();
+              }}
+            />
           </View>
         </View>
 
+        <View style={milkStyles.countContainer}>
+          <View style={milkStyles.countLabelContainer}>
+            <Text>Total Milk</Text>
+          </View>
+
+          <View style={milkStyles.countValueContainer}>
+            <Text>
+              {milkReducerState.milkData.length == 0 ? '0' : getTotalMilk()}
+            </Text>
+          </View>
+        </View>
 
         {visible && (
           <CardLongPressView
@@ -178,6 +167,42 @@ function Milk({navigation}) {
 export {Milk};
 
 const milkStyles = {
+  pickerRow: {
+    width: '90%',
+    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  pickerColumnLeft: {width: '50%', justifyContent: 'center', borderWidth: 0},
+  pickerColumnRight: {
+    width: '50%',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    borderWidth: 0,
+  },
+
+  countContainer: {
+    width: '90%',
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
+  countLabelContainer: {
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 40,
+    ...styles.abstractCardStyles,
+  },
+  countValueContainer: {
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 40,
+    marginLeft: 20,
+    ...styles.abstractCardStyles,
+  },
   parentContainer: {
     flex: 1,
     width: '100%',
@@ -186,52 +211,7 @@ const milkStyles = {
     marginBottom: 0,
   },
 
-  childOneContainer: {
-    height: 140,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '95%',
-    borderWidth: 0,
-  },
-
-  subChildOneContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-  },
-
-  subSubChildOneContainer: {
-    height: 70,
-    width: '45%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 0,
-  },
-
-  subChildTwoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-  },
-
-  subSubChildTwoContainer: {
-    height: 45,
-    width: '25%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...styles.shadow
-  },
-
-  subSubChildTwoContainerLabel: {
-    height: 45,
-    width: '35%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 0,
-    ...styles.shadow
-  },
-
+ 
   cardContainer: {
     minWidth: '100%',
     alignItems: 'center',
@@ -246,51 +226,10 @@ const milkStyles = {
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 0,
-    ...styles.abstractCardStyles
+    ...styles.abstractCardStyles,
   },
 
-  cardContainerChildTwo: {
-    width: '35%',
-    height: 40,
-    borderWidth: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...styles.shadow
-  },
-
-  cardContainerChildOne: {
-    width: '60%',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderWidth: 0,
-    height: 90,
-  },
-
-  cardContainerChildOneRow: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    height: 30,
-  },
-  cardContainerChildOneColLabel: {
-    width: '70%',
-    justifyContent: 'center',
-    height: 40,
-    borderWidth: 0,
-    paddingLeft: 5,
-    ...styles.shadow
-  },
-  cardContainerChildOneColText: {
-    width: '25%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 40,
-    borderWidth: 0,
-    marginLeft: 5,
-    ...styles.shadow
-
-  },
+  
   noRecordView: {
     marginTop: '25%',
     height: 30,

@@ -21,7 +21,7 @@ function AnimalDetail({navigation}) {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      getAnimalMilkData()
+      getAnimalMilkData();
     });
     return unsubscribe;
   }, [navigation, fromDate, toDate]);
@@ -54,40 +54,41 @@ function AnimalDetail({navigation}) {
   return (
     <SmartView>
       <View style={animalStyles.parentContainer}>
-        <View style={animalStyles.childOneContainer}>
-          <View style={animalStyles.subChildOneContainer}>
-            <View style={animalStyles.subSubChildOneContainer}>
-              <Date
-                required={false}
-                date={fromDate}
-                placeholder={'Select from date'}
-                onDateChange={date => setFromDate(date)}
-              />
-            </View>
+        <View style={animalStyles.pickerRow}>
+          <View style={animalStyles.pickerColumnLeft}>
+            <Date
+              required={false}
+              date={fromDate}
+              placeholder={'Select from date'}
+              onDateChange={date => {
+                setFromDate(date), getAnimalMilkData();
+              }}
+            />
+          </View>
+          <View style={animalStyles.pickerColumnRight}>
+            <Date
+              required={false}
+              minDate={fromDate}
+              date={toDate}
+              placeholder={'Select to date'}
+              onDateChange={date => {
+                setToDate(date), getAnimalMilkData();
+              }}
+            />
+          </View>
+        </View>
 
-            <View style={animalStyles.subSubChildOneContainer}>
-              <Date
-                required={false}
-                minDate={fromDate}
-                date={toDate}
-                placeholder={'Select to date'}
-                onDateChange={date => setToDate(date)}
-              />
-            </View>
+        <View style={animalStyles.countContainer}>
+          <View style={animalStyles.countLabelContainer}>
+            <Text>Total Milk</Text>
           </View>
 
-          <View style={animalStyles.subChildTwoContainer}>
-            <View style={animalStyles.subSubChildTwoContainer}>
-              <Text>Total milk</Text>
-            </View>
-
-            <View style={animalStyles.subSubChildTwoContainerLabel}>
-              <Text>
-                {animalReducerState.animalMilkData.length == 0
-                  ? '0'
-                  : getTotalMilk()}
-              </Text>
-            </View>
+          <View style={animalStyles.countValueContainer}>
+            <Text>
+              {animalReducerState.animalMilkData.length == 0
+                ? '0'
+                : getTotalMilk()}
+            </Text>
           </View>
         </View>
 
@@ -131,58 +132,48 @@ function AnimalDetail({navigation}) {
 export {AnimalDetail};
 
 const animalStyles = {
+  pickerRow: {
+    width: '90%',
+    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  pickerColumnLeft: {width: '50%', justifyContent: 'center', borderWidth: 0},
+  pickerColumnRight: {
+    width: '50%',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    borderWidth: 0,
+  },
+
+  countContainer: {
+    width: '90%',
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginBottom: 20,
+  },
+  countLabelContainer: {
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 40,
+    ...styles.abstractCardStyles,
+  },
+  countValueContainer: {
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 40,
+    marginLeft: 20,
+    ...styles.abstractCardStyles,
+  },
   parentContainer: {
     flex: 1,
     width: '100%',
     borderWidth: 0,
     alignItems: 'center',
     marginBottom: 0,
-  },
-
-  childOneContainer: {
-    height: 140,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '95%',
-    borderWidth: 0,
-  },
-
-  subChildOneContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-  },
-
-  subSubChildOneContainer: {
-    height: 70,
-    width: '45%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 0,
-  },
-
-  subChildTwoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-  },
-
-  subSubChildTwoContainer: {
-    height: 45,
-    width: '25%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...styles.shadow,
-  },
-
-  subSubChildTwoContainerLabel: {
-    height: 45,
-    width: '35%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 0,
-    ...styles.shadow,
   },
 
   cardContainer: {
@@ -202,47 +193,6 @@ const animalStyles = {
     ...styles.abstractCardStyles,
   },
 
-  cardContainerChildTwo: {
-    width: '35%',
-    height: 40,
-    borderWidth: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...styles.shadow,
-  },
-
-  cardContainerChildOne: {
-    width: '60%',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderWidth: 0,
-    height: 90,
-  },
-
-  cardContainerChildOneRow: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    height: 30,
-  },
-  cardContainerChildOneColLabel: {
-    width: '70%',
-    justifyContent: 'center',
-    height: 40,
-    borderWidth: 0,
-    paddingLeft: 5,
-    ...styles.shadow,
-  },
-  cardContainerChildOneColText: {
-    width: '25%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 40,
-    borderWidth: 0,
-    marginLeft: 5,
-    ...styles.shadow,
-  },
   noRecordView: {
     marginTop: '25%',
     height: 30,

@@ -9,7 +9,7 @@ import color from '../assets/color/Index';
 import DatePicker from 'react-native-datepicker';
 import {formatDate, fromDate, currentDate} from '../conversions/Index';
 import {requireFieldValidator} from '../validations/Index';
-import { onChange } from 'react-native-reanimated';
+import styles, {shadow} from '../assets/styles/Index';
 
 function IDate(props, ref) {
   const [date, setDate] = useState(props.date);
@@ -17,19 +17,19 @@ function IDate(props, ref) {
 
   useEffect(() => {
     setDate(props.date);
-    onDateChange(props.date)
+    onDateChange(props.date);
   }, [props.date]);
 
-  const onDateChange = async (d) => {
+  const onDateChange = async d => {
     try {
-      const  _requireFieldValidator = await requireFieldValidator(d)
+      const _requireFieldValidator = await requireFieldValidator(d);
       if (_requireFieldValidator) {
         setError(false);
         props.onDateChange(d);
         await props.error(false);
-        setDate(d)
+        setDate(d);
       } else {
-        setDate(d)
+        setDate(d);
         setError(true);
         props.onDateChange(d);
         await props.error(true);
@@ -45,8 +45,8 @@ function IDate(props, ref) {
   }));
 
   return (
-    <View style={datePickerStyles.pickerContainer}>
-      <View style={datePickerStyles.pickerCol}>
+    <View style={datePickerStyles.container}>
+      <View style={datePickerStyles.pickerContainer}>
         <View style={datePickerStyles.pickerRow}>
           <DatePicker
             style={datePickerStyles.datePickerStyle}
@@ -64,8 +64,8 @@ function IDate(props, ref) {
                 position: 'absolute',
                 left: 0,
                 marginLeft: 0,
-                height: 50,
-                width: 50,
+                height: 40,
+                width: 40,
               },
               dateInput: {
                 paddingLeft: 0,
@@ -79,15 +79,17 @@ function IDate(props, ref) {
             }}
             onDateChange={date => onDateChange(date)}
           />
-          {date == '' ? (
-            <Text style={datePickerStyles.placeholderText}>
-              {props.placeholder == undefined
-                ? 'Select Date'
-                : props.placeholder}
-            </Text>
-          ) : (
-            <Text style={datePickerStyles.dateText}>{date}</Text>
-          )}
+          <View style={datePickerStyles.placeholderInputContainer}>
+            {date == '' ? (
+              <Text style={datePickerStyles.placeholderText}>
+                {props.placeholder == undefined
+                  ? 'Select Date'
+                  : props.placeholder}
+              </Text>
+            ) : (
+              <Text style={datePickerStyles.dateText}>{date}</Text>
+            )}
+          </View>
         </View>
       </View>
       {props.required !== false && (
@@ -104,14 +106,25 @@ function IDate(props, ref) {
 export const Date = forwardRef(IDate);
 
 const datePickerStyles = {
-  pickerContainer: {
+  container: {
     width: '90%',
+    alignItems: 'flex-start',
+    borderWidth: 0,
+  },
+
+  placeholderInputContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: color.grey.color,
+  },
+  pickerContainer: {
+    paddingHorizontal: 10,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 0,
-    height: 85,
     marginTop: 20,
+    color: color.white,
+    ...shadow,
   },
   datePickerStyle: {
     width: 50,
@@ -127,17 +140,13 @@ const datePickerStyles = {
     width: '100%',
     borderWidth: 0,
     flexDirection: 'row',
-    alignItems: 'center',
   },
-  dateText: {
-    marginLeft: '5%',
-  },
+  dateText: {},
   placeholderText: {
-    marginLeft: '5%',
     color: color.grey,
   },
   errorContainer: {
-    height: 20,
+    height: 30,
     justifyContent: 'center',
     width: '100%',
     borderWidth: 0,

@@ -36,11 +36,11 @@ function MilkTab() {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: color.black,
-        indicatorStyle: {backgroundColor: color.tealGreen, height: '100%'},
+        activeTintColor: color.white,
+        indicatorStyle: {backgroundColor: color.white, height: '5%'},
         style: {backgroundColor: color.tealDarkGreen},
       }}>
-      <Tab.Screen name="Milks" component={Milk} />
+      <Tab.Screen name="MILK" component={Milk} />
       <Tab.Screen name="Add" component={AddMilk} />
     </Tab.Navigator>
   );
@@ -52,12 +52,15 @@ function MilkStack({navigation}) {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Milks"
+        name="Milk"
         component={MilkTab}
         options={{
           headerStyle: {
             backgroundColor: color.tealDarkGreen,
           },
+          headerTitleStyle:{
+            color: color.white
+           },
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
@@ -89,8 +92,8 @@ function AnimalTab() {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: color.black,
-        indicatorStyle: {backgroundColor: color.tealGreen, height: '100%'},
+        activeTintColor: color.white,
+        indicatorStyle: {backgroundColor: color.white, height: '5%'},
         style: {backgroundColor: color.tealDarkGreen},
       }}>
       <Tab.Screen name="Animals" component={Animal} />
@@ -111,6 +114,10 @@ function AnimalStack({navigation}) {
         options={{
           headerStyle: {
             backgroundColor: color.tealDarkGreen,
+            
+          },
+          headerTitleStyle:{
+           color: color.white
           },
           headerLeft: () => (
             <TouchableOpacity
@@ -181,5 +188,6 @@ const navigationStyles = {
   headerLeftImage: {
     height: 25,
     width: 25,
+    tintColor:color.white
   },
 };

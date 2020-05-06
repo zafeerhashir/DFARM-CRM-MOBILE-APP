@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import color from '../assets/color/Index';
+import styles,{shadow} from '../assets/styles/Index';
+
 
 function Button(props) {
   const [disable, setDisable] = useState(true);
@@ -51,6 +53,9 @@ const buttonStyles = {
     marginVertical: 20,
     justifyContent: 'center',
     alignItems: 'center',
+    ...shadow
+
+
   },
   disabled: {
     color: color.lightGrey,

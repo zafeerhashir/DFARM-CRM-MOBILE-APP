@@ -26,7 +26,7 @@ function AddMilk({navigation}) {
 
 
   useEffect(() => {
-      dispatch(getAnimalTags())
+      // dispatch(getAnimalTags())
       const unsubscribe = navigation.addListener('focus', () => {
       dispatch(getAnimalTags())
     });

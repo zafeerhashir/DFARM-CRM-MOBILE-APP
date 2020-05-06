@@ -2,6 +2,17 @@
 import color from '../color/Index'
 import { ColorPropType } from 'react-native';
 
+export const shadow ={
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.00,
+    elevation: 3
+}
+
 export default {
 borderRadius: 5,
 fontOne:{
@@ -9,9 +20,11 @@ fontSize: 18,
 },
 
 abstractCardStyles:{
-  borderBottomWidth: 0.5,
+  borderWidth: 1,
   borderColor: color.lightGrey,
-  backgroundColor: '#FDFEFE'
+  backgroundColor: '#FDFEFE',
+  ...shadow
+
 },
 
 abstractCountCardStyles:{
@@ -41,6 +54,7 @@ searchBarContainerStyle: {
     backgroundColor: color.white,
     marginVertical: 20,
     
+    
 
   },
   searchBarInputStyle: {
@@ -53,6 +67,8 @@ searchBarContainerStyle: {
     borderBottomWidth: 0.5,
     borderColor:color.black,
     height: 50,
+    ...shadow
+
   },
   searchContainerStyle: {
     flex: 1,

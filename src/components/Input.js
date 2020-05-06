@@ -7,6 +7,7 @@ import React, {
 import {Text, TextInput, View, TouchableWithoutFeedback} from 'react-native';
 import color from '../assets/color/Index';
 import {requireFieldValidator} from '../validations/Index';
+import styles,{shadow} from '../assets/styles/Index';
 
 function IInput(props, ref) {
   const [value, setValue] = useState(String(props.value));
@@ -116,7 +117,7 @@ function IInput(props, ref) {
                   {props.placeholder}
                 </Text>
               ) : (
-                <Text>{value}</Text>
+                <Text style={inputStyles.displayOnlyValue}>{value}</Text>
               )}
             </View>
           </TouchableWithoutFeedback>
@@ -143,8 +144,14 @@ function IInput(props, ref) {
 export const Input = forwardRef(IInput);
 
 const inputStyles = {
+
+  displayOnlyValue:{
+    paddingLeft:5
+  },
   placeholderText: {
     color: color.grey,
+    paddingLeft:5
+
   },
 
   container: {
@@ -154,6 +161,7 @@ const inputStyles = {
     borderWidth: 0,
     height: 110,
     backgroundColor: color.white,
+    
   },
 
   labelContainer: {
@@ -161,12 +169,15 @@ const inputStyles = {
     justifyContent: 'center',
     width: '100%',
     borderWidth: 0,
+    backgroundColor:color.white,
+
   },
 
   inputContainer: {
-    height: 30,
+    height: 20,
     justifyContent: 'center',
     width: '100%',
+
   },
 
   errorContainer: {
@@ -176,10 +187,13 @@ const inputStyles = {
     borderWidth: 0,
   },
   input: {
-    height: 45,
+    height: 55,
     width: '100%',
-    borderBottomWidth: 0.5,
     justifyContent: 'center',
+    backgroundColor:color.white,
+    ...shadow
+
+
   },
   error: {
     color: color.red,

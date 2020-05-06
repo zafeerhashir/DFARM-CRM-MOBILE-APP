@@ -6,7 +6,7 @@ red: "red",
 black: "black",
 white:"white",
 grey:"grey",
-tealDarkGreen:"#075E54",
-tealGreen:"#128C7E",
+tealDarkGreen:"#000966",
+tealGreen:"black",
 lightGrey:"#C8C8C8"
 }

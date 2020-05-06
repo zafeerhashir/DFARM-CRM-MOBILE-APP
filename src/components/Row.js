@@ -24,7 +24,7 @@ const rowStyles = {
     flexDirection: 'row',
     minHeight: 40,
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
   columnOne: {
