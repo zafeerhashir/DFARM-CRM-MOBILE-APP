@@ -24,7 +24,13 @@ import {
   SelectAnimalTag,
   AddAnimal,
   Animal,
-  AnimalDetail
+  AnimalDetail,
+  SelectFeedItemDate,
+  FeedItem,
+  AddFeedItem,
+  FeedItem,
+  AddFeedItem,
+  SelectFeedItemDate
 } from '../screens/Index';
 import color from '../assets/color/Index';
 
@@ -144,12 +150,69 @@ function AnimalStack({navigation}) {
   );
 }
 
+
+
+function FeedItemTab() {
+  return (
+    <Tab.Navigator
+      tabBarOptions={{
+        activeTintColor: color.white,
+        indicatorStyle: {backgroundColor: color.white, height: '5%'},
+        style: {backgroundColor: color.tealDarkGreen},
+      }}>
+      <Tab.Screen name="Feed Items" component={FeedItem} />
+      <Tab.Screen name="Add" component={AddFeedItem} />
+    </Tab.Navigator>
+  );
+}
+
+
+
+function FeedItemStack({navigation}) {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="FEED"
+        component={FeedItemTab}
+        options={{
+          headerStyle: {
+            backgroundColor: color.tealDarkGreen,
+            
+          },
+          headerTitleStyle:{
+           color: color.white
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.openDrawer()}
+              style={navigationStyles.headerLeft}>
+              <Image
+                style={navigationStyles.headerLeftImage}
+                source={require('../assets/img/menu.png')}
+              />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Stack.Screen
+      name="Animal Milk Detail"
+      component={SelectFeedItemDate}
+      options={{
+        headerStyle: {
+          backgroundColor: color.tealDarkGreen,
+        },
+      }}
+    />
+    </Stack.Navigator>
+  );
+}
+
 function MainDrawer() {
   return (
     <Drawer.Navigator>
       <Drawer.Screen name="Animal" component={AnimalStack} />
       <Drawer.Screen name="Milk" component={MilkStack} />
-      <Drawer.Screen name="Feed" component={MilkStack} />
+      <Drawer.Screen name="FeedItem" component={FeedItemStack} />
     </Drawer.Navigator>
   );
 }

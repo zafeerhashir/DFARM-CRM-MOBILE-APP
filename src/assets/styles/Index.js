@@ -10,7 +10,10 @@ export const shadow ={
     },
     shadowOpacity: 0.58,
     shadowRadius: 16.00,
-    elevation: 3
+    elevation: 3,
+    borderRadius: 5,
+
+
 }
 
 export default {
@@ -20,7 +23,8 @@ fontSize: 18,
 },
 
 abstractCardStyles:{
-  borderWidth: 1,
+  borderWidth: 0,
+  borderRadius: 5,
   borderColor: color.lightGrey,
   backgroundColor: '#FDFEFE',
   ...shadow
@@ -28,7 +32,8 @@ abstractCardStyles:{
 },
 
 abstractCountCardStyles:{
-  borderWidth: 0.5,
+  borderRadius: 5,
+  borderWidth: 0,
   borderColor: color.lightGrey,
   backgroundColor: '#FDFEFE'
 },
@@ -64,7 +69,7 @@ searchBarContainerStyle: {
     backgroundColor: color.white,
     shadowColor: "#aaa",
     shadowOpacity: 0.6,
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 0,
     borderColor:color.black,
     height: 50,
     ...shadow

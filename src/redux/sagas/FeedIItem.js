@@ -1,0 +1,163 @@
+import { Alert } from 'react-native';
+import { call, put, takeLatest } from 'redux-saga/effects';
+import network from '../../services/network';
+import constant from '../constant/Index';
+
+async function serverErrorDialogue(message) {
+  Alert.alert('Sorry', message, [{text: 'OK'}], {cancelable: false});
+}
+
+async function modifyMilkData(response) {
+  var data = [];
+  for (let i = 0; i < response.length; i++) {
+    for (let e of response[i].milk) {
+      let milkObject = e;
+      milkObject.animalTagId = response[i]._id;
+      milkObject.tag = response[i].tag;
+      data.push(milkObject);
+    }
+  }
+
+  return await data;
+}
+
+function* getMilk() {
+  const response = yield call(network.get, 'modules/milk');
+
+  if (response.error) {
+    serverErrorDialogue(response.errorMessage);
+
+    yield put({
+      type: constant.GET_MILK_FAILURE,
+      payload: response.errorMessage,
+    });
+  } else {
+    var data = yield call(modifyMilkData, response.data);
+    console.log(response.data, 'modifyMilkData');
+    yield put({
+      type: constant.GET_MILK_SUCCESS,
+      payload: data,
+    });
+  }
+}
+
+function* addMilk(action) {
+  console.log(action, 'addMilk');
+  const response = yield call(
+    network.post,
+    `modules/milk/${action.payload.animalTagId}`,
+    action.payload.postBodyAddMilk,
+  );
+
+  if (response.error) {
+    serverErrorDialogue(response.errorMessage);
+    yield put({
+      type: constant.ADD_Milk_FAILURE,
+      payload: response.errorMessage,
+    });
+  } else {
+    yield put({type: constant.ADD_MILK_SUCCESS});
+  }
+}
+
+function* filterMilkData(action) {
+  const response = yield call(network.get, 'modules/milk');
+  if (response.error) {
+    serverErrorDialogue(response.errorMessage);
+    yield put({
+      type: constant.FILTER_MILK_DATA_FAILURE,
+      payload: response.errorMessage,
+    });
+  } else {
+    var modifyData = yield call(modifyMilkData, response.data);
+    console.log(modifyData, 'modifyMilkData');
+    const fromDate = new Date(action.payload.fromDate);
+    const toDate = new Date(action.payload.toDate);
+
+    const data = modifyData.filter(x => {
+      const currentDate = new Date(x.date);
+      if (currentDate >= fromDate && currentDate <= toDate) {
+        return x;
+      }
+    });
+
+    yield put({
+      type: constant.FILTER_MILK_DATA_SUCCESS,
+      payload: data,
+    });
+  }
+}
+
+function* deleteMilk(action) {
+  console.log(action, 'deleteMilk');
+
+  const response = yield call(
+    network.delete,
+    `modules/milk/${action.payload.animalTagId}/${action.payload._id}`,
+  );
+  if (response.error) {
+    serverErrorDialogue(response.errorMessage);
+    yield put({
+      type: constant.DELETE_MILK_FAILURE,
+      payload: response.errorMessage,
+    });
+  } else {
+    yield put({
+      type: constant.DELETE_MILK_SUCCESS,
+    });
+  }
+}
+
+function* editMilk(action) {
+  console.log(action, 'editMilk');
+
+  const response = yield call(
+    network.patch,
+    `modules/milk/${action.payload.animalTagId}/${action.payload.milkId}`,
+    action.payload.postBodyEditMilk,
+  );
+
+  if (response.error) {
+    serverErrorDialogue(response.errorMessage);
+    yield put({
+      type: constant.EDIT_MILK_FAILURE,
+      payload: response.errorMessage,
+    });
+  } else {
+    yield put({
+      type: constant.EDIT_MILK_SUCCESS,
+    });
+  }
+}
+
+function* getAnimalTag() {
+  const response = yield call(network.get, 'modules/animal');
+
+  if (response.error) {
+    serverErrorDialogue(response.errorMessage);
+
+    yield put({
+      type: constant.GET_ANIMAL_TAG_FAILURE,
+      payload: response.errorMessage,
+    });
+  } else {
+    console.log(response.data, 'GET_ANIMAL_SUCCESS');
+
+    yield put({
+      type: constant.GET_ANIMAL_TAG_SUCCESS,
+      payload: response.data,
+    });
+  }
+}
+
+function* milkWatcherSaga() {
+  yield takeLatest(constant.FILTER_MILK_DATA_START, filterMilkData);
+  yield takeLatest(constant.GET_MILK_START, getMilk);
+  yield takeLatest(constant.ADD_MILK_START, addMilk);
+  yield takeLatest(constant.DELETE_MILK_START, deleteMilk);
+  yield takeLatest(constant.EDIT_MILK_START, editMilk);
+  yield takeLatest(constant.GET_ANIMAL_TAG_START, getAnimalTag);
+}
+
+export { milkWatcherSaga };
+

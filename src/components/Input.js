@@ -191,6 +191,7 @@ const inputStyles = {
     width: '100%',
     justifyContent: 'center',
     backgroundColor:color.white,
+    borderRadius:5,
     ...shadow
 
 

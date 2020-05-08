@@ -4,6 +4,8 @@ import { Button, Input, SmartView } from '../../../components/Index';
 import { addAnimal } from '../../../redux/actions/Index';
 import { animalTagRegex } from '../../../validations/Index';
 
+
+
 function AddAnimal() {
   const [animalTag, setAnimalTag] = useState('');
   const [animalTagError, setAnimalTagError] = useState('');

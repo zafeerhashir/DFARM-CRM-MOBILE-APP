@@ -1,14 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useRef, useState } from './node_modules/react';
+import { useDispatch, useSelector } from './node_modules/react-redux';
 import color from '../../../assets/color/Index';
 import { Button, Date, Input, SmartView } from '../../../components/Index';
 import { addMilk, getAnimalTags, selectAnimalTagItem } from '../../../redux/actions/Index';
 import { literRegex } from '../../../validations/Index';
-import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
+import {agoDate, currentDate, formatDate} from '../../../conversions/Index';
 
 
 
-function AddMilk({navigation}) {
+function AddFeedItemDate({navigation}) {
   const milkReducerState = useSelector(state => state.milk);
   const [milkAM, setMilkAM] = useState('');
   const [milkPM, setMilkPM] = useState('');
@@ -35,13 +35,13 @@ function AddMilk({navigation}) {
   }, [navigation]);
 
   const callApi = () => {
-    const postBodyAddMilk = {
+    const postBodyAddFeedItemDate = {
       milk: [
         {date, milkProduceAM: milkAM, milkProducePM: milkPM == '' ? 0 : milkPM},
       ],
     };
     const payload = {
-      postBodyAddMilk,
+      postBodyAddFeedItemDate,
       animalTagId:milkReducerState.selectAnimalTagItem.id,
     };
     milkAMRef.current.clear();
@@ -131,8 +131,7 @@ function AddMilk({navigation}) {
     return  true;}
 }
 
-export { AddMilk };
-export { Date };
+export { AddFeedItemDate };
 
 
 const addMilkStyles = {
