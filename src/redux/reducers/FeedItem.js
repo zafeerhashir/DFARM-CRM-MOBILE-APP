@@ -98,6 +98,28 @@ function feedItem(state = initialState, action) {
             editFeedItemVisible: action.payload.visible,
           };
 
+
+          case constant.DELETE_FEED_ITEM_START:
+            return {
+              ...state,
+              milkLoadingError: false,
+              milkLoading: true,
+            };
+      
+          case constant.DELETE_FEED_ITEM_SUCCESS:
+            return {
+              ...state,
+              milkLoadingError: false,
+              milkLoading: false,
+            };
+      
+          case constant.DELETE_FEED_ITEM_FAILURE:
+            return {
+              ...state,
+              milkLoadingError: true,
+              milkLoading: false,
+            };
+
     default:
       return state;
   }

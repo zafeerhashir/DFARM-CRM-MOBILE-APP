@@ -43,7 +43,7 @@ function EditFeedItem(props) {
   useEffect(() => {}, []);
 
   const callApi = () => {
-    const postBodyAddFeedItem = {
+    const postBodyEditFeedItem = {
           unit: feedUnit == '' ? 0 : feedUnit,
           quantity: feedQuantity == '' ? 0 : feedQuantity,
           name: feedName,
@@ -51,7 +51,7 @@ function EditFeedItem(props) {
     };
 
     const payload = {
-      postBodyAddFeedItem,
+      postBodyEditFeedItem,
       feedItemId: feedItemId,
       feedItemDateId:
         feedItemReducerState.feedItemDate.id == ''

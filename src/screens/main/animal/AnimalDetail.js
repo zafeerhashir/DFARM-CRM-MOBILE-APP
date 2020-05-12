@@ -6,7 +6,7 @@ import {
   CardLongPressView,
   Date,
   Row,
-  SmartView,
+  ListView,
   EditMilk,
 } from '../../../components/Index';
 import {getAnimalMilk} from '../../../redux/actions/Index';
@@ -52,7 +52,7 @@ function AnimalDetail({navigation}) {
   };
 
   return (
-    <SmartView>
+    <ListView>
       <View style={animalStyles.parentContainer}>
         <View style={animalStyles.pickerRow}>
           <View style={animalStyles.pickerColumnLeft}>
@@ -124,7 +124,7 @@ function AnimalDetail({navigation}) {
           />
         )}
       </View>
-    </SmartView>
+    </ListView>
   );
 }
 

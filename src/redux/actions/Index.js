@@ -122,6 +122,10 @@ export const editFeedItemVisible = body => ({
   payload: body,
 });
 
+export const deleteFeedItem = body => ({
+  type: constant.DELETE_FEED_ITEM_START,
+  payload: body,
+});
 
 
 
@@ -150,6 +154,7 @@ export const addFeedItemDate = body => ({
   type: constant.ADD_FEED_ITEM_DATE_START,
   payload: body,
 });
+
 
 
 

@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, Text, TouchableOpacity, View, RefreshControl} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import color from '../../../assets/color/Index';
 import styles from '../../../assets/styles/Index';
@@ -8,7 +8,7 @@ import {
   Date,
   EditMilk,
   Row,
-  SmartView,
+  ListView,
 } from '../../../components/Index';
 import {
   deleteMilk,
@@ -61,9 +61,24 @@ function Milk({navigation}) {
 
     return total;
   };
+    // refreshing={milkReducerState.milkLoading}
+            // onRefresh={() => onRefresh()}
 
   return (
-    <SmartView>
+  //   <ListView 
+  //   refreshControl={
+  //   <RefreshControl
+  //   refreshing={milkReducerState.milkLoading}
+  //   onRefresh={() => onRefresh()}
+  // />}
+    
+  //   >
+
+  <ListView 
+  refreshing={milkReducerState.milkLoading}
+  onRefresh={() => onRefresh()}
+  
+  >
       <View style={milkStyles.parentContainer}>
         <View style={milkStyles.pickerRow}>
           <View style={milkStyles.pickerColumnLeft}>
@@ -123,8 +138,7 @@ function Milk({navigation}) {
           </View>
         ) : (
           <FlatList
-            refreshing={milkReducerState.milkLoading}
-            onRefresh={() => onRefresh()}
+          
             data={milkReducerState.milkData}
             renderItem={({item}) => (
               <TouchableOpacity
@@ -153,7 +167,7 @@ function Milk({navigation}) {
           />
         )}
       </View>
-    </SmartView>
+    </ListView>
   );
 }
 

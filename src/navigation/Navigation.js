@@ -254,9 +254,10 @@ function ChangePasswordStack({navigation}) {
 function MainDrawer() {
   return (
     <Drawer.Navigator>
+    <Drawer.Screen name="FeedItem" component={FeedItemStack} />
+
     <Drawer.Screen name="Milk" component={MilkStack} />
 
-    <Drawer.Screen name="FeedItem" component={FeedItemStack} />
       <Drawer.Screen name="Animal" component={AnimalStack} />
       <Drawer.Screen name="ChangePassword" component={ChangePasswordStack} />
     </Drawer.Navigator>

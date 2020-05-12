@@ -82,4 +82,6 @@ searchBarContainerStyle: {
     alignItems: "center",
     paddingBottom: 20,
   },
+
+ 
 }

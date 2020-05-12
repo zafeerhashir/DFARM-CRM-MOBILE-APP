@@ -20,20 +20,28 @@ async function executeRequest(method, pathname, body = {}, headers = {}) {
     delete fetchInputObject.body;
   }
 
-  try
-  {
-  response = await fetch(
+  // try
+  // {
+  var response = await fetch(
     `https://dfarm.herokuapp.com/${pathname}`,
     fetchInputObject,
   );
-  }
-  catch(e)
-  {
-    return await { error: true, errorMessage: 'Network failed',  }    
-  }
 
   const statusCode = response.status;
-  const data = await response.json();
+  console.log(response,'responce')
+  const data = method == 'DELETE' ?  {} : await response.json() 
+  console.log(data,'sdsdsdd')
+  // }
+  // catch(e)
+  // {
+  //   return await { error: true, errorMessage: 'Network failed',  }    
+  // }
+
+
+  // const statusCode = response.status;
+  // const data = await response.json();
+
+
 
   if(statusCode == 200)
   {

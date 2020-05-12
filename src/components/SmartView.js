@@ -62,6 +62,6 @@ const smartViewStyles = {
     width: '100%',
     alignItems: 'center',
     backgroundColor: color.white,
-    flex:1
+
   },
 };

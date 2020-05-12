@@ -8,11 +8,11 @@ import {
   Date,
   EditMilk,
   Row,
-  SmartView,
+  ListView,
   EditFeedItem
 } from '../../../components/Index';
 import {
-  deleteMilk,
+  deleteFeedItem,
   editMilkVisible,
   getFeedData,
   editFeedItemVisible
@@ -48,9 +48,10 @@ function FeedItem({navigation}) {
 
   const _deleteMilk = item => {
     setVisible(false);
-    const payload = {animalTagId: item.animalTagId, _id: item._id};
-    dispatch(deleteMilk(payload));
-    getFilterMilkData();
+    const payload = {feedItemDateId: item.feedItemDateId, feedItemId: item._id};
+    dispatch(deleteFeedItem(payload));
+    getData();
+
   };
 
   const getTotalFeedPrice = () => {
@@ -64,7 +65,7 @@ function FeedItem({navigation}) {
   };
 
   return (
-    <SmartView>
+    <ListView>
       <View style={FeedItemStyles.parentContainer}>
         <View style={FeedItemStyles.pickerRow}>
           <View style={FeedItemStyles.pickerColumnLeft}>
@@ -163,7 +164,7 @@ function FeedItem({navigation}) {
           />
         )}
       </View>
-    </SmartView>
+    </ListView>
   );
 }
 

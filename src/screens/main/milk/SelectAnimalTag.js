@@ -4,7 +4,7 @@ import {SearchBar} from 'react-native-elements';
 import {useDispatch, useSelector} from 'react-redux';
 import color from '../../../assets/color/Index';
 import styles from '../../../assets/styles/Index';
-import {Row, SmartView} from '../../../components/Index';
+import {Row, ListView} from '../../../components/Index';
 import {getAnimalTags, selectAnimalTagItem, searchMilkAnimalTag} from '../../../redux/actions/Index';
 
 function SelectAnimalTag({navigation}) {
@@ -24,7 +24,7 @@ function SelectAnimalTag({navigation}) {
   }, [milkReducerState.milkLoading]);
 
   return (
-    <SmartView>
+    <ListView>
       <View style={selectAnimalTagStyles.form}>
         <SearchBar
           lightTheme
@@ -68,7 +68,7 @@ function SelectAnimalTag({navigation}) {
           />
         )}
       </View>
-    </SmartView>
+    </ListView>
   );
 }
 

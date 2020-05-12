@@ -6,7 +6,7 @@ import color from '../../../assets/color/Index';
 import styles from '../../../assets/styles/Index';
 import {
   Row,
-  SmartView,
+  ListView,
   CardLongPressView,
   EditAnimal,
   
@@ -75,7 +75,7 @@ function Animal({navigation}) {
   };
 
   return (
-    <SmartView>
+    <ListView>
       <View style={animalStyles.form}>
         <SearchBar
           lightTheme
@@ -151,7 +151,7 @@ function Animal({navigation}) {
           />
         )}
       </View>
-    </SmartView>
+    </ListView>
   );
 }
 
