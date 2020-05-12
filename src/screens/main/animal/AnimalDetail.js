@@ -20,6 +20,7 @@ function AnimalDetail({navigation}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    getAnimalMilkData();
     const unsubscribe = navigation.addListener('focus', () => {
       getAnimalMilkData();
     });
@@ -42,12 +43,11 @@ function AnimalDetail({navigation}) {
   };
 
   const getTotalMilk = () => {
+    
     var total = 0;
-
     for (let e of animalReducerState.animalMilkData) {
       total = total + (e.milkProduceAM + e.milkProducePM);
     }
-
     return total;
   };
 
@@ -61,7 +61,7 @@ function AnimalDetail({navigation}) {
               date={fromDate}
               placeholder={'Select from date'}
               onDateChange={date => {
-                setFromDate(date), getAnimalMilkData();
+                setFromDate(date);
               }}
             />
           </View>
@@ -72,7 +72,7 @@ function AnimalDetail({navigation}) {
               date={toDate}
               placeholder={'Select to date'}
               onDateChange={date => {
-                setToDate(date), getAnimalMilkData();
+                setToDate(date);
               }}
             />
           </View>
@@ -106,7 +106,6 @@ function AnimalDetail({navigation}) {
               <TouchableOpacity style={animalStyles.cardContainer}>
                 <View style={animalStyles.cardContainerChild}>
                   <Row label={'Date'} value={formatDate(item.date)} />
-                  <Row label={'Animal Tag'} value={item.tag} />
                   <Row
                     label={'Morning Milk'}
                     value={`${item.milkProduceAM} liter`}

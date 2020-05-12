@@ -1,6 +1,7 @@
 import React,{ useRef } from 'react';
 import { ActivityIndicator, Modal, TouchableWithoutFeedback, View, PanResponder  } from 'react-native';
 import color from '../assets/color/Index';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 function MYModal(props) {
 
@@ -11,13 +12,13 @@ function MYModal(props) {
       <TouchableWithoutFeedback
         onPress={props.onTabOut}
         >
-        <View
-          style={{
+        <KeyboardAwareScrollView
+          contentContainerStyle={{
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: 'rgba(52, 52, 52, 0.8)',
-            height: '100%',
             width: '100%',
+            flexGrow: 1
           }}
           >
           {props.loading ? (
@@ -25,7 +26,7 @@ function MYModal(props) {
           ) : (
             props.children
           )}
-        </View>
+        </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
     </Modal>
   );

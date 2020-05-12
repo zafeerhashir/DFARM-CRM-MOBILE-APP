@@ -1,6 +1,6 @@
-import React, {useEffect, useState, useCallback} from './node_modules/react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
-import {useDispatch, useSelector} from './node_modules/react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import color from '../../../assets/color/Index';
 import styles from '../../../assets/styles/Index';
 
@@ -17,42 +17,31 @@ import {
   getMilk,
   editMilkVisible,
 } from '../../../redux/actions/Index';
-import {agoDate, currentDate, formatDate} from '../../../conversions/Index';
-import {SearchBar} from './node_modules/react-native-elements';
+import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
+import {SearchBar} from 'react-native-elements';
 import {
-  selectAnimalTagItem,
-  selectAnimalTagVisible,
+  searchFeedDate,
+  selectFeedDateItem,
+  getFeedItemDateData,
 } from '../../../redux/actions/Index';
+import {feedItem} from '../../../redux/reducers/FeedItem';
 
-function SelectFeedItem({navigation}) {
-  const milkReducerState = useSelector(state => state.milk);
+function SelectFeedItemDate({navigation}) {
+  const feedItemReducerState = useSelector(state => state.feedItem);
   const dispatch = useDispatch();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [data, setData] = useState(milkReducerState.animalTagData);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    onRefresh();
 
-  const onChangeText = async searchTerm => {
-    setSearchTerm(searchTerm);
+    const unsubscribe = navigation.addListener('focus', () => {
+      onRefresh();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
-    if (searchTerm.trim().length >= 1 && data.length != 0) {
-      try {
-        var suggestion = await data.sort().filter(x => {
-          return new RegExp(searchTerm, 'i').test(x.tag);
-        });
-      } catch (e) {
-        // this.setState({searchFound: false});
-      }
-
-      if (suggestion.length == 0) {
-        setData(suggestion);
-      } else {
-        setData(suggestion);
-      }
-    } else {
-      setData(milkReducerState.animalTagData);
-    }
-  };
+  const onRefresh = useCallback(() => {
+    dispatch(getFeedItemDateData());
+  }, [feedItemReducerState.feedItemLoading]);
 
   return (
     <SmartView>
@@ -63,14 +52,15 @@ function SelectFeedItem({navigation}) {
           containerStyle={styles.searchBarContainerStyle}
           inputContainerStyle={styles.searchBarInputContainerStyle}
           inputStyle={styles.searchBarInputStyle}
-          onChangeText={searchTerm => onChangeText(searchTerm)}
-          value={searchTerm}
+          onChangeText={searchTerm => dispatch(searchFeedDate({searchTerm}))}
+          value={feedItemReducerState.animalTagSearchTerm}
           placeholderTextColor={color.grey}
           clearIcon={false}
           searchIcon={false}
         />
 
-        {data.length == 0 && milkReducerState.milkLoading == false ? (
+        {feedItemReducerState.feedItemDateSearchResults.length == 0 &&
+        feedItemReducerState.feedItemLoading == false ? (
           <View style={selectAnimalTagStyles.noRecordView}>
             <Text style={selectAnimalTagStyles.noRecordText}>
               No Record Found
@@ -78,16 +68,23 @@ function SelectFeedItem({navigation}) {
           </View>
         ) : (
           <FlatList
-            data={data}
+            onRefresh={() => onRefresh()}
+            refreshing={feedItemReducerState.feedItemLoading}
+            data={feedItemReducerState.feedItemDateSearchResults}
             renderItem={({item}) => (
               <TouchableOpacity
                 onPress={() => {
-                  dispatch(selectAnimalTagItem({tag: item.tag, id: item._id}));
+                  dispatch(
+                    selectFeedDateItem({
+                      date: formatDate(item.date),
+                      id: item._id,
+                    }),
+                  );
                   navigation.goBack();
                 }}
                 style={selectAnimalTagStyles.cardContainer}>
                 <View style={[selectAnimalTagStyles.cardContainerChild]}>
-                  <Row label={'Animal Tag'} value={item.tag} />
+                  <Row label={'Date'} value={formatDate(item.date)} />
                 </View>
               </TouchableOpacity>
             )}
@@ -98,7 +95,7 @@ function SelectFeedItem({navigation}) {
   );
 }
 
-export {SelectFeedItem}
+export {SelectFeedItemDate};
 
 const selectAnimalTagStyles = {
   dismissRow: {
@@ -184,7 +181,6 @@ const selectAnimalTagStyles = {
     borderWidth: 0,
     paddingHorizontal: 8,
     marginBottom: 15,
-
   },
 
   cardContainerChild: {

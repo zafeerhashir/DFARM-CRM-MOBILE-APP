@@ -10,7 +10,8 @@ import {Input} from './Input';
 import {MYModal} from './Modal';
 import {SmartView} from './SmartView';
 import {formatDate} from '../conversions/Index';
-import styles from '../assets/styles/Index';
+import styles,{shadow} from '../assets/styles/Index';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 function EditMilk(props) {
   const animalTagId = props.selectedItem.animalTagId;
@@ -18,7 +19,6 @@ function EditMilk(props) {
   const [milkAM, setMilkAM] = useState(props.selectedItem.milkProduceAM);
   const [milkPM, setMilkPM] = useState(props.selectedItem.milkProducePM);
   const [date, setDate] = useState(formatDate(props.selectedItem.date));
-  const buttonDisable = validate(milkAMError, milkPMError, date);
   const [milkAMError, setMilkAMError] = useState(true);
   const [milkPMError, setMilkPMError] = useState(true);
   const [dateError, setDateError] = useState(true);
@@ -70,7 +70,7 @@ function EditMilk(props) {
           maxLength={2}
           value={milkAM}
           placeholder={'Enter Milk Produce AM'}
-          errorMessage={'The value must be numeric'}
+          errorMessage={'Morning Milk must be in liter'}
           onChangeText={value => setMilkAM(value)}
           error={error => {
             setMilkAMError(error);
@@ -85,7 +85,7 @@ function EditMilk(props) {
           maxLength={2}
           value={milkPM}
           placeholder={'Enter Milk Produce PM'}
-          errorMessage={'The value must be numeric'}
+          errorMessage={'Evening Milk must be in liter'}
           onChangeText={value => setMilkPM(value)}
           error={error => {
             setMilkPMError(error);
@@ -93,21 +93,18 @@ function EditMilk(props) {
           regex={literRegex}
         />
 
+     
         <Button
-          error={[milkAMError, milkAMError, dateError]}
-          disabled={buttonDisable}
+          error={[milkAMError, milkAMError]}
           title={'Edit'}
           onPress={() => callApi()}
         />
+       
       </View>
     </MYModal>
   );
 }
 
-function validate(milkAMError, milkPMError, date) {
-  if (!milkAMError && !milkPMError && date !== '') return false;
-  else return true;
-}
 
 export {EditMilk};
 
@@ -117,6 +114,7 @@ const addMilkStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
+    ...shadow
   },
   dismissRow: {
     borderWidth: 0,

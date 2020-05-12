@@ -1,17 +1,15 @@
 import React from 'react';
-import {View, StatusBar, RefreshControl} from 'react-native';
+import {View, StatusBar, RefreshControl, ShadowPropTypesIOS} from 'react-native';
 import color from '../assets/color/Index';
 import {TransparentActivityIndicator} from './TransparentActivityIndicator';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 function SmartView(props) {
-
   return (
     <>
-       
-      { <StatusBar backgroundColor={color.tealDarkGreen} />}
+      {<StatusBar backgroundColor={color.tealDarkGreen} />}
       <KeyboardAwareScrollView
-        contentContainerStyle={[ smartViewStyles.keyboardAwareScrollViewStyle ]}>
+        contentContainerStyle={[smartViewStyles.keyboardAwareScrollViewStyle,props.contentContainerStyle]}>
         {props.children}
       </KeyboardAwareScrollView>
     </>
@@ -47,7 +45,7 @@ function SmartView(props) {
 
 export {SmartView};
 const smartViewStyles = {
-  modalContainerStyle:{
+  modalContainerStyle: {
     height: 600,
     width: '100%',
     justifyContent: 'center',
@@ -58,13 +56,12 @@ const smartViewStyles = {
     width: '100%',
     height: '100%',
     alignItems: 'center',
+    backgroundColor: color.white,
   },
   keyboardAwareScrollViewStyle: {
-    flex:1,
     width: '100%',
     alignItems: 'center',
     backgroundColor: color.white,
-    
-
+    flex:1
   },
 };

@@ -1,146 +1,144 @@
-import React, { useEffect, useRef, useState } from './node_modules/react';
-import { useDispatch, useSelector } from './node_modules/react-redux';
-import color from '../../../assets/color/Index';
+import React, { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Date, Input, SmartView } from '../../../components/Index';
-import { addMilk, getAnimalTags, selectAnimalTagItem } from '../../../redux/actions/Index';
-import { literRegex } from '../../../validations/Index';
-import {agoDate, currentDate, formatDate} from '../../../conversions/Index';
+import { addFeedItem, addFeedItemDate } from '../../../redux/actions/Index';
+import { charactersRegex, integerRegex } from '../../../validations/Index';
+import { currentDate } from './../../../conversions/Index';
 
-
-
-function AddFeedItem({navigation}) {
-  const milkReducerState = useSelector(state => state.milk);
-  const [milkAM, setMilkAM] = useState('');
-  const [milkPM, setMilkPM] = useState('');
+function AddFeedItem() {
+  const feedItemReducerState = useSelector(state => state.feedItem);
+  const [feedName, setFeedName] = useState('');
+  const [feedUnit, setFeedUnit] = useState('');
+  const [feedQuantity, setFeedQuantity] = useState('');
+  const [feedPrice, setFeedPrice] = useState('');
   const [date, setDate] = useState(currentDate());
-  const dispatch = useDispatch();
-  const [milkAMError, setMilkAMError] = useState(true);
-  const [milkPMError, setMilkPMError] = useState(true);
-  const [animalTagError,setAnimalTagError]= useState(true);
-  const [dateError,setDateError]= useState(true);
-  const milkAMRef = useRef();
-  const milkPMRef = useRef();
+  const [feedNameError, setFeedNameError] = useState(true);
+  const [feedUnitError, setFeedUnitError] = useState(true);
+  const [feedQuantityError, setFeedQuantityError] = useState(true);
+  const [feedPriceError, setFeedPriceError] = useState(true);
+  const [dateError, setDateError] = useState(true);
+
+  const feedPriceRef = useRef();
+  const feedNameRef = useRef();
+  const feedQuantityRef = useRef();
+  const feedUnitRef = useRef();
   const dateRef = useRef();
-  const animalTagRef = useRef();
 
-
-
-
-  useEffect(() => {
-      // dispatch(getAnimalTags())
-      const unsubscribe = navigation.addListener('focus', () => {
-      dispatch(getAnimalTags())
-    });
-    return unsubscribe;
-  }, [navigation]);
+  const dispatch = useDispatch();
 
   const callApi = () => {
     const postBodyAddFeedItem = {
-      milk: [
-        {date, milkProduceAM: milkAM, milkProducePM: milkPM == '' ? 0 : milkPM},
+      item: [
+        {
+          unit: feedUnit == '' ? 0 : feedUnit,
+          quantity: feedQuantity == '' ? 0 : feedQuantity,
+          name: feedName,
+          price: feedPrice,
+        },
       ],
     };
+
     const payload = {
       postBodyAddFeedItem,
-      animalTagId:milkReducerState.selectAnimalTagItem.id,
+      feedItemDateId: feedItemReducerState.feedItemDate.id,
     };
-    milkAMRef.current.clear();
-    milkPMRef.current.clear();
-    animalTagRef.current.clear()
+    feedNameRef.current.clear();
+    feedQuantityRef.current.clear();
+    feedUnitRef.current.clear();
+    feedPriceRef.current.clear();
     // dateRef.current.clear();
-    dispatch(addMilk(payload));
+    dispatch(addFeedItem(payload));
   };
 
   return (
     <SmartView>
-        <Date
-          date={date}
-          ref={dateRef}
-          onDateChange={date => {
-            setDate(date);
-          }}
-          error={error => {
-            setDateError(error);
-          }}
-        />
-        
-        <Input
-          displayOnly={true}
-          label={'Animal Tag'}
-          ref={animalTagRef}
-          value={milkReducerState.selectAnimalTagItem.tag}
-          onChangeText={value => dispatch(dispatch(selectAnimalTagItem({tag: value, id: value})))}
-          placeholder={'Select Animal Tag'}
-          onPress={() => navigation.navigate('Animal Tag')}
-          errorMessage={'The value must be numeric'}
-          error={error => {
-            setAnimalTagError(error);
-          }}
-        />
+      <Date
+        date={date}
+        ref={dateRef}
+        onDateChange={date => {
+          setDate(date);
+          dispatch(addFeedItemDate({date: date}));
+        }}
+      />
 
-     
+      <Input
+        label={'Feed Name'}
+        ref={feedNameRef}
+        value={feedName}
+        placeholder={'Enter Feed Name'}
+        errorMessage={'Feed Name must be characters'}
+        onChangeText={value => setFeedName(value)}
+        error={error => {
+          setFeedNameError(error);
+        }}
+        regex={charactersRegex}
+      />
 
-        <Input
-          label={'Morning Milk'}
-          keyboardType={'number-pad'}
-          maxLength={2}
-          ref={milkAMRef}
-          value={milkAM}
-          placeholder={'Enter Morning Milk'}
-          errorMessage={'The value must be numeric'}
-          onChangeText={value => setMilkAM(value)}
-          error={error => {
-            setMilkAMError(error);
-          }}
-          regex={literRegex}
-        />
+      <Input
+        label={'Feed Unit'}
+        keyboardType={'number-pad'}
+        maxLength={9}
+        ref={feedUnitRef}
+        value={feedUnit}
+        placeholder={'Enter Feed Unit'}
+        errorMessage={'Feed Unit must be numeric'}
+        onChangeText={value => setFeedUnit(value)}
+        error={error => {
+          setFeedUnitError(error);
+        }}
+        regex={integerRegex}
+      />
 
-        <Input
-          label={'Evening Milk'}
-          keyboardType={'number-pad'}
-          required={false}
-          maxLength={2}
-          ref={milkPMRef}
-          value={milkPM}
-          placeholder={'Enter Evening Milk'}
-          errorMessage={'The value must be numeric'}
-          onChangeText={value => setMilkPM(value)}
-          error={error => {
-            setMilkPMError(error);
-          }}
-          regex={literRegex}
-        />
+      <Input
+        label={'Feed Quantity'}
+        keyboardType={'number-pad'}
+        maxLength={9}
+        ref={feedQuantityRef}
+        value={feedQuantity}
+        placeholder={'Enter Feed Quantity'}
+        errorMessage={'Feed Quantity must be numeric'}
+        onChangeText={value => setFeedQuantity(value)}
+        error={error => {
+          setFeedQuantityError(error);
+        }}
+        regex={integerRegex}
+      />
 
-        <Button
-          loading={milkReducerState.milkLoading}
-          error={[milkAMError,milkPMError,dateError]}
-          title={'Submit'}
-          onPress={() => callApi()}
-        />
+      <Input
+        label={'Feed Price'}
+        keyboardType={'number-pad'}
+        maxLength={9}
+        ref={feedPriceRef}
+        value={feedPrice}
+        placeholder={'Feed Price'}
+        errorMessage={'Feed Price must be numeric'}
+        onChangeText={value => setFeedPrice(value)}
+        error={error => {
+          setFeedPriceError(error);
+        }}
+        regex={integerRegex}
+      />
+
+      <Button
+        loading={feedItemReducerState.feedItemLoading}
+        error={[
+          feedNameError,
+          feedPriceError,
+          feedUnitError,
+          feedQuantityError,
+        ]}
+        title={'Submit'}
+        onPress={() => callApi()}
+      />
     </SmartView>
   );
 }
 
- function validate(milkAMError, milkPMError, date, tag) {
-
-  if ( milkAMError == false && milkPMError == false && date !== '', tag!=='') 
-  {
-    return  false;
-  }
-  else {
-    return  true;}
-}
-
 export { AddFeedItem };
 
-
-const addMilkStyles = {
+const addFeedItemStyles = {
   container: {
-    width: '100%',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: color.white,
+    marginTop: 20,
   },
   form: {
     justifyContent: 'center',

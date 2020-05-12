@@ -1,46 +1,29 @@
+import DateTimePicker from '@react-native-community/datetimepicker';
 import React, {
   forwardRef,
+  useEffect,
   useImperativeHandle,
   useState,
-  useEffect,
 } from 'react';
-import {Text, TouchableOpacity, View, Image } from 'react-native';
+import {Image, Text, TouchableOpacity, View} from 'react-native';
 import color from '../assets/color/Index';
-import DatePicker from 'react-native-datepicker';
-import {formatDate, fromDate, currentDate} from '../conversions/Index';
-import {requireFieldValidator} from '../validations/Index';
-import styles, {shadow} from '../assets/styles/Index';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import {shadow} from '../assets/styles/Index';
+import {formatDate} from '../conversions/Index';
 
 function IDate(props, ref) {
-  const [date, setDate] = useState(props.date.split("/"));
+  const [selectedDate, setSelectedDate] = useState(props.date);
   const [error, setError] = useState(true);
   const [show, setShow] = useState(false);
 
-
   useEffect(() => {
-    setDate(props.date);
-    onDateChange(props.date);
+    setSelectedDate(props.date);
   }, [props.date]);
 
-  const onDateChange = async d => {
+  const onDateChange = async (nativeEvent, onSelectDate) => {
     setShow(false);
-    props.onDateChange(d);
-    // try {
-    //   const _requireFieldValidator = await requireFieldValidator(d);
-    //   if (_requireFieldValidator) {
-    //     setError(false);
-    //     setShow(false);
-    //     props.onDateChange(d);
-    //     await props.error(false);
-    //     setDate(d);
-    //   } else {
-    //     setDate(d);
-    //     setError(true);
-    //     props.onDateChange(d);
-    //     await props.error(true);
-    //   }
-    // } catch (e) {}
+    const date = onSelectDate || selectedDate;
+    setSelectedDate(formatDate(date));
+    await props.onDateChange(formatDate(date));
   };
 
   const showDatepicker = () => {
@@ -56,86 +39,58 @@ function IDate(props, ref) {
 
   return (
     <>
-    <View style={datePickerStyles.container}>
-      <View style={datePickerStyles.pickerContainer}>
-        <TouchableOpacity onPress={()=>showDatepicker()} style={datePickerStyles.pickerRow}>
-        <Image
-        style={datePickerStyles.datePickerIcon}
-        source={require('../assets/img/calendar.png')}
-        />
-          
-          {/*<DatePicker
-            style={datePickerStyles.datePickerStyle}
-            date={date}
-            iconSource={require('../assets/img/calendar.png')}
-            mode="date"
-            format="YYYY-MM-DD"
-            maxDate={new window.Date()}
-            minDate={props.minDate}
-            hideText={true}
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            customStyles={{
-              dateIcon: {
-                position: 'absolute',
-                left: 0,
-                marginLeft: 0,
-                height: 40,
-                width: 40,
-              },
-              dateInput: {
-                paddingLeft: 0,
-                borderWidth: 0,
-              },
-              placeholderText: {
-                color: color.grey.color,
-                marginLeft: 0,
-                paddingLeft: 0,
-              },
-            }}
-            onDateChange={date => onDateChange(date)}
-          />*/}
-          <View style={datePickerStyles.placeholderInputContainer}>
-            {date == '' ? (
-              <Text style={datePickerStyles.placeholderText}>
-                {props.placeholder == undefined
-                  ? 'Select Date'
-                  : props.placeholder}
-              </Text>
-            ) : (
-              <Text style={datePickerStyles.dateText}>{formatDate(date)}</Text>
-            )}
-          </View>
-        </TouchableOpacity>
-      </View>
-      {props.required !== false && (
-        <View style={datePickerStyles.errorContainer}>
-          {error && (
-            <Text style={datePickerStyles.error}>This field is required</Text>
-          )}
+      <View style={datePickerStyles.container}>
+        <View style={datePickerStyles.pickerContainer}>
+          <TouchableOpacity
+            onPress={() => showDatepicker()}
+            style={datePickerStyles.pickerRow}>
+            <Image
+              style={datePickerStyles.datePickerIcon}
+              source={require('../assets/img/calendar.png')}
+            />
+            <View style={datePickerStyles.placeholderInputContainer}>
+              {selectedDate == '' ? (
+                <Text style={datePickerStyles.placeholderText}>
+                  {props.placeholder == undefined
+                    ? 'Select Date'
+                    : props.placeholder}
+                </Text>
+              ) : (
+                <Text style={datePickerStyles.dateText}>{selectedDate}</Text>
+              )}
+            </View>
+          </TouchableOpacity>
         </View>
+        {props.required !== false && (
+          <View style={datePickerStyles.errorContainer}>
+            {/*error && (
+            <Text style={datePickerStyles.error}>This field is required</Text>
+          )*/}
+          </View>
+        )}
+      </View>
+      {show && (
+        <DateTimePicker
+          value={new window.Date(selectedDate)}
+          mode={'date'}
+          maximumDate={new window.Date()}
+          minimumDate={
+            props.minDate == undefined
+              ? new window.Date(2019, 1, 1)
+              : new window.Date(props.minDate)
+          }
+          display="default"
+          onChange={(x, y) => onDateChange(x, y)}
+        />
       )}
-    </View>
-    {show && (
-      <DateTimePicker
-        timeZoneOffsetInMinutes={0}
-        value={new window.Date(props.date)}
-        mode={'date'}
-        display="spinner"
-        maximumDate={new window.Date(props.date)}
-        minimumDate={new window.Date(props.minDate)}                
-        onChange={()=>onDateChange(date)}
-      />
-    )}
-  </>
+    </>
   );
 }
 
 export const Date = forwardRef(IDate);
 
 const datePickerStyles = {
-
-  datePickerIcon:{
+  datePickerIcon: {
     height: 40,
     width: 40,
   },
@@ -148,7 +103,7 @@ const datePickerStyles = {
   placeholderInputContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 10
+    marginLeft: 10,
   },
   pickerContainer: {
     paddingHorizontal: 10,
@@ -158,7 +113,6 @@ const datePickerStyles = {
     borderWidth: 0,
     marginTop: 20,
     ...shadow,
-
   },
   datePickerStyle: {
     width: 50,
@@ -174,7 +128,6 @@ const datePickerStyles = {
     width: '100%',
     borderWidth: 0,
     flexDirection: 'row',
-
   },
   dateText: {},
   placeholderText: {

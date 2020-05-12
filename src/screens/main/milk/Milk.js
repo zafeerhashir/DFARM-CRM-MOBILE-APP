@@ -26,26 +26,19 @@ function Milk({navigation}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // getFilterMilkData();
-
+    getFilterMilkData();
     const unsubscribe = navigation.addListener('focus', () => {
       getFilterMilkData();
     });
     return unsubscribe;
   }, [navigation, fromDate, toDate, milkReducerState.editMilkVisible]);
 
-  const setDatesForDefaultData = async () => {
-    const _fromDate = await agoDate(7);
-    const _toDate = await currentDate();
-    setFromDate(_fromDate);
-    setToDate(_toDate);
-  };
-
+  
   const onRefresh = useCallback(() => {
     getFilterMilkData();
   }, [milkReducerState.milkLoading]);
 
-  const getFilterMilkData = () => {
+  const getFilterMilkData = async () => {
     if (fromDate !== '' && toDate !== '') {
       const body = {toDate: toDate, fromDate: fromDate};
       dispatch(filterMilkData(body));
@@ -79,7 +72,7 @@ function Milk({navigation}) {
               date={fromDate}
               placeholder={'Select from date'}
               onDateChange={date => {
-                setFromDate(date), getFilterMilkData();
+                setFromDate(date);
               }}
             />
           </View>
@@ -90,7 +83,7 @@ function Milk({navigation}) {
               date={toDate}
               placeholder={'Select to date'}
               onDateChange={date => {
-                setToDate(date), getFilterMilkData();
+                setToDate(date);
               }}
             />
           </View>
@@ -211,7 +204,6 @@ const milkStyles = {
     marginBottom: 0,
   },
 
- 
   cardContainer: {
     minWidth: '100%',
     alignItems: 'center',
@@ -229,7 +221,6 @@ const milkStyles = {
     ...styles.abstractCardStyles,
   },
 
-  
   noRecordView: {
     marginTop: '25%',
     height: 30,

@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useState} from './node_modules/react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
-import {useDispatch, useSelector} from './node_modules/react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import color from '../../../assets/color/Index';
 import styles from '../../../assets/styles/Index';
 import {
@@ -15,7 +15,7 @@ import {
   editMilkVisible,
   filterMilkData,
 } from '../../../redux/actions/Index';
-import {agoDate, currentDate, formatDate} from '../../../conversions/Index';
+import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
 
 function FeedItemDate({navigation}) {
   const [toDate, setToDate] = useState(currentDate());

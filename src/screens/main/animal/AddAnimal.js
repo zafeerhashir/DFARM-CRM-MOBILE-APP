@@ -32,7 +32,7 @@ function AddAnimal() {
         ref={animalTagRef}
         value={animalTag}
         placeholder={'Enter Animal Tag'}
-        errorMessage={'The value must be alphanumeric'}
+        errorMessage={'Animal Tag can be (A-Z a-z 0-9) '}
         onChangeText={value => setAnimalTag(value)}
         error={error => {
           setAnimalTagError(error);

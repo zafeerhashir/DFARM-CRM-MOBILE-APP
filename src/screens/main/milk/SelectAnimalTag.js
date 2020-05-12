@@ -1,58 +1,27 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
+import {SearchBar} from 'react-native-elements';
 import {useDispatch, useSelector} from 'react-redux';
 import color from '../../../assets/color/Index';
 import styles from '../../../assets/styles/Index';
-
-import {
-  CardLongPressView,
-  Date,
-  Row,
-  SmartView,
-  EditMilk,
-} from '../../../components/Index';
-import {
-  deleteMilk,
-  filterMilkData,
-  getMilk,
-  editMilkVisible,
-} from '../../../redux/actions/Index';
-import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
-import {SearchBar} from 'react-native-elements';
-import {
-  selectAnimalTagItem,
-  selectAnimalTagVisible,
-} from '../../../redux/actions/Index';
+import {Row, SmartView} from '../../../components/Index';
+import {getAnimalTags, selectAnimalTagItem, searchMilkAnimalTag} from '../../../redux/actions/Index';
 
 function SelectAnimalTag({navigation}) {
   const milkReducerState = useSelector(state => state.milk);
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState('');
-  const [data, setData] = useState(milkReducerState.animalTagData);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      dispatch(getAnimalTags());
+    });
+    return unsubscribe;
+  }, [navigation]);
 
-  const onChangeText = async searchTerm => {
-    setSearchTerm(searchTerm);
-
-    if (searchTerm.trim().length >= 1 && data.length != 0) {
-      try {
-        var suggestion = await data.sort().filter(x => {
-          return new RegExp(searchTerm, 'i').test(x.tag);
-        });
-      } catch (e) {
-        // this.setState({searchFound: false});
-      }
-
-      if (suggestion.length == 0) {
-        setData(suggestion);
-      } else {
-        setData(suggestion);
-      }
-    } else {
-      setData(milkReducerState.animalTagData);
-    }
-  };
+  const onRefresh = useCallback(() => {
+    dispatch(getAnimalTags());
+  }, [milkReducerState.milkLoading]);
 
   return (
     <SmartView>
@@ -63,14 +32,17 @@ function SelectAnimalTag({navigation}) {
           containerStyle={styles.searchBarContainerStyle}
           inputContainerStyle={styles.searchBarInputContainerStyle}
           inputStyle={styles.searchBarInputStyle}
-          onChangeText={searchTerm => onChangeText(searchTerm)}
-          value={searchTerm}
+          onChangeText={searchTerm =>
+            dispatch(searchMilkAnimalTag({searchTerm}))
+          }
+          value={milkReducerState.animalTagSearchTerm}
           placeholderTextColor={color.grey}
           clearIcon={false}
           searchIcon={false}
         />
 
-        {data.length == 0 && milkReducerState.milkLoading == false ? (
+        {milkReducerState.animalTagSearchResults.length == 0 &&
+        milkReducerState.milkLoading == false ? (
           <View style={selectAnimalTagStyles.noRecordView}>
             <Text style={selectAnimalTagStyles.noRecordText}>
               No Record Found
@@ -78,7 +50,9 @@ function SelectAnimalTag({navigation}) {
           </View>
         ) : (
           <FlatList
-            data={data}
+            onRefresh={() => onRefresh}
+            refreshing={milkReducerState.milkLoading}
+            data={milkReducerState.animalTagSearchResults}
             renderItem={({item}) => (
               <TouchableOpacity
                 onPress={() => {
@@ -184,7 +158,6 @@ const selectAnimalTagStyles = {
     borderWidth: 0,
     paddingHorizontal: 8,
     marginBottom: 15,
-
   },
 
   cardContainerChild: {

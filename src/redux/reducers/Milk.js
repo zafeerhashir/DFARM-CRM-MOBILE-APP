@@ -10,6 +10,8 @@ const initialState = {
   editMilkLoading: false,
   editMilkVisible: false,
   selectAnimalTagVisible: false,
+  animalTagSearchResults:[],
+  animalTagSearchTerm: ''
 };
 
 function milk(state = initialState, action) {
@@ -21,6 +23,7 @@ function milk(state = initialState, action) {
       return {
         ...state,
         animalTagData: action.payload,
+        animalTagSearchResults: action.payload,
         milkLoading: false,
         milkLoadingError: false,
       };
@@ -150,6 +153,40 @@ function milk(state = initialState, action) {
         milkLoading: false,
         milkData: [],
       };
+
+    case constant.SEARCH_ANIMAL_TAG:
+      if (
+        action.payload.searchTerm.trim().length >= 1 &&
+        state.animalTagSearchResults.length != 0
+      ) {
+        try {
+          var suggestion = state.animalTagSearchResults
+            .sort()
+            .filter(x => {
+              return new RegExp(action.payload.searchTerm, 'i').test(x.tag);
+            });
+        } catch (e) {
+          // this.setState({searchFound: false});
+        }
+
+        return {
+          ...state,
+          animalTagSearchResults: suggestion,
+          animalTagSearchTerm: action.payload.searchTerm,
+        };
+
+        // if (suggestion.length == 0) {
+        //   setData(suggestion);
+        // } else {
+        //   setData(suggestion);
+        // }
+      } else {
+        return {
+          ...state,
+          animalTagSearchResults: state.milkData,
+          animalTagSearchTerm: action.payload.searchTerm,
+        };
+      }
 
     default:
       return state;

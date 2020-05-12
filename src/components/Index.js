@@ -8,3 +8,5 @@ export { CardLongPressView } from './CardLongPressView'
 export { EditMilk } from './EditMilk'
 export { SelectAnimalTag } from './SelectAnimalTag'
 export { EditAnimal } from './EditAnimal'
+export { EditFeedItem } from './EditFeedItem'
+

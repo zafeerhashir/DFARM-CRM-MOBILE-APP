@@ -1,11 +1,9 @@
 import {milkWatcherSaga} from './Milk';
 import {animalWatcherSaga} from './Animal';
-
-
-import {all} from 'redux-saga/effects';
-
+import { feedItemWatcherSaga } from './FeedIItem';
+import { all } from 'redux-saga/effects';
 
 
 export default function* rootSaga() {
-  yield all([milkWatcherSaga(), animalWatcherSaga(),]);
+  yield all([milkWatcherSaga(), animalWatcherSaga(),feedItemWatcherSaga()]);
 }

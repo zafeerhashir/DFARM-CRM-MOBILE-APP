@@ -28,9 +28,10 @@ import {
   SelectFeedItemDate,
   FeedItem,
   AddFeedItem,
-  FeedItem,
-  AddFeedItem,
-  SelectFeedItemDate
+  FeedItemDate,
+  AddFeedItemDate,
+  ChangePassword,
+  SignIn,
 } from '../screens/Index';
 import color from '../assets/color/Index';
 
@@ -160,7 +161,7 @@ function FeedItemTab() {
         indicatorStyle: {backgroundColor: color.white, height: '5%'},
         style: {backgroundColor: color.tealDarkGreen},
       }}>
-      <Tab.Screen name="Feed Items" component={FeedItem} />
+      <Tab.Screen name="FeedItems" component={FeedItem} />
       <Tab.Screen name="Add" component={AddFeedItem} />
     </Tab.Navigator>
   );
@@ -194,9 +195,52 @@ function FeedItemStack({navigation}) {
           ),
         }}
       />
+
       <Stack.Screen
-      name="Animal Milk Detail"
+      name="Select Feed Date"
       component={SelectFeedItemDate}
+      options={{
+        headerStyle: {
+          backgroundColor: color.tealDarkGreen,
+        },
+      }}
+    />
+
+     
+    
+    </Stack.Navigator>
+  );
+}
+
+function ChangePasswordStack({navigation}) {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="FEED"
+        component={FeedItemTab}
+        options={{
+          headerStyle: {
+            backgroundColor: color.tealDarkGreen,
+            
+          },
+          headerTitleStyle:{
+           color: color.white
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.openDrawer()}
+              style={navigationStyles.headerLeft}>
+              <Image
+                style={navigationStyles.headerLeftImage}
+                source={require('../assets/img/menu.png')}
+              />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      <Stack.Screen
+      name="Change Password"
+      component={ChangePassword}
       options={{
         headerStyle: {
           backgroundColor: color.tealDarkGreen,
@@ -210,9 +254,11 @@ function FeedItemStack({navigation}) {
 function MainDrawer() {
   return (
     <Drawer.Navigator>
+    <Drawer.Screen name="Milk" component={MilkStack} />
+
+    <Drawer.Screen name="FeedItem" component={FeedItemStack} />
       <Drawer.Screen name="Animal" component={AnimalStack} />
-      <Drawer.Screen name="Milk" component={MilkStack} />
-      <Drawer.Screen name="FeedItem" component={FeedItemStack} />
+      <Drawer.Screen name="ChangePassword" component={ChangePasswordStack} />
     </Drawer.Navigator>
   );
 }
@@ -231,7 +277,7 @@ function Navigation() {
           </>
         ) : (
           <>
-            <Stack.Screen name="SignIn" component={MainDrawer} />
+            <Stack.Screen name="SignIn" component={SignIn} />
           </>
         )}
       </Stack.Navigator>

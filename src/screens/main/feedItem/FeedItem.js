@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useState} from './node_modules/react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
-import {useDispatch, useSelector} from './node_modules/react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import color from '../../../assets/color/Index';
 import styles from '../../../assets/styles/Index';
 import {
@@ -9,46 +9,40 @@ import {
   EditMilk,
   Row,
   SmartView,
+  EditFeedItem
 } from '../../../components/Index';
 import {
   deleteMilk,
   editMilkVisible,
-  filterMilkData,
+  getFeedData,
+  editFeedItemVisible
 } from '../../../redux/actions/Index';
-import {agoDate, currentDate, formatDate} from '../../../conversions/Index';
+import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
 
 function FeedItem({navigation}) {
   const [toDate, setToDate] = useState(currentDate());
   const [fromDate, setFromDate] = useState(agoDate(7));
   const [visible, setVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(false);
-  const milkReducerState = useSelector(state => state.milk);
+  const feedItemReducerState = useSelector(state => state.feedItem);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // getFilterMilkData();
-
+    getData();
     const unsubscribe = navigation.addListener('focus', () => {
-      getFilterMilkData();
+      getData();
     });
     return unsubscribe;
-  }, [navigation, fromDate, toDate, milkReducerState.editMilkVisible]);
-
-  const setDatesForDefaultData = async () => {
-    const _fromDate = await agoDate(7);
-    const _toDate = await currentDate();
-    setFromDate(_fromDate);
-    setToDate(_toDate);
-  };
+  }, [navigation, fromDate, toDate, ]);
 
   const onRefresh = useCallback(() => {
-    getFilterMilkData();
-  }, [milkReducerState.milkLoading]);
+    getData();
+  }, [feedItemReducerState.feedItemLoading]);
 
-  const getFilterMilkData = () => {
+  const getData = () => {
     if (fromDate !== '' && toDate !== '') {
       const body = {toDate: toDate, fromDate: fromDate};
-      dispatch(filterMilkData(body));
+      dispatch(getFeedData(body));
     }
   };
 
@@ -59,11 +53,11 @@ function FeedItem({navigation}) {
     getFilterMilkData();
   };
 
-  const getTotalMilk = () => {
+  const getTotalFeedPrice = () => {
     var total = 0;
 
-    for (let e of milkReducerState.milkData) {
-      total = total + (e.milkProduceAM + e.milkProducePM);
+    for (let e of feedItemReducerState.feedItemData) {
+      total = total + (e.price + e.price);
     }
 
     return total;
@@ -71,88 +65,97 @@ function FeedItem({navigation}) {
 
   return (
     <SmartView>
-      <View style={milkStyles.parentContainer}>
-        <View style={milkStyles.pickerRow}>
-          <View style={milkStyles.pickerColumnLeft}>
+      <View style={FeedItemStyles.parentContainer}>
+        <View style={FeedItemStyles.pickerRow}>
+          <View style={FeedItemStyles.pickerColumnLeft}>
             <Date
               required={false}
               date={fromDate}
               placeholder={'Select from date'}
               onDateChange={date => {
-                setFromDate(date), getFilterMilkData();
+                setFromDate(date)
               }}
             />
           </View>
-          <View style={milkStyles.pickerColumnRight}>
+          <View style={FeedItemStyles.pickerColumnRight}>
             <Date
               required={false}
               minDate={fromDate}
               date={toDate}
               placeholder={'Select to date'}
               onDateChange={date => {
-                setToDate(date), getFilterMilkData();
+                 setToDate(date)
               }}
             />
           </View>
         </View>
 
-        <View style={milkStyles.countContainer}>
-          <View style={milkStyles.countLabelContainer}>
-            <Text>Total Milk</Text>
+        <View style={FeedItemStyles.countContainer}>
+          <View style={FeedItemStyles.countLabelContainer}>
+            <Text>Total Price</Text>
           </View>
-
-          <View style={milkStyles.countValueContainer}>
+          {feedItemReducerState.feedItemData.length != 0 && 
+          <View style={FeedItemStyles.countValueContainer}>
             <Text>
-              {milkReducerState.milkData.length == 0 ? '0' : getTotalMilk()}
+            
+               { `${getTotalFeedPrice()} PKR`}
             </Text>
           </View>
+         }
         </View>
 
         {visible && (
           <CardLongPressView
             onEditPress={() => {
-              dispatch(editMilkVisible({visible: true})), setVisible(false);
+              dispatch(editFeedItemVisible({visible: true})), setVisible(false);
             }}
             onDeletePress={() => _deleteMilk(selectedItem)}
             onTabOut={() => setVisible(false)}
           />
         )}
 
-        {milkReducerState.editMilkVisible && (
-          <EditMilk selectedItem={selectedItem} />
+        {feedItemReducerState.editFeedItemVisible && (
+          <EditFeedItem selectedItem={selectedItem} />
         )}
         {console.log(selectedItem, 'selectedItem')}
 
-        {milkReducerState.milkData.length == 0 &&
-        milkReducerState.milkLoading == false ? (
-          <View style={milkStyles.noRecordView}>
-            <Text style={milkStyles.noRecordText}>No Record Found</Text>
+        {feedItemReducerState.feedItemData.length == 0 &&
+        feedItemReducerState.feedItemLoading == false ? (
+          <View style={FeedItemStyles.noRecordView}>
+            <Text style={FeedItemStyles.noRecordText}>No Record Found</Text>
           </View>
         ) : (
           <FlatList
-            refreshing={milkReducerState.milkLoading}
+            refreshing={feedItemReducerState.editFeedItemLoading}
             onRefresh={() => onRefresh()}
-            data={milkReducerState.milkData}
+            data={feedItemReducerState.feedItemData}
             renderItem={({item}) => (
               <TouchableOpacity
                 onLongPress={() => {
                   setVisible(true), setSelectedItem(item);
                 }}
-                style={milkStyles.cardContainer}>
-                <View style={milkStyles.cardContainerChild}>
-                  <Row label={'Date'} value={formatDate(item.date)} />
-                  <Row label={'Animal Tag'} value={item.tag} />
-                  <Row
-                    label={'Morning Milk'}
-                    value={`${item.milkProduceAM} liter`}
+                style={FeedItemStyles.cardContainer}>
+                <View style={FeedItemStyles.cardContainerChild}>
+                  <Row 
+                  label={'Date'} 
+                  value={formatDate(item.date)} 
                   />
-                  <Row
-                    label={'Evening Milk'}
-                    value={`${item.milkProducePM} liter`}
+                  <Row 
+                  label={'Feed Name'} 
+                  value={item.name} 
                   />
-                  <Row
-                    label={'Total Milk'}
-                    value={item.milkProduceAM + item.milkProducePM}
+                  <Row 
+                  label={'Feed Unit'} 
+                  value={item.unit} 
+                  />
+                  <Row 
+                  label={'Feed Quantity'} 
+                  value={item.quantity} 
+                  />
+
+                  <Row 
+                  label={'Feed price'} 
+                  value={`${item.price} PKR`} 
                   />
                 </View>
               </TouchableOpacity>
@@ -166,7 +169,7 @@ function FeedItem({navigation}) {
 
 export {FeedItem};
 
-const milkStyles = {
+const FeedItemStyles = {
   pickerRow: {
     width: '90%',
     marginBottom: 20,
@@ -211,7 +214,6 @@ const milkStyles = {
     marginBottom: 0,
   },
 
- 
   cardContainer: {
     minWidth: '100%',
     alignItems: 'center',
@@ -229,7 +231,6 @@ const milkStyles = {
     ...styles.abstractCardStyles,
   },
 
-  
   noRecordView: {
     marginTop: '25%',
     height: 30,
