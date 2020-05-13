@@ -22,7 +22,7 @@ function ConfirmationModel(props) {
           <TouchableOpacity
             style={ConfirmationModelStyles.buttonRowContainer}
             onPress={props.onPress}>
-            <Text style={{color: color.tealDarkGreen}}>OK</Text>
+            <Text style={{color: color.themeColor}}>OK</Text>
           </TouchableOpacity>
         </View>
       </View>

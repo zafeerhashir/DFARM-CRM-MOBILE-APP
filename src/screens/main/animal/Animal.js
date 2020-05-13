@@ -9,7 +9,6 @@ import {
   ListView,
   CardLongPressView,
   EditAnimal,
-  
 } from '../../../components/Index';
 import {
   getAnimal,
@@ -17,7 +16,7 @@ import {
   editAnimal,
   editAnimalVisible,
   selectedAnimal,
-  searchAnimal
+  searchAnimal,
 } from '../../../redux/actions/Index';
 
 function Animal({navigation}) {
@@ -29,12 +28,12 @@ function Animal({navigation}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setData(animalReducerState.animalData)
+    setData(animalReducerState.animalData);
     const unsubscribe = navigation.addListener('focus', () => {
       getAnimals();
     });
     return unsubscribe;
-  }, [navigation,animalReducerState.animalLoading]);
+  }, [navigation, animalReducerState.animalLoading]);
 
   const onRefresh = useCallback(() => {
     getAnimals();
@@ -75,7 +74,9 @@ function Animal({navigation}) {
   };
 
   return (
-    <ListView>
+    <ListView
+      refreshing={animalReducerState.animalLoading}
+      onRefresh={() => onRefresh()}>
       <View style={animalStyles.form}>
         <SearchBar
           lightTheme
@@ -91,16 +92,18 @@ function Animal({navigation}) {
         />
 
         <View style={animalStyles.countContainer}>
-            <View style={animalStyles.countLabelContainer}>
-              <Text>Total Animal</Text>
-            </View>
-
-            <View style={animalStyles.countValueContainer}>
-              <Text>
-                {animalReducerState.animalData == 0 ? '0' : animalReducerState.animalData.length-1 }
-              </Text>
-            </View>
+          <View style={animalStyles.countLabelContainer}>
+            <Text>Total Animal</Text>
           </View>
+
+          <View style={animalStyles.countValueContainer}>
+            <Text>
+              {animalReducerState.animalData == 0
+                ? '0'
+                : animalReducerState.animalData.length - 1}
+            </Text>
+          </View>
+        </View>
 
         {visible && (
           <CardLongPressView
@@ -128,12 +131,9 @@ function Animal({navigation}) {
           </View>
         ) : (
           <FlatList
-            refreshing={animalReducerState.animalLoading}
-            onRefresh={() => onRefresh()}
             data={animalReducerState.animalSearchResults}
             renderItem={({item}) => (
-
-             <TouchableOpacity
+              <TouchableOpacity
                 onLongPress={() => {
                   setVisible(true),
                     dispatch(
@@ -146,7 +146,7 @@ function Animal({navigation}) {
                 <View style={[animalStyles.cardContainerChild]}>
                   <Row label={'Animal Tag'} value={item.tag} />
                 </View>
-              </TouchableOpacity> 
+              </TouchableOpacity>
             )}
           />
         )}
@@ -158,30 +158,26 @@ function Animal({navigation}) {
 export {Animal};
 
 const animalStyles = StyleSheet.create({
-
-  countContainer:{
-    width:'90%',
-    alignItems:'center',
-    flexDirection:'row',
-    marginBottom: 20
+  countContainer: {
+    width: '90%',
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginBottom: 20,
   },
-  countLabelContainer:{
-    paddingHorizontal:10,
-    alignItems:'center',
-    justifyContent:'center',
+  countLabelContainer: {
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
     height: 40,
     ...styles.abstractCardStyles,
-
   },
-  countValueContainer:{
-    paddingHorizontal:10,
-    alignItems:'center',
-    justifyContent:'center',
+  countValueContainer: {
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
     height: 40,
     marginLeft: 20,
     ...styles.abstractCardStyles,
-  
-
   },
 
   dismissRow: {

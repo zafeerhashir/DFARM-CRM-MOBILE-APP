@@ -23,7 +23,7 @@ function CardLongPressView(props) {
           onPress={props.onEditPress}
           style={cardLongPressViewStyles.Container}>
           <View style={cardLongPressViewStyles.row}>
-            <Text style={{color: color.tealDarkGreen}}>Edit</Text>
+            <Text style={{color: color.themeColor}}>Edit</Text>
           </View>
         </TouchableOpacity>
         
@@ -37,7 +37,7 @@ function CardLongPressView(props) {
           onPress={() => setVisible(true)}
           style={cardLongPressViewStyles.Container}>
           <View style={cardLongPressViewStyles.row}>
-          <Text style={{color: color.tealDarkGreen}}>Delete</Text>
+          <Text style={{color: color.themeColor}}>Delete</Text>
           </View>
         </TouchableOpacity>
         {props.viewDetails &&
@@ -45,7 +45,7 @@ function CardLongPressView(props) {
           onPress={props.onDetailsPress}
           style={cardLongPressViewStyles.Container}>
           <View style={cardLongPressViewStyles.row}>
-            <Text style={{color: color.tealDarkGreen}}>View Details</Text>
+            <Text style={{color: color.themeColor}}>View Details</Text>
           </View>
         </TouchableOpacity>
         }

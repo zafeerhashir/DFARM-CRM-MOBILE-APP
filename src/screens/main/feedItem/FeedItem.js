@@ -33,7 +33,7 @@ function FeedItem({navigation}) {
       getData();
     });
     return unsubscribe;
-  }, [navigation, fromDate, toDate, ]);
+  }, [navigation, fromDate, toDate ]);
 
   const onRefresh = useCallback(() => {
     getData();
@@ -65,7 +65,9 @@ function FeedItem({navigation}) {
   };
 
   return (
-    <ListView>
+    <ListView
+    refreshing={feedItemReducerState.feedItemLoading}
+    onRefresh={() => onRefresh()}>
       <View style={FeedItemStyles.parentContainer}>
         <View style={FeedItemStyles.pickerRow}>
           <View style={FeedItemStyles.pickerColumnLeft}>
@@ -127,8 +129,6 @@ function FeedItem({navigation}) {
           </View>
         ) : (
           <FlatList
-            refreshing={feedItemReducerState.editFeedItemLoading}
-            onRefresh={() => onRefresh()}
             data={feedItemReducerState.feedItemData}
             renderItem={({item}) => (
               <TouchableOpacity

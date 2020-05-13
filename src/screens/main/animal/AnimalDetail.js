@@ -43,7 +43,6 @@ function AnimalDetail({navigation}) {
   };
 
   const getTotalMilk = () => {
-    
     var total = 0;
     for (let e of animalReducerState.animalMilkData) {
       total = total + (e.milkProduceAM + e.milkProducePM);
@@ -52,7 +51,9 @@ function AnimalDetail({navigation}) {
   };
 
   return (
-    <ListView>
+    <ListView
+      refreshing={animalReducerState.animalMilkLoading}
+      onRefresh={() => onRefresh()}>
       <View style={animalStyles.parentContainer}>
         <View style={animalStyles.pickerRow}>
           <View style={animalStyles.pickerColumnLeft}>
@@ -99,8 +100,6 @@ function AnimalDetail({navigation}) {
           </View>
         ) : (
           <FlatList
-            refreshing={animalReducerState.animalMilkLoading}
-            onRefresh={() => onRefresh()}
             data={animalReducerState.animalMilkData}
             renderItem={({item}) => (
               <TouchableOpacity style={animalStyles.cardContainer}>

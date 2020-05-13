@@ -1,30 +1,30 @@
 import React from 'react';
-import { StatusBar, View, RefreshControl, ScrollView } from 'react-native';
+import {StatusBar, View, RefreshControl, ScrollView} from 'react-native';
 import color from '../assets/color/Index';
 
 function ListView(props) {
   return (
     <>
-      {<StatusBar backgroundColor={color.tealDarkGreen} />}
+      {<StatusBar backgroundColor={color.themeColor} />}
       <ScrollView
-      refreshControl={
-        <RefreshControl
-        refreshing={props.refreshing}
-        onRefresh={props.onRefresh}
-      />}
+        refreshControl={
+          <RefreshControl
+            colors={[color.themeColor]}
+            tintColor={color.themeColor}
+            refreshing={props.refreshing}
+            onRefresh={props.onRefresh}
+          />
+        }
         // refreshControl={props.refreshControl}
-  
+
         contentContainerStyle={[listViewStyles.keyboardAwareScrollViewStyle]}>
         {props.children}
       </ScrollView>
     </>
   );
-  
 }
 
-
-
-export { ListView };
+export {ListView};
 const listViewStyles = {
   modalContainerStyle: {
     height: 600,
@@ -43,6 +43,6 @@ const listViewStyles = {
     width: '100%',
     alignItems: 'center',
     backgroundColor: color.white,
-    flexGrow:1
+    flexGrow: 1,
   },
 };

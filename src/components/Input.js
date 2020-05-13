@@ -181,7 +181,7 @@ const inputStyles = {
   },
 
   errorContainer: {
-    height: 30,
+    minHeight: 30,
     justifyContent: 'center',
     width: '100%',
     borderWidth: 0,

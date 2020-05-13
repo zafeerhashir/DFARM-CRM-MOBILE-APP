@@ -31,9 +31,10 @@ import {
   FeedItemDate,
   AddFeedItemDate,
   ChangePassword,
-  SignIn,
+  Login,
 } from '../screens/Index';
 import color from '../assets/color/Index';
+import {clockRunning} from 'react-native-reanimated';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -45,29 +46,27 @@ function MilkTab() {
       tabBarOptions={{
         activeTintColor: color.white,
         indicatorStyle: {backgroundColor: color.white, height: '5%'},
-        style: {backgroundColor: color.tealDarkGreen},
+        style: {backgroundColor: color.themeColor},
       }}>
-      <Tab.Screen name="MILK" component={Milk} />
+      <Tab.Screen name="Milk" component={Milk} />
       <Tab.Screen name="Add" component={AddMilk} />
     </Tab.Navigator>
   );
 }
 
-
-
 function MilkStack({navigation}) {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Milk"
+        name="MILK"
         component={MilkTab}
         options={{
           headerStyle: {
-            backgroundColor: color.tealDarkGreen,
+            backgroundColor: color.themeColor,
           },
-          headerTitleStyle:{
-            color: color.white
-           },
+          headerTitleStyle: {
+            color: color.white,
+          },
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
@@ -85,15 +84,20 @@ function MilkStack({navigation}) {
         name="Animal Tag"
         component={SelectAnimalTag}
         options={{
+          title: 'ANIMAL TAGS',
           headerStyle: {
-            backgroundColor: color.tealDarkGreen,
+            backgroundColor: color.themeColor,
+            height: navigationStyles.headerHeight.height,
           },
+          headerTitleStyle: {
+            color: color.white,
+          },
+          headerTintColor: color.white,
         }}
       />
     </Stack.Navigator>
   );
 }
-
 
 function AnimalTab() {
   return (
@@ -101,30 +105,26 @@ function AnimalTab() {
       tabBarOptions={{
         activeTintColor: color.white,
         indicatorStyle: {backgroundColor: color.white, height: '5%'},
-        style: {backgroundColor: color.tealDarkGreen},
+        style: {backgroundColor: color.themeColor},
       }}>
-      <Tab.Screen name="Animals" component={Animal} />
+      <Tab.Screen name="Animal" component={Animal} />
       <Tab.Screen name="Add" component={AddAnimal} />
     </Tab.Navigator>
   );
 }
 
-
-
-
 function AnimalStack({navigation}) {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Animal"
+        name="ANIMAL"
         component={AnimalTab}
         options={{
           headerStyle: {
-            backgroundColor: color.tealDarkGreen,
-            
+            backgroundColor: color.themeColor,
           },
-          headerTitleStyle:{
-           color: color.white
+          headerTitleStyle: {
+            color: color.white,
           },
           headerLeft: () => (
             <TouchableOpacity
@@ -139,19 +139,23 @@ function AnimalStack({navigation}) {
         }}
       />
       <Stack.Screen
-      name="Animal Milk Detail"
-      component={AnimalDetail}
-      options={{
-        headerStyle: {
-          backgroundColor: color.tealDarkGreen,
-        },
-      }}
-    />
+        name="Animal Milk Detail"
+        component={AnimalDetail}
+        options={{
+          title: 'MILK DETAILS',
+          headerStyle: {
+            backgroundColor: color.themeColor,
+            height: navigationStyles.headerHeight.height,
+          },
+          headerTitleStyle: {
+            color: color.white,
+          },
+          headerTintColor: color.white,
+        }}
+      />
     </Stack.Navigator>
   );
 }
-
-
 
 function FeedItemTab() {
   return (
@@ -159,15 +163,13 @@ function FeedItemTab() {
       tabBarOptions={{
         activeTintColor: color.white,
         indicatorStyle: {backgroundColor: color.white, height: '5%'},
-        style: {backgroundColor: color.tealDarkGreen},
+        style: {backgroundColor: color.themeColor},
       }}>
-      <Tab.Screen name="FeedItems" component={FeedItem} />
+      <Tab.Screen name="Feed" component={FeedItem} />
       <Tab.Screen name="Add" component={AddFeedItem} />
     </Tab.Navigator>
   );
 }
-
-
 
 function FeedItemStack({navigation}) {
   return (
@@ -177,11 +179,10 @@ function FeedItemStack({navigation}) {
         component={FeedItemTab}
         options={{
           headerStyle: {
-            backgroundColor: color.tealDarkGreen,
-            
+            backgroundColor: color.themeColor,
           },
-          headerTitleStyle:{
-           color: color.white
+          headerTitleStyle: {
+            color: color.white,
           },
           headerLeft: () => (
             <TouchableOpacity
@@ -197,17 +198,14 @@ function FeedItemStack({navigation}) {
       />
 
       <Stack.Screen
-      name="Select Feed Date"
-      component={SelectFeedItemDate}
-      options={{
-        headerStyle: {
-          backgroundColor: color.tealDarkGreen,
-        },
-      }}
-    />
-
-     
-    
+        name="Select Feed Date"
+        component={SelectFeedItemDate}
+        options={{
+          headerStyle: {
+            backgroundColor: color.themeColor,
+          },
+        }}
+      />
     </Stack.Navigator>
   );
 }
@@ -216,16 +214,18 @@ function ChangePasswordStack({navigation}) {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="FEED"
-        component={FeedItemTab}
+        name="Change Password"
+        component={ChangePassword}
         options={{
+          title: 'CHANGE PASSWORD',
           headerStyle: {
-            backgroundColor: color.tealDarkGreen,
-            
+            backgroundColor: color.themeColor,
+            height: navigationStyles.headerHeight.height,
           },
-          headerTitleStyle:{
-           color: color.white
+          headerTitleStyle: {
+            color: color.white,
           },
+
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
@@ -238,28 +238,52 @@ function ChangePasswordStack({navigation}) {
           ),
         }}
       />
-      <Stack.Screen
-      name="Change Password"
-      component={ChangePassword}
-      options={{
-        headerStyle: {
-          backgroundColor: color.tealDarkGreen,
-        },
-      }}
-    />
     </Stack.Navigator>
+  );
+}
+
+function CustomDrawerContent(props) {
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItem
+        labelStyle={{color: color.white, fontSize: 17}}
+        label="Zafeer Hashir"
+      />
+      <DrawerItemList {...props} />
+      <DrawerItem
+        labelStyle={{
+          color: color.white,
+          fontSize: navigationStyles.drawerFontSize,
+        }}
+        label="LOGOUT"
+        onPress={() => alert('Link to help')}
+      />
+    </DrawerContentScrollView>
   );
 }
 
 function MainDrawer() {
   return (
-    <Drawer.Navigator>
-    <Drawer.Screen name="FeedItem" component={FeedItemStack} />
-
-    <Drawer.Screen name="Milk" component={MilkStack} />
-
-      <Drawer.Screen name="Animal" component={AnimalStack} />
-      <Drawer.Screen name="ChangePassword" component={ChangePasswordStack} />
+    <Drawer.Navigator
+      drawerContentOptions={{
+        activeTintColor: color.white,
+        inactiveBackgroundColor: color.white,
+        itemStyle: {marginVertical: 10},
+        inactiveTintColor: color.black,
+        labelStyle: {fontSize: navigationStyles.drawerFontSize},
+      }}
+      drawerStyle={{
+        width: 220,
+        backgroundColor: color.themeColor,
+        activeBackgroundColor: {
+          color: color.themeColor,
+        },
+      }}
+      drawerContent={props => <CustomDrawerContent {...props} />}>
+      <Drawer.Screen name="MILK" component={MilkStack} />
+      <Drawer.Screen name="FEED" component={FeedItemStack} />
+      <Drawer.Screen name="ANIMAL" component={AnimalStack} />
+      <Drawer.Screen name="CHANGE PASSWORD" component={ChangePasswordStack} />
     </Drawer.Navigator>
   );
 }
@@ -271,14 +295,14 @@ function Navigation() {
         {null == null ? (
           <>
             <Stack.Screen
-              name="SignIn"
+              name="Login"
               component={MainDrawer}
               options={{headerShown: false}}
             />
           </>
         ) : (
           <>
-            <Stack.Screen name="SignIn" component={SignIn} />
+            <Stack.Screen name="Login" component={Login} />
           </>
         )}
       </Stack.Navigator>
@@ -298,6 +322,16 @@ const navigationStyles = {
   headerLeftImage: {
     height: 25,
     width: 25,
-    tintColor:color.white
+    tintColor: color.white,
   },
+
+  drawerView: {
+    height: 100,
+    backgroundColor: color.white,
+    borderRadius: 80,
+  },
+  headerHeight: {
+    height: 65,
+  },
+  drawerFontSize: 12,
 };

@@ -1,5 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, Text, TouchableOpacity, View, RefreshControl} from 'react-native';
+import {
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+  RefreshControl,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import color from '../../../assets/color/Index';
 import styles from '../../../assets/styles/Index';
@@ -33,7 +39,6 @@ function Milk({navigation}) {
     return unsubscribe;
   }, [navigation, fromDate, toDate, milkReducerState.editMilkVisible]);
 
-  
   const onRefresh = useCallback(() => {
     getFilterMilkData();
   }, [milkReducerState.milkLoading]);
@@ -61,24 +66,22 @@ function Milk({navigation}) {
 
     return total;
   };
-    // refreshing={milkReducerState.milkLoading}
-            // onRefresh={() => onRefresh()}
+  // refreshing={milkReducerState.milkLoading}
+  // onRefresh={() => onRefresh()}
 
   return (
-  //   <ListView 
-  //   refreshControl={
-  //   <RefreshControl
-  //   refreshing={milkReducerState.milkLoading}
-  //   onRefresh={() => onRefresh()}
-  // />}
-    
-  //   >
+    //   <ListView
+    //   refreshControl={
+    //   <RefreshControl
+    //   refreshing={milkReducerState.milkLoading}
+    //   onRefresh={() => onRefresh()}
+    // />}
 
-  <ListView 
-  refreshing={milkReducerState.milkLoading}
-  onRefresh={() => onRefresh()}
-  
-  >
+    //   >
+
+    <ListView
+      refreshing={milkReducerState.milkLoading}
+      onRefresh={() => onRefresh()}>
       <View style={milkStyles.parentContainer}>
         <View style={milkStyles.pickerRow}>
           <View style={milkStyles.pickerColumnLeft}>
@@ -138,7 +141,6 @@ function Milk({navigation}) {
           </View>
         ) : (
           <FlatList
-          
             data={milkReducerState.milkData}
             renderItem={({item}) => (
               <TouchableOpacity

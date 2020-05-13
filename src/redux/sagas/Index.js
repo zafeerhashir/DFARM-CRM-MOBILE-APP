@@ -1,9 +1,16 @@
 import {milkWatcherSaga} from './Milk';
 import {animalWatcherSaga} from './Animal';
-import { feedItemWatcherSaga } from './FeedIItem';
-import { all } from 'redux-saga/effects';
-
+import {feedItemWatcherSaga} from './FeedIItem';
+import {all} from 'redux-saga/effects';
+import {personalInformationWatcherSaga} from './PersonalInformation';
+import { onBoardingWatcherSaga } from '../sagas/onBoarding' 
 
 export default function* rootSaga() {
-  yield all([milkWatcherSaga(), animalWatcherSaga(),feedItemWatcherSaga()]);
+  yield all([
+    milkWatcherSaga(),
+    animalWatcherSaga(),
+    feedItemWatcherSaga(),
+    personalInformationWatcherSaga(),
+    onBoardingWatcherSaga(),
+  ]);
 }

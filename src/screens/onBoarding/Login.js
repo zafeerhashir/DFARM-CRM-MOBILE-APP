@@ -4,11 +4,11 @@ import color from '../../assets/color/Index';
 import { Button, Date, Input, SmartView } from '../../components/Index';
 import { addMilk, getAnimalTags, selectAnimalTagItem } from '../../redux/actions/Index';
 import { literRegex } from '../../validations/Index';
-import {agoDate, currentDate, formatDate} from './../../conversions/Index';
+import {agoDate, currentDate, formatDate} from '../../conversions/Index';
 
 
 
-function SignIn({navigation}) {
+function Login({navigation}) {
   const milkReducerState = useSelector(state => state.milk);
   const [milkAM, setMilkAM] = useState('');
   const [milkPM, setMilkPM] = useState('');
@@ -131,7 +131,7 @@ function SignIn({navigation}) {
     return  true;}
 }
 
-export { SignIn };
+export { Login };
 
 
 const addMilkStyles = {

@@ -5,7 +5,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import color from '../../../assets/color/Index';
 import styles from '../../../assets/styles/Index';
 import {Row, ListView} from '../../../components/Index';
-import {getAnimalTags, selectAnimalTagItem, searchMilkAnimalTag} from '../../../redux/actions/Index';
+import {
+  getAnimalTags,
+  selectAnimalTagItem,
+  searchMilkAnimalTag,
+} from '../../../redux/actions/Index';
 
 function SelectAnimalTag({navigation}) {
   const milkReducerState = useSelector(state => state.milk);
@@ -24,7 +28,9 @@ function SelectAnimalTag({navigation}) {
   }, [milkReducerState.milkLoading]);
 
   return (
-    <ListView>
+    <ListView
+      refreshing={milkReducerState.milkLoading}
+      onRefresh={() => onRefresh()}>
       <View style={selectAnimalTagStyles.form}>
         <SearchBar
           lightTheme
@@ -50,8 +56,6 @@ function SelectAnimalTag({navigation}) {
           </View>
         ) : (
           <FlatList
-            onRefresh={() => onRefresh}
-            refreshing={milkReducerState.milkLoading}
             data={milkReducerState.animalTagSearchResults}
             renderItem={({item}) => (
               <TouchableOpacity

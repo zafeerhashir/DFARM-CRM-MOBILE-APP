@@ -33,7 +33,7 @@ function Button(props) {
       disabled={disable}
       onPress={props.onPress}>
       {props.loading ? (
-        <ActivityIndicator color={color.black} size="large" />
+        <ActivityIndicator color={color.white} size="large" />
       ) : (
         <Text style={[buttonStyles.title, disable && buttonStyles.disabled]}>
           {props.title}
@@ -48,7 +48,7 @@ export {Button};
 const buttonStyles = {
   container: {
     width: '90%',
-    backgroundColor: color.tealDarkGreen,
+    backgroundColor: color.themeColor,
     height: 50,
     marginVertical: 20,
     justifyContent: 'center',
@@ -59,9 +59,9 @@ const buttonStyles = {
 
   },
   disabled: {
-    color: color.lightGrey,
+    color: color.grey,
   },
   title: {
-    color: color.black,
+    color: color.white,
   },
 };

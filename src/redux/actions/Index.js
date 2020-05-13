@@ -155,8 +155,19 @@ export const addFeedItemDate = body => ({
   payload: body,
 });
 
+// Personal Information
 
+export const changePassword = body => ({
+  type: constant.CHANGE_PASSWORD_START,
+  payload: body,
+});
 
+// Sign in
+
+export const login = body => ({
+  type: constant.LOGIN_START,
+  payload: body,
+});
 
 
 ///

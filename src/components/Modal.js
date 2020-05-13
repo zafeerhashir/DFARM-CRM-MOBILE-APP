@@ -22,7 +22,7 @@ function MYModal(props) {
           }}
           >
           {props.loading ? (
-            <ActivityIndicator color={color.tealDarkGreen} size="large" />
+            <ActivityIndicator color={color.themeColor} size="large" />
           ) : (
             props.children
           )}
