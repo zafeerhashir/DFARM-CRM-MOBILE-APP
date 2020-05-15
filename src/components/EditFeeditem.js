@@ -163,7 +163,7 @@ const editFeedItemStyles = {
     width: '90%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: color.white,
     ...shadow
   },
   dismissRow: {

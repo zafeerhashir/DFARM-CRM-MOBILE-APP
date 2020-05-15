@@ -6,11 +6,11 @@ function Row(props) {
   return (
     <View style={rowStyles.container}>
       <View style={rowStyles.columnOne}>
-        <Text>{props.label}</Text>
+        <Text style={rowStyles.label}>{props.label}</Text>
       </View>
 
       <View style={rowStyles.columnTwo}>
-      <Text>{props.value}</Text>
+      <Text style={rowStyles.value}>{props.value}</Text>
       </View>
     </View>
   );
@@ -19,6 +19,9 @@ function Row(props) {
 export {Row};
 
 const rowStyles = {
+  label:{color: color.black},
+  value:{color: color.black},
+
   container: {
     width: '90%',
     flexDirection: 'row',

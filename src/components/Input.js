@@ -76,7 +76,7 @@ function IInput(props, ref) {
       }
     } else {
       setError(true);
-      setErrorMessage('This field is required');
+      setErrorMessage('*');
       await props.error(true);
     }
 
@@ -105,8 +105,8 @@ function IInput(props, ref) {
 
   return (
     <View style={[inputStyles.container,props.containerStyles]}>
-      <View style={inputStyles.labelContainer}>
-        <Text>{props.label}</Text>
+      <View style={[inputStyles.labelContainer,props.labelContainerStyles]}>
+        <Text style={inputStyles.label}>{props.label}</Text>
       </View>
       <View style={inputStyles.inputContainer}>
         {props.displayOnly == true ? (
@@ -123,19 +123,19 @@ function IInput(props, ref) {
           </TouchableWithoutFeedback>
         ) : (
           <TextInput
-            style={inputStyles.input}
+            style={[inputStyles.input,props.inputStyles]}
             keyboardType={props.keyboardType}
             onChangeText={value => onChangeRowInput(value)}
             onFocus={props.onFocus}
             placeholder={props.placeholder}
-            placeholderTextColor={color.grey}
+            placeholderTextColor={color.black}
             value={String(value)}
             maxLength={props.maxLength}
           />
         )}
       </View>
       <View style={inputStyles.errorContainer}>
-        <Text style={inputStyles.error}>{error && errorMessage}</Text>
+        {props.showError != false  && <Text style={inputStyles.error}>{error && errorMessage}</Text>}
       </View>
     </View>
   );
@@ -144,6 +144,10 @@ function IInput(props, ref) {
 export const Input = forwardRef(IInput);
 
 const inputStyles = {
+
+  label:{
+   color:color.black
+  },
 
   displayOnlyValue:{
     paddingLeft:5
@@ -190,8 +194,9 @@ const inputStyles = {
     height: 55,
     width: '100%',
     justifyContent: 'center',
-    backgroundColor:color.white,
     borderRadius:5,
+    backgroundColor: color.white,
+
     ...shadow
 
 

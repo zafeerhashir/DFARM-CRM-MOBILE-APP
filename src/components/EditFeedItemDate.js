@@ -116,7 +116,7 @@ const addMilkStyles = {
     width: '90%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: color.white,
   },
   dismissRow: {
     borderWidth: 0,

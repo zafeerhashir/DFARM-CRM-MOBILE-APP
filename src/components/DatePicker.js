@@ -98,6 +98,7 @@ const datePickerStyles = {
     width: '90%',
     alignItems: 'flex-start',
     borderWidth: 0,
+    marginTop: 20
   },
 
   placeholderInputContainer: {
@@ -111,7 +112,7 @@ const datePickerStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0,
-    marginTop: 20,
+    backgroundColor: color.white,
     ...shadow,
   },
   datePickerStyle: {
@@ -129,7 +130,7 @@ const datePickerStyles = {
     borderWidth: 0,
     flexDirection: 'row',
   },
-  dateText: {},
+  dateText: { color: color.black},
   placeholderText: {
     color: color.grey,
   },

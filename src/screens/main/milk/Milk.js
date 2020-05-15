@@ -82,7 +82,6 @@ function Milk({navigation}) {
     <ListView
       refreshing={milkReducerState.milkLoading}
       onRefresh={() => onRefresh()}>
-      <View style={milkStyles.parentContainer}>
         <View style={milkStyles.pickerRow}>
           <View style={milkStyles.pickerColumnLeft}>
             <Date
@@ -109,11 +108,11 @@ function Milk({navigation}) {
 
         <View style={milkStyles.countContainer}>
           <View style={milkStyles.countLabelContainer}>
-            <Text>Total Milk</Text>
+            <Text style={milkStyles.countLabel}>Total Milk</Text>
           </View>
 
           <View style={milkStyles.countValueContainer}>
-            <Text>
+            <Text style={milkStyles.countValue}>
               {milkReducerState.milkData.length == 0 ? '0' : getTotalMilk()}
             </Text>
           </View>
@@ -168,26 +167,27 @@ function Milk({navigation}) {
             )}
           />
         )}
-      </View>
     </ListView>
   );
 }
 
 export {Milk};
 
+import {shadow} from '../../../assets/styles/Index'
+
 const milkStyles = {
   pickerRow: {
     width: '90%',
-    marginBottom: 20,
-    flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection:'row',
+    marginBottom: 20
   },
-  pickerColumnLeft: {width: '50%', justifyContent: 'center', borderWidth: 0},
+  pickerColumnLeft: {
+    borderWidth: 0,
+
+  },
   pickerColumnRight: {
-    width: '50%',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
     borderWidth: 0,
   },
 
@@ -196,6 +196,12 @@ const milkStyles = {
     alignItems: 'center',
     flexDirection: 'row',
     marginBottom: 20,
+  },
+  countLabel: {
+    color: color.black,
+  },
+  countValue: {
+    color: color.black,
   },
   countLabelContainer: {
     paddingHorizontal: 10,

@@ -92,7 +92,7 @@ const ConfirmationModelStyles = {
   },
 
   dialogueChildContainer: {
-    backgroundColor: 'white',
+    backgroundColor: color.white,
     width: '70%',
     borderWidth: 0.5,
     justifyContent: 'center',

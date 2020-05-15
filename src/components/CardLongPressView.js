@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {MYModal} from './Modal';
-import styles from '../assets/styles/Index';
+import styles,{shadow} from '../assets/styles/Index';
 import color from '../assets/color/Index';
 import {ConfirmationModel} from './ConfirmationModel'
 
@@ -21,9 +21,9 @@ function CardLongPressView(props) {
         </View>
         <TouchableOpacity
           onPress={props.onEditPress}
-          style={cardLongPressViewStyles.Container}>
+          style={cardLongPressViewStyles.rowContainer}>
           <View style={cardLongPressViewStyles.row}>
-            <Text style={{color: color.themeColor}}>Edit</Text>
+            <Text style={cardLongPressViewStyles.cardLongPressOptionText}>Edit</Text>
           </View>
         </TouchableOpacity>
         
@@ -35,17 +35,17 @@ function CardLongPressView(props) {
           />}
         <TouchableOpacity
           onPress={() => setVisible(true)}
-          style={cardLongPressViewStyles.Container}>
+          style={cardLongPressViewStyles.rowContainer}>
           <View style={cardLongPressViewStyles.row}>
-          <Text style={{color: color.themeColor}}>Delete</Text>
+          <Text style={cardLongPressViewStyles.cardLongPressOptionText}>Delete</Text>
           </View>
         </TouchableOpacity>
         {props.viewDetails &&
         <TouchableOpacity
           onPress={props.onDetailsPress}
-          style={cardLongPressViewStyles.Container}>
+          style={cardLongPressViewStyles.rowContainer}>
           <View style={cardLongPressViewStyles.row}>
-            <Text style={{color: color.themeColor}}>View Details</Text>
+            <Text style={cardLongPressViewStyles.cardLongPressOptionText}>View Details</Text>
           </View>
         </TouchableOpacity>
         }
@@ -55,62 +55,11 @@ function CardLongPressView(props) {
 }
 export {CardLongPressView};
 
-const ConfirmationModelStyles = {
-
-  dismissRow: {
-    borderWidth: 0,
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  dismissTextContainer: {
-    borderWidth: 0,
-    height: 20,
-    width: '40%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  dismissTextContainer: {
-    borderWidth: 0,
-    height: 20,
-    width: '40%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: Platform.OS === 'ios' ? 15 : 10,
-    width: '95%',
-    justifyContent: 'space-between',
-    borderWidth: 0,
-  },
-
-  buttonRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '90%',
-    justifyContent: 'flex-end',
-    borderWidth: 0,
-  },
-
-  dialogueChildContainer: {
-    backgroundColor: 'white',
-    width: '70%',
-    borderWidth: 0.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    borderRadius: styles.borderRadius,
-  },
-};
-
 const cardLongPressViewStyles = StyleSheet.create({
+
+  cardLongPressOptionText:{
+  color:color.black
+  },
   dismissRow: {
     borderWidth: 0,
     width: '100%',
@@ -120,28 +69,28 @@ const cardLongPressViewStyles = StyleSheet.create({
   },
   dismissTextContainer: {
     borderWidth: 0,
-    height: 20,
     width: '40%',
     justifyContent: 'center',
     alignItems: 'center',
   },
 
   cardLongPressViewText: {},
-  Container: {
+  rowContainer: {
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
     height: 35,
     borderWidth: 0,
+    paddingHorizontal: 20,
+    marginBottom: 5
   },
 
   row: {
-    width: '100%',
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
-    borderBottomWidth: 0,
+    paddingHorizontal: 10,
+    backgroundColor: color.white,
+    ...shadow
   },
 
   container: {
@@ -170,16 +119,16 @@ const cardLongPressViewStyles = StyleSheet.create({
   },
 
   dialogueChildContainer: {
-    backgroundColor: 'white',
+    backgroundColor: color.white,
     width: '60%',
     borderWidth: 0.5,
     justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 10,
+    paddingTop:10,
+    paddingBottom: 10,
     borderRadius: styles.borderRadius,
   },
   dialogueDescriptionContainer: {
-    backgroundColor: 'white',
+    backgroundColor: color.white,
     width: '90%',
     borderWidth: 0.5,
     minHeight: 250,

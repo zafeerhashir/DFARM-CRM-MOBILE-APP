@@ -268,8 +268,9 @@ function MainDrawer() {
       drawerContentOptions={{
         activeTintColor: color.white,
         inactiveBackgroundColor: color.white,
-        itemStyle: {marginVertical: 10},
+        itemStyle: {marginVertical: 10, },
         inactiveTintColor: color.black,
+        
         labelStyle: {fontSize: navigationStyles.drawerFontSize},
       }}
       drawerStyle={{
@@ -292,17 +293,35 @@ function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {null == null ? (
+        {null != null ? (
           <>
             <Stack.Screen
-              name="Login"
+              name="Main"  
               component={MainDrawer}
               options={{headerShown: false}}
             />
           </>
         ) : (
           <>
-            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen 
+            name="Login"  
+            component={Login} 
+            options={{
+              title: 'DAIRY FARM',
+              headerStyle: {
+                backgroundColor: color.themeColor,
+                height: navigationStyles.headerHeight.height,
+              },
+              headerTitleStyle: {
+                color: color.white,
+                fontWeight:'bold'
+
+              },
+              headerTintColor: color.white,
+              headerShown: false
+            }}
+
+            />
           </>
         )}
       </Stack.Navigator>

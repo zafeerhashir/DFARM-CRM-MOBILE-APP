@@ -4,6 +4,7 @@ export const animalTagRegex = '^[a-zA-Z0-9]*$';
 export const integerRegex = '^[0-9]*$';
 export const charactersRegex = '^[a-zA-Z0-9]*$';
 export const passwordRegex = '^[a-zA-Z0-9]{6,}$';
+export const usernameRegex = '^[a-zA-Z]*$';
 
 
 

@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState, useRef} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import color from '../assets/color/Index';
-import styles from '../assets/styles/Index';
+import styles,{shadow} from '../assets/styles/Index';
 import {editAnimal, editAnimalVisible, getAnimal } from '../redux/actions/Index';
 import {animalTagRegex} from '../validations/Index';
 import {Button} from './Button';
@@ -78,7 +78,9 @@ const EditAnimalStyles = {
     width: '90%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: color.white,
+    ...shadow
+
   },
   dismissRow: {
     borderWidth: 0,

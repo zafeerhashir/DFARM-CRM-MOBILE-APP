@@ -95,11 +95,11 @@ function FeedItem({navigation}) {
 
         <View style={FeedItemStyles.countContainer}>
           <View style={FeedItemStyles.countLabelContainer}>
-            <Text>Total Price</Text>
+            <Text style={FeedItemStyles.countLabel}>Total Price</Text>
           </View>
           {feedItemReducerState.feedItemData.length != 0 && 
           <View style={FeedItemStyles.countValueContainer}>
-            <Text>
+            <Text style={FeedItemStyles.countValue}>
             
                { `${getTotalFeedPrice()} PKR`}
             </Text>
@@ -171,6 +171,14 @@ function FeedItem({navigation}) {
 export {FeedItem};
 
 const FeedItemStyles = {
+
+  countLabel:{
+    color:color.black
+
+  },
+  countValue:{
+   color:color.black
+  },
   pickerRow: {
     width: '90%',
     marginBottom: 20,

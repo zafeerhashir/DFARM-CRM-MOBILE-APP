@@ -93,11 +93,11 @@ function Animal({navigation}) {
 
         <View style={animalStyles.countContainer}>
           <View style={animalStyles.countLabelContainer}>
-            <Text>Total Animal</Text>
+            <Text  style={animalStyles.countLabel} >Total Animal</Text>
           </View>
 
           <View style={animalStyles.countValueContainer}>
-            <Text>
+            <Text style={animalStyles.countValue}>
               {animalReducerState.animalData == 0
                 ? '0'
                 : animalReducerState.animalData.length - 1}
@@ -158,6 +158,15 @@ function Animal({navigation}) {
 export {Animal};
 
 const animalStyles = StyleSheet.create({
+
+  countLabel:{
+    color:color.black
+
+  },
+  countValue:{
+   color:color.black
+  },
+
   countContainer: {
     width: '90%',
     alignItems: 'center',

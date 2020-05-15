@@ -42,6 +42,7 @@ const listViewStyles = {
   keyboardAwareScrollViewStyle: {
     width: '100%',
     alignItems: 'center',
+    justifyContent:'center',
     backgroundColor: color.white,
     flexGrow: 1,
   },

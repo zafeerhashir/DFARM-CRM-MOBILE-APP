@@ -54,9 +54,9 @@ function AnimalDetail({navigation}) {
     <ListView
       refreshing={animalReducerState.animalMilkLoading}
       onRefresh={() => onRefresh()}>
-      <View style={animalStyles.parentContainer}>
-        <View style={animalStyles.pickerRow}>
-          <View style={animalStyles.pickerColumnLeft}>
+      <View style={animalDetailStyles.parentContainer}>
+        <View style={animalDetailStyles.pickerRow}>
+          <View style={animalDetailStyles.pickerColumnLeft}>
             <Date
               required={false}
               date={fromDate}
@@ -66,7 +66,7 @@ function AnimalDetail({navigation}) {
               }}
             />
           </View>
-          <View style={animalStyles.pickerColumnRight}>
+          <View style={animalDetailStyles.pickerColumnRight}>
             <Date
               required={false}
               minDate={fromDate}
@@ -79,13 +79,13 @@ function AnimalDetail({navigation}) {
           </View>
         </View>
 
-        <View style={animalStyles.countContainer}>
-          <View style={animalStyles.countLabelContainer}>
-            <Text>Total Milk</Text>
+        <View style={animalDetailStyles.countContainer}>
+          <View style={animalDetailStyles.countLabelContainer}>
+            <Text style={animalDetailStyles.countLabel} >Total Milk</Text>
           </View>
 
-          <View style={animalStyles.countValueContainer}>
-            <Text>
+          <View style={animalDetailStyles.countValueContainer}>
+            <Text style={animalDetailStyles.countValue} >
               {animalReducerState.animalMilkData.length == 0
                 ? '0'
                 : getTotalMilk()}
@@ -95,15 +95,15 @@ function AnimalDetail({navigation}) {
 
         {animalReducerState.animalMilkData.length == 0 &&
         animalReducerState.animalMilkLoading == false ? (
-          <View style={animalStyles.noRecordView}>
-            <Text style={animalStyles.noRecordText}>No Record Found</Text>
+          <View style={animalDetailStyles.noRecordView}>
+            <Text style={animalDetailStyles.noRecordText}>No Record Found</Text>
           </View>
         ) : (
           <FlatList
             data={animalReducerState.animalMilkData}
             renderItem={({item}) => (
-              <TouchableOpacity style={animalStyles.cardContainer}>
-                <View style={animalStyles.cardContainerChild}>
+              <TouchableOpacity style={animalDetailStyles.cardContainer}>
+                <View style={animalDetailStyles.cardContainerChild}>
                   <Row label={'Date'} value={formatDate(item.date)} />
                   <Row
                     label={'Morning Milk'}
@@ -129,7 +129,17 @@ function AnimalDetail({navigation}) {
 
 export {AnimalDetail};
 
-const animalStyles = {
+const animalDetailStyles = {
+
+  countLabel:{
+    color:color.black
+
+  },
+  countValue:{
+   color:color.black
+  },
+
+  
   pickerRow: {
     width: '90%',
     marginBottom: 20,

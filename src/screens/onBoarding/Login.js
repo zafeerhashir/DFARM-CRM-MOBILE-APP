@@ -1,146 +1,157 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { ImageBackground} from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
-import color from '../../assets/color/Index';
-import { Button, Date, Input, SmartView } from '../../components/Index';
-import { addMilk, getAnimalTags, selectAnimalTagItem } from '../../redux/actions/Index';
-import { literRegex } from '../../validations/Index';
-import {agoDate, currentDate, formatDate} from '../../conversions/Index';
-
-
-
+import { Button, Input, SmartView } from '../../components/Index';
+import { passwordRegex, usernameRegex } from '../../conversions/Index';
+import { login } from '../../redux/actions/Index';
+import { shadow } from '../../assets/styles/Index'
 function Login({navigation}) {
-  const milkReducerState = useSelector(state => state.milk);
-  const [milkAM, setMilkAM] = useState('');
-  const [milkPM, setMilkPM] = useState('');
-  const [date, setDate] = useState(currentDate());
+  const onBoardingReducerState = useSelector(state => state.onBoarding);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const dispatch = useDispatch();
-  const [milkAMError, setMilkAMError] = useState(true);
-  const [milkPMError, setMilkPMError] = useState(true);
-  const [animalTagError,setAnimalTagError]= useState(true);
-  const [dateError,setDateError]= useState(true);
-  const milkAMRef = useRef();
-  const milkPMRef = useRef();
-  const dateRef = useRef();
-  const animalTagRef = useRef();
-
-
-
-
-  useEffect(() => {
-      // dispatch(getAnimalTags())
-      const unsubscribe = navigation.addListener('focus', () => {
-      dispatch(getAnimalTags())
-    });
-    return unsubscribe;
-  }, [navigation]);
+  const [usernameError, setUsernameError] = useState(true);
+  const [passwordError, setPasswordError] = useState(true);
+  const usernameRef = useRef();
+  const passwordRef = useRef();
 
   const callApi = () => {
-    const postBodyAddMilk = {
-      milk: [
-        {date, milkProduceAM: milkAM, milkProducePM: milkPM == '' ? 0 : milkPM},
-      ],
+    const postBodyLogin = {
+      username,
+      password,
     };
-    const payload = {
-      postBodyAddMilk,
-      animalTagId:milkReducerState.selectAnimalTagItem.id,
-    };
-    milkAMRef.current.clear();
-    milkPMRef.current.clear();
-    animalTagRef.current.clear()
-    // dateRef.current.clear();
-    dispatch(addMilk(payload));
+    const payload = postBodyLogin;
+
+    usernameRef.current.clear();
+    passwordRef.current.clear();
+    dispatch(login(payload));
   };
 
   return (
+
     <SmartView>
-        <Date
-          date={date}
-          ref={dateRef}
-          onDateChange={date => {
-            setDate(date);
-          }}
-          error={error => {
-            setDateError(error);
-          }}
-        />
-        
-        <Input
-          displayOnly={true}
-          label={'Animal Tag'}
-          ref={animalTagRef}
-          value={milkReducerState.selectAnimalTagItem.tag}
-          onChangeText={value => dispatch(dispatch(selectAnimalTagItem({tag: value, id: value})))}
-          placeholder={'Select Animal Tag'}
-          onPress={() => navigation.navigate('Animal Tag')}
-          errorMessage={'The value must be numeric'}
-          error={error => {
-            setAnimalTagError(error);
-          }}
-        />
 
-     
+    <ImageBackground source={require('../../assets/img/logo.png')} style={onBoardingStyles.image} >
 
-        <Input
-          label={'Morning Milk'}
-          keyboardType={'number-pad'}
-          maxLength={2}
-          ref={milkAMRef}
-          value={milkAM}
-          placeholder={'Enter Morning Milk'}
-          errorMessage={'The value must be numeric'}
-          onChangeText={value => setMilkAM(value)}
-          error={error => {
-            setMilkAMError(error);
-          }}
-          regex={literRegex}
-        />
+      <Input
+        containerStyles={onBoardingStyles.containerStyles}
+        inputStyles={onBoardingStyles.inputStyles}
+        labelContainerStyles={onBoardingStyles.labelContainerStyles}
+        label={'Username'}
+        showError={false}
+        maxLength={20}
+        ref={usernameRef}
+        value={username}
+        placeholder={'Enter Username'}
+        onChangeText={value => setUsername(value)}
+        error={error => {
+          setUsernameError(error);
+        }}
+        regex={usernameRegex}
+      />
 
-        <Input
-          label={'Evening Milk'}
-          keyboardType={'number-pad'}
-          required={false}
-          maxLength={2}
-          ref={milkPMRef}
-          value={milkPM}
-          placeholder={'Enter Evening Milk'}
-          errorMessage={'The value must be numeric'}
-          onChangeText={value => setMilkPM(value)}
-          error={error => {
-            setMilkPMError(error);
-          }}
-          regex={literRegex}
-        />
+      <Input
+       containerStyles={onBoardingStyles.containerStyles}
+      inputStyles={onBoardingStyles.inputStyles}
+      labelContainerStyles={onBoardingStyles.labelContainerStyles}
+        label={'Password'}
+        showError={false}
+        maxLength={20}
+        ref={passwordRef}
+        value={password}
+        placeholder={'Enter Password'}
+        onChangeText={value => setPassword(value)}
+        error={error => {
+          setPasswordError(error);
+        }}
+        regex={passwordRegex}
+      />
 
-        <Button
-          loading={milkReducerState.milkLoading}
-          error={[milkAMError,milkPMError,dateError]}
-          title={'Submit'}
-          onPress={() => callApi()}
-        />
+      <Button
+        loading={onBoardingReducerState.onBoardLoading}
+        error={[usernameError, passwordError]}
+        title={'Login'}
+        onPress={() => navigation.navigate('MainDrawer')}
+      />
+      </ImageBackground>
+
     </SmartView>
   );
 }
 
- function validate(milkAMError, milkPMError, date, tag) {
-
-  if ( milkAMError == false && milkPMError == false && date !== '', tag!=='') 
-  {
-    return  false;
-  }
-  else {
-    return  true;}
-}
-
 export { Login };
 
+const onBoardingStyles = {
 
-const addMilkStyles = {
-  container: {
-    width: '100%',
+  label:{
+   },
+ 
+   displayOnlyValue:{
+     paddingLeft:5
+   },
+   placeholderText: {
+     paddingLeft:5
+ 
+   },
+ 
+   containerStyles: {
+     width: '90%',
+     justifyContent: 'space-between',
+     alignItems: 'center',
+     borderWidth: 0,
+     height: 110,
+     backgroundColor:''
+     
+   },
+ 
+   labelContainerStyles: {
+     height: 20,
+     justifyContent: 'center',
+     width: '100%',
+     borderWidth: 0,
+     backgroundColor:''
+ 
+   },
+ 
+   inputContainerStyles: {
+     height: 20,
+     justifyContent: 'center',
+     width: '100%',
+     backgroundColor:''
+
+ 
+   },
+ 
+   errorContainer: {
+     minHeight: 30,
+     justifyContent: 'center',
+     width: '100%',
+     borderWidth: 0,
+   },
+   inputStyles: {
+     height: 55,
+     width: '100%',
+     justifyContent: 'center',
+     borderRadius:5,
+     backgroundColor:'',
+     ...shadow
+
+ 
+ 
+ 
+   },
+   error: {
+   },
+
+  image: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: color.white,
+    resizeMode: "cover",
+    justifyContent: "center",
+    alignItems:'center',
+    width:'100%'
+  },
+  container: {
+    marginTop: 30,
   },
   form: {
     justifyContent: 'center',
