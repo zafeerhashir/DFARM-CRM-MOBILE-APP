@@ -322,7 +322,8 @@ const animalStyles = StyleSheet.create({
     marginLeft: 5,
   },
   noRecordView: {
-    height: 40,
+    marginTop: '25%',
+    height: 30,
     borderWidth: 0,
   },
   noRecordText: {

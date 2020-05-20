@@ -11,19 +11,14 @@ import {rootReducer} from './src/redux/reducers/Index';
 import createSagaMiddleware from 'redux-saga';
 import saga from './src/redux/sagas/Index';
 import React from 'react';
+import SplashScreen from 'react-native-splash-screen';
 
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
 
-// AppRegistry.registerComponent(
-//   appName,
-//   <Provider store={store}>
-//     <Navigation />
-//   </Provider>,
-// );
-
 function App() {
+  setTimeout(() => SplashScreen.hide(), 1200);
   return (
     <Provider store={store}>
       <Navigation />
@@ -32,6 +27,5 @@ function App() {
 }
 
 sagaMiddleware.run(saga);
-
 
 AppRegistry.registerComponent(appName, () => App);

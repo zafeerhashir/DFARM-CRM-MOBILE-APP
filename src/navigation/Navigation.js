@@ -5,6 +5,7 @@ import {
   TextInput,
   Button,
   TouchableOpacity,
+  ImageBackground,
   Image,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
@@ -35,6 +36,10 @@ import {
 } from '../screens/Index';
 import color from '../assets/color/Index';
 import {clockRunning} from 'react-native-reanimated';
+import {useDispatch, useSelector} from 'react-redux';
+import constant from '../redux/constant/Index';
+import AsyncStorage from '@react-native-community/async-storage';
+import {restoreToken, logout} from '../redux/actions/Index';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -243,12 +248,28 @@ function ChangePasswordStack({navigation}) {
 }
 
 function CustomDrawerContent(props) {
+  const onBoardingReducerState = useSelector(state => state.onBoarding);
+  var userName = 's';
+  const dispatch = useDispatch();
+
   return (
     <DrawerContentScrollView {...props}>
-      <DrawerItem
-        labelStyle={{color: color.white, fontSize: 17}}
-        label="Zafeer Hashir"
-      />
+      <View style={navigationStyles.parentContainer}>
+        <View style={navigationStyles.row}>
+          <View />
+          <View style={navigationStyles.roundContainer}>
+            <Text style={navigationStyles.roundText}>
+              {onBoardingReducerState.user.userName.charAt(0).toUpperCase()}
+            </Text>
+          </View>
+          <View>
+            <Text style={navigationStyles.usernameText}>
+              {onBoardingReducerState.user.userName}
+            </Text>
+          </View>
+        </View>
+      </View>
+
       <DrawerItemList {...props} />
       <DrawerItem
         labelStyle={{
@@ -256,7 +277,7 @@ function CustomDrawerContent(props) {
           fontSize: navigationStyles.drawerFontSize,
         }}
         label="LOGOUT"
-        onPress={() => alert('Link to help')}
+        onPress={() => dispatch(logout())}
       />
     </DrawerContentScrollView>
   );
@@ -267,10 +288,10 @@ function MainDrawer() {
     <Drawer.Navigator
       drawerContentOptions={{
         activeTintColor: color.white,
-        inactiveBackgroundColor: color.white,
-        itemStyle: {marginVertical: 10, },
-        inactiveTintColor: color.black,
-        
+        inactiveBackgroundColor: color.themeColor,
+        itemStyle: {marginVertical: 10},
+        inactiveTintColor: 'rgba(255,255,255, 0.5);',
+
         labelStyle: {fontSize: navigationStyles.drawerFontSize},
       }}
       drawerStyle={{
@@ -280,6 +301,7 @@ function MainDrawer() {
           color: color.themeColor,
         },
       }}
+      drawerType={'slide'}
       drawerContent={props => <CustomDrawerContent {...props} />}>
       <Drawer.Screen name="MILK" component={MilkStack} />
       <Drawer.Screen name="FEED" component={FeedItemStack} />
@@ -289,23 +311,63 @@ function MainDrawer() {
   );
 }
 
+const navigationRef = React.createRef();
+
+function navigate(name, params) {
+  navigationRef.current && navigationRef.current.navigate(name, params);
+}
+
+function SplashScreen() {
+  return (
+    <View style={splashScreenStyles.container}>
+      <ImageBackground
+        source={require('../assets/img/loginbackground.png')}
+        style={splashScreenStyles.image}
+      />
+    </View>
+  );
+}
+
+const splashScreenStyles = {
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  image: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
+  text: {
+    color: 'grey',
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+};
+
 function Navigation() {
+  const onBoardingReducerState = useSelector(state => state.onBoarding);
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(restoreToken());
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {null != null ? (
-          <>
-            <Stack.Screen
-              name="Main"  
-              component={MainDrawer}
-              options={{headerShown: false}}
-            />
-          </>
-        ) : (
-          <>
-            <Stack.Screen 
-            name="Login"  
-            component={Login} 
+        {onBoardingReducerState.splashLoading ? (
+          // We haven't finished checking for the token yet
+          <Stack.Screen
+            name="Splash"
+            options={{headerShown: false}}
+            component={SplashScreen}
+          />
+        ) : onBoardingReducerState.userToken == null ? (
+          // No token found, user isn't signed in
+          <Stack.Screen
+            name="Login"
+            component={Login}
             options={{
               title: 'DAIRY FARM',
               headerStyle: {
@@ -314,15 +376,19 @@ function Navigation() {
               },
               headerTitleStyle: {
                 color: color.white,
-                fontWeight:'bold'
-
+                fontWeight: 'bold',
               },
               headerTintColor: color.white,
-              headerShown: false
+              headerShown: false,
             }}
-
-            />
-          </>
+          />
+        ) : (
+          // User is signed in
+          <Stack.Screen
+            name="Main"
+            component={MainDrawer}
+            options={{headerShown: false}}
+          />
         )}
       </Stack.Navigator>
     </NavigationContainer>
@@ -353,4 +419,33 @@ const navigationStyles = {
     height: 65,
   },
   drawerFontSize: 12,
+
+  roundContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 50,
+    height: 35,
+    width: 35,
+  },
+  roundText: {color: color.themeColor, fontSize: 18},
+
+  usernameText: {
+    color: 'white',
+    marginLeft: '15%',
+    fontSize: 18,
+  },
+  parentContainer: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 30,
+    marginBottom: 20,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 0,
+    width: '90%',
+  },
 };

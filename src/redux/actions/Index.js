@@ -162,12 +162,27 @@ export const changePassword = body => ({
   payload: body,
 });
 
-// Sign in
+// Login in
 
 export const login = body => ({
   type: constant.LOGIN_START,
   payload: body,
 });
+
+// Log Out
+
+
+export const logout = body => ({
+  type: constant.LOGOUT_START,
+});
+
+
+
+export const restoreToken = body => ({
+  type: constant.RESTORE_TOKEN_START,
+  payload: body,
+});
+
 
 
 ///

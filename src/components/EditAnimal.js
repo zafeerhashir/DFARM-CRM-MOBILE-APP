@@ -51,7 +51,7 @@ function EditAnimal(props) {
           ref={animalTagRef}
           value={animalTag}
           placeholder={'Enter Animal Tag'}
-          errorMessage={'The value must be alphanumeric'}
+          errorMessage={'Animal Tag only contain letters and numbers '}
           onChangeText={value => setAnimalTag(value)}
           error={error => {
             setAnimalTagError(error);

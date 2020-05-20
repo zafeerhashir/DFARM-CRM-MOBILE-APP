@@ -7,7 +7,7 @@ import React, {
 import {Text, TextInput, View, TouchableWithoutFeedback} from 'react-native';
 import color from '../assets/color/Index';
 import {requireFieldValidator} from '../validations/Index';
-import styles,{shadow} from '../assets/styles/Index';
+import styles, {shadow} from '../assets/styles/Index';
 
 function IInput(props, ref) {
   const [value, setValue] = useState(String(props.value));
@@ -61,7 +61,7 @@ function IInput(props, ref) {
       (await !props.displayOnly) && props.onChangeText(v);
       await props.error(false);
 
-      // if regex have 
+      // if regex have
       if (props.regex) {
         if (regexValidator) {
           setError(false);
@@ -104,8 +104,8 @@ function IInput(props, ref) {
   };
 
   return (
-    <View style={[inputStyles.container,props.containerStyles]}>
-      <View style={[inputStyles.labelContainer,props.labelContainerStyles]}>
+    <View style={[inputStyles.container, props.containerStyles]}>
+      <View style={[inputStyles.labelContainer, props.labelContainerStyles]}>
         <Text style={inputStyles.label}>{props.label}</Text>
       </View>
       <View style={inputStyles.inputContainer}>
@@ -123,19 +123,27 @@ function IInput(props, ref) {
           </TouchableWithoutFeedback>
         ) : (
           <TextInput
-            style={[inputStyles.input,props.inputStyles]}
+            autoCapitalize={props.autoCapitalize}
+            secureTextEntry={props.secureTextEntry}
+            style={[inputStyles.input, props.inputStyles]}
             keyboardType={props.keyboardType}
             onChangeText={value => onChangeRowInput(value)}
             onFocus={props.onFocus}
             placeholder={props.placeholder}
-            placeholderTextColor={color.black}
+            placeholderTextColor={
+              props.placeholderTextColor == undefined
+                ? color.black
+                : props.placeholderTextColor
+            }
             value={String(value)}
             maxLength={props.maxLength}
           />
         )}
       </View>
       <View style={inputStyles.errorContainer}>
-        {props.showError != false  && <Text style={inputStyles.error}>{error && errorMessage}</Text>}
+        {props.showError != false && (
+          <Text style={inputStyles.error}>{error && errorMessage}</Text>
+        )}
       </View>
     </View>
   );
@@ -144,18 +152,17 @@ function IInput(props, ref) {
 export const Input = forwardRef(IInput);
 
 const inputStyles = {
-
-  label:{
-   color:color.black
+  label: {
+    color: color.black,
   },
 
-  displayOnlyValue:{
-    paddingLeft:5
+  displayOnlyValue: {
+    paddingLeft: 5,
+    color:color.black
   },
   placeholderText: {
     color: color.grey,
-    paddingLeft:5
-
+    paddingLeft: 5,
   },
 
   container: {
@@ -165,7 +172,6 @@ const inputStyles = {
     borderWidth: 0,
     height: 110,
     backgroundColor: color.white,
-    
   },
 
   labelContainer: {
@@ -173,15 +179,13 @@ const inputStyles = {
     justifyContent: 'center',
     width: '100%',
     borderWidth: 0,
-    backgroundColor:color.white,
-
+    backgroundColor: color.white,
   },
 
   inputContainer: {
     height: 20,
     justifyContent: 'center',
     width: '100%',
-
   },
 
   errorContainer: {
@@ -194,12 +198,10 @@ const inputStyles = {
     height: 55,
     width: '100%',
     justifyContent: 'center',
-    borderRadius:5,
+    borderRadius: 5,
     backgroundColor: color.white,
 
-    ...shadow
-
-
+    ...shadow,
   },
   error: {
     color: color.red,

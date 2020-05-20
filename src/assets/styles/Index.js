@@ -11,6 +11,8 @@ export const shadow ={
     shadowOpacity: 0.58,
     shadowRadius: 16.00,
     elevation: 3,
+    borderRadius: 5,
+
 
 
 }

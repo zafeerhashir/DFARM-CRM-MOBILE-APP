@@ -114,6 +114,8 @@ const datePickerStyles = {
     borderWidth: 0,
     backgroundColor: color.white,
     ...shadow,
+    borderRadius: 5,
+
   },
   datePickerStyle: {
     width: 50,

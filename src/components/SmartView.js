@@ -7,7 +7,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 function SmartView(props) {
   return (
     <>
-      {<StatusBar backgroundColor={color.themeColor} />}
+      {<StatusBar  backgroundColor={color.themeColor} />}
       <KeyboardAwareScrollView
         contentContainerStyle={[smartViewStyles.keyboardAwareScrollViewStyle,props.contentContainerStyle]}>
         {props.children}
