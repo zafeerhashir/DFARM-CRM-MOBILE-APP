@@ -2,7 +2,7 @@ export const literRegex = '^\\d+(\\.\\d{1,2})?$';
 export const descriptionRegex = '^s*([0-9a-zA-Z ]*)s*$';
 export const animalTagRegex = '^[a-zA-Z0-9]*$';
 export const integerRegex = '^[0-9]*$';
-export const charactersRegex = '^[a-zA-Z0-9]*$';
+export const charactersRegex = '^[a-zA-Z]*$';
 export const passwordRegex = '^[a-zA-Z0-9]{6,}$';
 export const usernameRegex = '^[a-zA-Z]*$';
 

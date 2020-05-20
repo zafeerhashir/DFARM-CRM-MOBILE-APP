@@ -33,6 +33,8 @@ import {
   AddFeedItemDate,
   ChangePassword,
   Login,
+  User,
+  AddUser
 } from '../screens/Index';
 import color from '../assets/color/Index';
 import {clockRunning} from 'react-native-reanimated';
@@ -156,6 +158,50 @@ function AnimalStack({navigation}) {
             color: color.white,
           },
           headerTintColor: color.white,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function UserTab() {
+  return (
+    <Tab.Navigator
+      tabBarOptions={{
+        activeTintColor: color.white,
+        indicatorStyle: {backgroundColor: color.white, height: '5%'},
+        style: {backgroundColor: color.themeColor},
+      }}>
+      <Tab.Screen name="User" component={User} />
+      <Tab.Screen name="Add" component={AddUser} />
+    </Tab.Navigator>
+  );
+}
+
+
+function UserStack({navigation}) {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="USER"
+        component={UserTab}
+        options={{
+          headerStyle: {
+            backgroundColor: color.themeColor,
+          },
+          headerTitleStyle: {
+            color: color.white,
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.openDrawer()}
+              style={navigationStyles.headerLeft}>
+              <Image
+                style={navigationStyles.headerLeftImage}
+                source={require('../assets/img/menu.png')}
+              />
+            </TouchableOpacity>
+          ),
         }}
       />
     </Stack.Navigator>
@@ -290,7 +336,7 @@ function MainDrawer() {
         activeTintColor: color.white,
         inactiveBackgroundColor: color.themeColor,
         itemStyle: {marginVertical: 10},
-        inactiveTintColor: 'rgba(255,255,255, 0.5);',
+        inactiveTintColor: color.dullWhite,
 
         labelStyle: {fontSize: navigationStyles.drawerFontSize},
       }}
@@ -306,6 +352,7 @@ function MainDrawer() {
       <Drawer.Screen name="MILK" component={MilkStack} />
       <Drawer.Screen name="FEED" component={FeedItemStack} />
       <Drawer.Screen name="ANIMAL" component={AnimalStack} />
+      <Drawer.Screen name="USER" component={UserStack} />
       <Drawer.Screen name="CHANGE PASSWORD" component={ChangePasswordStack} />
     </Drawer.Navigator>
   );
@@ -313,9 +360,6 @@ function MainDrawer() {
 
 const navigationRef = React.createRef();
 
-function navigate(name, params) {
-  navigationRef.current && navigationRef.current.navigate(name, params);
-}
 
 function SplashScreen() {
   return (
@@ -328,22 +372,6 @@ function SplashScreen() {
   );
 }
 
-const splashScreenStyles = {
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-  image: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'center',
-  },
-  text: {
-    color: 'grey',
-    fontSize: 30,
-    fontWeight: 'bold',
-  },
-};
 
 function Navigation() {
   const onBoardingReducerState = useSelector(state => state.onBoarding);
@@ -396,6 +424,27 @@ function Navigation() {
 }
 
 export default Navigation;
+
+
+
+const splashScreenStyles = {
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  image: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
+  text: {
+    color: 'grey',
+    fontSize: 30,
+    fontWeight: 'bold',
+  },
+};
+
+
 
 const navigationStyles = {
   headerLeft: {

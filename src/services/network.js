@@ -40,7 +40,7 @@ async function executeRequest(method, pathname, body = {}, headers = {}) {
     return await {error: false, data: data};
   } else {
     if (statusCode == 409) {
-      return await {error: true, errorMessage: 'Animal Tag already added'};
+      return await {error: true, errorMessage: data.errorMessage};
     } else if (statusCode == 401) {
       return await {
         error: true,

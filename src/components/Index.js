@@ -1,3 +1,4 @@
+
 export {Input} from './Input';
 export {Button} from './Button';
 export {Date} from './DatePicker';
@@ -10,3 +11,4 @@ export {SelectAnimalTag} from './SelectAnimalTag';
 export {EditAnimal} from './EditAnimal';
 export {ListView} from './ListView';
 export {EditFeedItem} from './EditFeedItem';
+export { EditUserPassword } from './EditUserPassword';

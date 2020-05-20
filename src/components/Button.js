@@ -49,7 +49,7 @@ const buttonStyles = {
   container: {
     width: '90%',
     backgroundColor: color.themeColor,
-    height: 50,
+    height: 55,
     marginVertical: 20,
     justifyContent: 'center',
     alignItems: 'center',

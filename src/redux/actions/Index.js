@@ -251,21 +251,55 @@ export const editFeedItemDate = body => ({
   payload: body,
 });
 
-// export const editMilkVisible = body => ({
-//   type: constant.EDIT_MILK_VISIBLE,
-//   payload: body,
-// });
 
-// export const selectAnimalTagVisible = body => ({
-//   type: constant.SELECT_ANIMAL_TAG_VISIBLE,
-//   payload: body,
-// });
+// USER
 
-// export const getAnimalTags = () => ({
-//   type: constant.GET_ANIMAL_TAG_START,
-// });
 
-// export const selectAnimalTagItem = body => ({
-//   type: constant.SELECT_ANIMAL_TAG_ITEM,
-//   payload: body,
-// });
+ // Animals //
+ 
+
+ export const addUser = body => ({
+  type: constant.ADD_USER_START,
+  payload: body,
+});
+
+export const deleteUser = body => ({
+  type: constant.DELETE_USER_START,
+  payload: body,
+});
+
+export const editUser = body => ({
+  type: constant.EDIT_ANIMAL_START,
+  payload: body,
+});
+
+export const getUser = body => ({
+  type: constant.GET_USER_START,
+  payload: body,
+});
+
+
+
+export const editUserPassword = body => ({
+  type: constant.EDIT_USER_PASSWORD_START,
+  payload: body,
+});
+
+export const editUserPasswordVisible = body => ({
+  type: constant.EDIT_USER_PASSWORD_VISIBLE,
+  payload: body,
+});
+
+
+
+
+export const selectedUser = body => ({
+  type: constant.SELECTED_USER,
+  payload: body,
+});
+
+
+export const searchUser = body => ({
+  type: constant.SEARCH_USER,
+  payload: body,
+});

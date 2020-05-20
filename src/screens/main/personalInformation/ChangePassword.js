@@ -1,4 +1,5 @@
 import React, {useRef, useState} from 'react';
+import {View, Text} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import color from '../../../assets/color/Index';
 import {Button, Date, Input, SmartView} from '../../../components/Index';
@@ -39,13 +40,13 @@ function ChangePassword({navigation}) {
     <SmartView>
       <Input
         autoCapitalize={'none'}
-        containerStyles={addpersonalInformationStyles.container}
+        containerStyles={addPersonalInformationStyles.container}
         label={'New Password'}
         maxLength={12}
         ref={newPasswordRef}
         value={newPassword}
         placeholder={'Enter New Password'}
-        errorMessage={'Password consists of six letters and numbers '}
+        errorMessage={'Password consists of at least six letters and numbers '}
         onChangeText={value => setNewPassword(value)}
         error={error => {
           setNewPasswordError(error);
@@ -68,6 +69,13 @@ function ChangePassword({navigation}) {
         regex={new RegExp(`${newPassword}`)}
       />
 
+      <View style={addPersonalInformationStyles.policyContainer}>
+        <Text style={addPersonalInformationStyles.policyContainerText}>
+          Password contains at least six character of uppercase lowercase and
+          number
+        </Text>
+      </View>
+
       <Button
         loading={personalInformationReducerState.personalInformationLoading}
         error={[newPasswordError, confirmPasswordError]}
@@ -80,7 +88,17 @@ function ChangePassword({navigation}) {
 
 export {ChangePassword};
 
-const addpersonalInformationStyles = {
+const addPersonalInformationStyles = {
+
+  policyContainer: {
+    height: 50,
+    justifyContent: 'center',
+    width: '90%',
+  },
+  policyContainerText: {
+    color: color.black,
+    fontWeight: 'bold',
+  },
   container: {
     marginTop: 30,
   },

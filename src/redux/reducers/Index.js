@@ -4,6 +4,7 @@ import {animal} from './Animal';
 import {feedItem} from './FeedItem';
 import { onBoarding } from './onBoarding';
 import { personalInformation } from './PersonalInformation';
+import { user } from './User';
 
 
 export const rootReducer = combineReducers({
@@ -11,5 +12,7 @@ export const rootReducer = combineReducers({
   animal,
   feedItem,
   onBoarding,
-  personalInformation
+  personalInformation,
+  user
+
 });
