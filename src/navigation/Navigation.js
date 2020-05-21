@@ -307,10 +307,14 @@ function CustomDrawerContent(props) {
             <Text style={navigationStyles.roundText}>
               {onBoardingReducerState.user.userName.charAt(0).toUpperCase()}
             </Text>
+            
           </View>
           <View>
             <Text style={navigationStyles.usernameText}>
               {onBoardingReducerState.user.userName}
+            </Text>
+            <Text style={navigationStyles.roleText}>
+              {onBoardingReducerState.user.role.roleName == 'SUPER_USER' ? 'SUPER USER': 'BASIC USER'}
             </Text>
           </View>
         </View>
@@ -330,6 +334,7 @@ function CustomDrawerContent(props) {
 }
 
 function MainDrawer() {
+  const onBoardingReducerState = useSelector(state => state.onBoarding);
   return (
     <Drawer.Navigator
       drawerContentOptions={{
@@ -352,7 +357,9 @@ function MainDrawer() {
       <Drawer.Screen name="MILK" component={MilkStack} />
       <Drawer.Screen name="FEED" component={FeedItemStack} />
       <Drawer.Screen name="ANIMAL" component={AnimalStack} />
+      {onBoardingReducerState.user.role.roleName == 'SUPER_USER' &&
       <Drawer.Screen name="USER" component={UserStack} />
+      }
       <Drawer.Screen name="CHANGE PASSWORD" component={ChangePasswordStack} />
     </Drawer.Navigator>
   );
@@ -483,6 +490,11 @@ const navigationStyles = {
     color: 'white',
     marginLeft: '15%',
     fontSize: 18,
+  },
+  roleText:{
+    color: 'white',
+    marginLeft: '15%',
+    fontSize: 8,
   },
   parentContainer: {
     width: '100%',

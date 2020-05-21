@@ -103,14 +103,14 @@ function user(state = initialState, action) {
         selectedUser: action.payload.selectedUser,
       };
 
-    case constant.SELECTED_USER:
+    case constant.SEARCH_USER:
       if (
         action.payload.searchTerm.trim().length >= 1 &&
         state.userSearchResults.length != 0
       ) {
         try {
           var suggestion = state.userSearchResults.sort().filter(x => {
-            return new RegExp(action.payload.searchTerm, 'i').test(x.tag);
+            return new RegExp(action.payload.searchTerm, 'i').test(x.userName);
           });
         } catch (e) {
           // this.setState({searchFound: false});

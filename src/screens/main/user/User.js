@@ -77,14 +77,13 @@ function User({navigation}) {
             <Text style={userStyles.countValue}>
               {userReducerState.userData == 0
                 ? '0'
-                : userReducerState.userData.length - 1}
+                : userReducerState.userData.length }
             </Text>
           </View>
         </View>
 
         {visible && (
           <CardLongPressView
-            viewDetails={true}
             onEditPress={() => {
               dispatch(editUserPasswordVisible({visible: true})),
                 setVisible(false);
@@ -97,7 +96,7 @@ function User({navigation}) {
         {userReducerState.changeUserPasswordVisible && (
           <EditUserPassword selectedItem={userReducerState.selectedUser} />
         )}
-        {console.log(userReducerState.selectedAnimal, 'selectedItem')}
+        {console.log(userReducerState.selectedUser, 'selectedItem')}
 
         {userReducerState.userSearchResults.length == 0 &&
         userReducerState.userLoading == false ? (

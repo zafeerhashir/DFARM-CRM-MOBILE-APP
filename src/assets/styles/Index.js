@@ -65,6 +65,7 @@ searchBarContainerStyle: {
   },
   searchBarInputStyle: {
     fontSize: 14,
+    color:color.black
   },
   searchBarInputContainerStyle: {
     backgroundColor: color.white,

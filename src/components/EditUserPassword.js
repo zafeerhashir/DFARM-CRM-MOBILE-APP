@@ -25,7 +25,7 @@ function EditUserPassword(props) {
 
     const payload = {
         postBodyEditUserPassword,
-        userId:userReducerState.selectedItem.userId,
+        userId:userReducerState.selectedUser.userId,
     };
     dispatch(editUserPasswordVisible(payload))
     dispatch(getUser());
@@ -49,7 +49,7 @@ function EditUserPassword(props) {
         maxLength={8}
         value={password}
         placeholder={'Enter Password'}
-        errorMessage={'Password consists of at least six letters and numbers '}
+        errorMessage={'Password characters is not correct '}
         onChangeText={value => setPassword(value)}
         error={error => {
           setPasswordError(error);

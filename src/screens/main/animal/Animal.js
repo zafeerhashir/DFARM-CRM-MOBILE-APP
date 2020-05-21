@@ -100,7 +100,7 @@ function Animal({navigation}) {
             <Text style={animalStyles.countValue}>
               {animalReducerState.animalData == 0
                 ? '0'
-                : animalReducerState.animalData.length - 1}
+                : animalReducerState.animalData.length}
             </Text>
           </View>
         </View>
