@@ -18,7 +18,7 @@ function* getUser() {
   } else {
     yield put({
       type: constant.GET_USER_SUCCESS,
-      payload: response.data,
+      payload: response.data.pop().user
     });
   }
 }

@@ -9,13 +9,14 @@ import {
   EditMilk,
   Row,
   ListView,
-  EditFeedItem
+  EditFeedItem,
+  NumberFormatter
 } from '../../../components/Index';
 import {
   deleteFeedItem,
   editMilkVisible,
   getFeedData,
-  editFeedItemVisible
+  editFeedItemVisible,
 } from '../../../redux/actions/Index';
 import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
 
@@ -33,7 +34,7 @@ function FeedItem({navigation}) {
       getData();
     });
     return unsubscribe;
-  }, [navigation, fromDate, toDate ]);
+  }, [navigation, fromDate, toDate]);
 
   const onRefresh = useCallback(() => {
     getData();
@@ -51,7 +52,6 @@ function FeedItem({navigation}) {
     const payload = {feedItemDateId: item.feedItemDateId, feedItemId: item._id};
     dispatch(deleteFeedItem(payload));
     getData();
-
   };
 
   const getTotalFeedPrice = () => {
@@ -60,14 +60,18 @@ function FeedItem({navigation}) {
     for (let e of feedItemReducerState.feedItemData) {
       total = total + (e.price + e.price);
     }
-
-    return total;
+    return (
+      <NumberFormatter
+        value={total}
+        suffix={' PKR'}
+      />
+    );
   };
 
   return (
     <ListView
-    refreshing={feedItemReducerState.feedItemLoading}
-    onRefresh={() => onRefresh()}>
+      refreshing={feedItemReducerState.feedItemLoading}
+      onRefresh={() => onRefresh()}>
       <View style={FeedItemStyles.parentContainer}>
         <View style={FeedItemStyles.pickerRow}>
           <View style={FeedItemStyles.pickerColumnLeft}>
@@ -76,7 +80,7 @@ function FeedItem({navigation}) {
               date={fromDate}
               placeholder={'Select from date'}
               onDateChange={date => {
-                setFromDate(date)
+                setFromDate(date);
               }}
             />
           </View>
@@ -87,7 +91,7 @@ function FeedItem({navigation}) {
               date={toDate}
               placeholder={'Select to date'}
               onDateChange={date => {
-                 setToDate(date)
+                setToDate(date);
               }}
             />
           </View>
@@ -97,14 +101,11 @@ function FeedItem({navigation}) {
           <View style={FeedItemStyles.countLabelContainer}>
             <Text style={FeedItemStyles.countLabel}>Total Price</Text>
           </View>
-          {feedItemReducerState.feedItemData.length != 0 && 
-          <View style={FeedItemStyles.countValueContainer}>
-            <Text style={FeedItemStyles.countValue}>
-            
-               { `${getTotalFeedPrice()} PKR`}
-            </Text>
-          </View>
-         }
+          {feedItemReducerState.feedItemData.length != 0 && (
+            <View style={FeedItemStyles.countValueContainer}>
+              {getTotalFeedPrice()}
+            </View>
+          )}
         </View>
 
         {visible && (
@@ -137,27 +138,12 @@ function FeedItem({navigation}) {
                 }}
                 style={FeedItemStyles.cardContainer}>
                 <View style={FeedItemStyles.cardContainerChild}>
-                  <Row 
-                  label={'Date'} 
-                  value={formatDate(item.date)} 
-                  />
-                  <Row 
-                  label={'Feed Name'} 
-                  value={item.name} 
-                  />
-                  <Row 
-                  label={'Feed Unit'} 
-                  value={item.unit} 
-                  />
-                  <Row 
-                  label={'Feed Quantity'} 
-                  value={item.quantity} 
-                  />
+                  <Row label={'Date'} value={formatDate(item.date)} />
+                  <Row label={'Feed Name'} value={item.name} />
+                  <Row label={'Feed Unit'} value={item.unit} />
+                  <Row label={'Feed Quantity'} value={item.quantity} />
 
-                  <Row 
-                  label={'Feed price'} 
-                  value={`${item.price} PKR`} 
-                  />
+                  <Row label={'Feed price'} value={`${item.price} PKR`} />
                 </View>
               </TouchableOpacity>
             )}
@@ -171,13 +157,11 @@ function FeedItem({navigation}) {
 export {FeedItem};
 
 const FeedItemStyles = {
-
-  countLabel:{
-    color:color.black
-
+  countLabel: {
+    color: color.black,
   },
-  countValue:{
-   color:color.black
+  countValue: {
+    color: color.black,
   },
   pickerRow: {
     width: '90%',

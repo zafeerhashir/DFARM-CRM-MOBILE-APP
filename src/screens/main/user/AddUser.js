@@ -33,7 +33,7 @@ function AddUser() {
         autoCapitalize={'none'}
         containerStyles={addMilkStyles.container}
         label={'User Name'}
-        maxLength={8}
+        maxLength={16}
         ref={usernameRef}
         value={username}
         placeholder={'Enter Username'}
@@ -49,7 +49,7 @@ function AddUser() {
         autoCapitalize={'none'}
         containerStyles={addMilkStyles.container}
         label={'Password'}
-        maxLength={8}
+        maxLength={16}
         ref={passwordRef}
         value={password}
         placeholder={'Enter Password'}

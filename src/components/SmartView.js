@@ -9,11 +9,16 @@ function SmartView(props) {
     <>
       {<StatusBar  backgroundColor={color.themeColor} />}
       <KeyboardAwareScrollView
+      style={{flexGrow:1}}
+        enableOnAndroid={true}
+        extraScrollHeight={props.extraScrollHeight == false ? 0: 10 }
         contentContainerStyle={[smartViewStyles.keyboardAwareScrollViewStyle,props.contentContainerStyle]}>
+         <View style={smartViewStyles.keyboardAwareScrollViewStyle}>
         {props.children}
+        </View>
       </KeyboardAwareScrollView>
-    </>
-  );
+</>
+      );
 
 }
 

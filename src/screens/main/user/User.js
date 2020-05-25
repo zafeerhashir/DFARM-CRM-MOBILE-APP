@@ -27,7 +27,6 @@ function User({navigation}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setData(userReducerState.userData);
     const unsubscribe = navigation.addListener('focus', () => {
       getData();
     });
@@ -48,6 +47,8 @@ function User({navigation}) {
       userId: userReducerState.selectedUser.userId,
     };
     dispatch(deleteUser(payload));
+    getData();
+
   };
 
   return (

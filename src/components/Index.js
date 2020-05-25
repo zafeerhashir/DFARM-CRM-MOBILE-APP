@@ -12,3 +12,5 @@ export {EditAnimal} from './EditAnimal';
 export {ListView} from './ListView';
 export {EditFeedItem} from './EditFeedItem';
 export { EditUserPassword } from './EditUserPassword';
+export { NumberFormatter } from './NumberFormatter';
+

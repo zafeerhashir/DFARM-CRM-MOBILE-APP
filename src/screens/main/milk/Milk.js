@@ -15,6 +15,7 @@ import {
   EditMilk,
   Row,
   ListView,
+  NumberFormatter
 } from '../../../components/Index';
 import {
   deleteMilk,
@@ -64,7 +65,12 @@ function Milk({navigation}) {
       total = total + (e.milkProduceAM + e.milkProducePM);
     }
 
-    return total;
+       return (
+      <NumberFormatter
+        value={total}
+        suffix={' liter'}
+      />
+    );
   };
   // refreshing={milkReducerState.milkLoading}
   // onRefresh={() => onRefresh()}

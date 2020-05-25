@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button, Date, Input, SmartView } from '../../../components/Index';
-import { addFeedItem, addFeedItemDate } from '../../../redux/actions/Index';
-import { charactersRegex, integerRegex } from '../../../validations/Index';
-import { currentDate } from './../../../conversions/Index';
+import React, {useRef, useState, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {Button, Date, Input, SmartView} from '../../../components/Index';
+import {addFeedItem, addFeedItemDate} from '../../../redux/actions/Index';
+import {charactersRegex, integerRegex} from '../../../validations/Index';
+import {currentDate} from './../../../conversions/Index';
 
-function AddFeedItem() {
+function AddFeedItem({navigation}) {
   const feedItemReducerState = useSelector(state => state.feedItem);
   const [feedName, setFeedName] = useState('');
   const [feedUnit, setFeedUnit] = useState('');
@@ -25,6 +25,16 @@ function AddFeedItem() {
   const dateRef = useRef();
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      /// date is select but not added
+      dispatch(addFeedItemDate({date: date}));
+
+    });
+    return unsubscribe;
+  }, [navigation]);
+
 
   const callApi = () => {
     const postBodyAddFeedItem = {
@@ -134,7 +144,7 @@ function AddFeedItem() {
   );
 }
 
-export { AddFeedItem };
+export {AddFeedItem};
 
 const addFeedItemStyles = {
   container: {

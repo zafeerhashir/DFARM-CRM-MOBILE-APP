@@ -46,7 +46,7 @@ function EditUserPassword(props) {
         <Input
         autoCapitalize={'none'}
         label={'Password'}
-        maxLength={8}
+        maxLength={16}
         value={password}
         placeholder={'Enter Password'}
         errorMessage={'Password characters is not correct '}

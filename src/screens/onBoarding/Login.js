@@ -25,14 +25,13 @@ function Login() {
       password: password,
     };
     const payload = postBodyLogin;
-
-    usernameRef.current.clear();
-    passwordRef.current.clear();
     dispatch(login(payload));
   };
 
   return (
-    <SmartView>
+    <SmartView
+    extraScrollHeight={false}
+    >
       <ImageBackground
         source={imagePath}
         style={onBoardingStyles.image}>
@@ -147,7 +146,7 @@ const onBoardingStyles = {
   error: {},
 
   image: {
-    flex: 1,
+    flexGrow: 1,
     resizeMode: 'cover',
     justifyContent: 'center',
     alignItems: 'center',

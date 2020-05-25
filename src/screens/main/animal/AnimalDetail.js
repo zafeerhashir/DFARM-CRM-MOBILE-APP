@@ -8,6 +8,7 @@ import {
   Row,
   ListView,
   EditMilk,
+  NumberFormatter
 } from '../../../components/Index';
 import {getAnimalMilk} from '../../../redux/actions/Index';
 import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
@@ -47,7 +48,13 @@ function AnimalDetail({navigation}) {
     for (let e of animalReducerState.animalMilkData) {
       total = total + (e.milkProduceAM + e.milkProducePM);
     }
-    return total;
+   
+    return (
+      <NumberFormatter
+        value={total}
+        suffix={' liter'}
+      />
+    );
   };
 
   return (

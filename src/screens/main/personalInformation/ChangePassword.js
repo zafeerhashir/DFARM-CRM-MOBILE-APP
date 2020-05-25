@@ -42,7 +42,7 @@ function ChangePassword({navigation}) {
         autoCapitalize={'none'}
         containerStyles={addPersonalInformationStyles.container}
         label={'New Password'}
-        maxLength={12}
+        maxLength={16}
         ref={newPasswordRef}
         value={newPassword}
         placeholder={'Enter New Password'}
@@ -57,7 +57,7 @@ function ChangePassword({navigation}) {
       <Input
         autoCapitalize={'none'}
         label={'Confirm Password'}
-        maxLength={12}
+        maxLength={16}
         ref={confirmPasswordRef}
         value={confirmPassword}
         placeholder={'Enter Confirm Password'}
