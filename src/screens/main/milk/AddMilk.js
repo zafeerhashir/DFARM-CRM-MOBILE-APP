@@ -1,43 +1,50 @@
-import React, { useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {useRef, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import color from '../../../assets/color/Index';
-import { Button, Date, Input, SmartView } from '../../../components/Index';
-import { addMilk, searchMilkAnimalTag, selectAnimalTagItem } from '../../../redux/actions/Index';
-import { literRegex } from '../../../validations/Index';
-import { currentDate } from './../../../conversions/Index';
+import {Button, Date, Input, SmartView} from '../../../components/Index';
+import {
+  addMilk,
+  searchMilkAnimalTag,
+  selectAnimalTagItem,
+} from '../../../redux/actions/Index';
+import {literRegex} from '../../../validations/Index';
+import {currentDate} from './../../../conversions/Index';
 
 function AddMilk({navigation}) {
   const milkReducerState = useSelector(state => state.milk);
   const [milkAM, setMilkAM] = useState('');
   const [milkPM, setMilkPM] = useState('');
+  const [rate, setRate] = useState('');
   const [date, setDate] = useState(currentDate());
   const dispatch = useDispatch();
+  const [rateError, setRateError] = useState(true);
   const [milkAMError, setMilkAMError] = useState(true);
   const [milkPMError, setMilkPMError] = useState(true);
   const [animalTagError, setAnimalTagError] = useState(true);
   const [dateError, setDateError] = useState(true);
+  const rateRef = useRef();
   const milkAMRef = useRef();
   const milkPMRef = useRef();
   const dateRef = useRef();
   const animalTagRef = useRef();
 
-
-
   const callApi = () => {
     const postBodyAddMilk = {
-      milk: [
-        {date, milkProduceAM: milkAM, milkProducePM: milkPM == '' ? 0 : milkPM},
-      ],
+      date,
+      milkProduceAM: milkAM,
+      milkProducePM: milkPM === '' ? 0 : milkPM,
+      rate:  rate === '' ? 1 : rate,
+      animal: milkReducerState.selectAnimalTagItem.id ,
     };
-    const payload = {
-      postBodyAddMilk,
-      animalTagId: milkReducerState.selectAnimalTagItem.id,
-    };
+    
+    if(milkReducerState.selectAnimalTagItem.id){
+      delete postBodyAddMilk.animal
+    }
+
     milkAMRef.current.clear();
     milkPMRef.current.clear();
-    dispatch(addMilk(payload));
-    dispatch(selectAnimalTagItem({tag: '', id: ''}));    
-
+    dispatch(addMilk(postBodyAddMilk));
+    dispatch(selectAnimalTagItem({tag: '', id: ''}));
   };
 
   return (
@@ -67,7 +74,7 @@ function AddMilk({navigation}) {
       <Input
         label={'Morning Milk'}
         keyboardType={'number-pad'}
-        maxLength={2}
+        maxLength={8}
         ref={milkAMRef}
         value={milkAM}
         placeholder={'Enter Morning Milk'}
@@ -79,11 +86,12 @@ function AddMilk({navigation}) {
         regex={literRegex}
       />
 
+
       <Input
         label={'Evening Milk'}
         keyboardType={'number-pad'}
         required={false}
-        maxLength={2}
+        maxLength={8}
         ref={milkPMRef}
         value={milkPM}
         placeholder={'Enter Evening Milk'}
@@ -95,9 +103,25 @@ function AddMilk({navigation}) {
         regex={literRegex}
       />
 
+      <Input
+        label={'Rate'}
+        keyboardType={'number-pad'}
+        required={false}
+        maxLength={8}
+        ref={rateRef}
+        value={rate}
+        placeholder={'Enter Rate'}
+        errorMessage={'Rate must be in number'}
+        onChangeText={value => setRate(value)}
+        error={error => {
+          setRateError(error);
+        }}
+        regex={literRegex}
+      />
+
       <Button
         loading={milkReducerState.milkLoading}
-        error={[milkAMError, milkPMError, animalTagError]}
+        error={[milkAMError, milkPMError, rateError]}
         title={'Submit'}
         onPress={() => callApi()}
       />
@@ -105,9 +129,8 @@ function AddMilk({navigation}) {
   );
 }
 
-
-export { AddMilk };
-export { Date };
+export {AddMilk};
+export {Date};
 
 const addMilkStyles = {
   container: {

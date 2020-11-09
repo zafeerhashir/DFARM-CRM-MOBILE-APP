@@ -10,6 +10,12 @@ export const addMilk = body => ({
   payload: body,
 });
 
+export const filterMilkPerDayData = body => ({
+  type: constant.FILTER_MILK_PER_DAY_DATA_START,
+  payload: body,
+});
+
+
 export const filterMilkData = body => ({
   type: constant.FILTER_MILK_DATA_START,
   payload: body,

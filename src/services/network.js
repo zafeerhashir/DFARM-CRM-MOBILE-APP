@@ -1,37 +1,52 @@
 import {tryStatement} from '@babel/types';
+import AsyncStorage from '@react-native-community/async-storage';
 
-async function executeRequest(method, pathname, body = {}, headers = {}) {
+const baseURL = 'https://dfarm.herokuapp.com/';
+
+async function getHeaders() {
+  const userToken = await AsyncStorage.getItem('userToken');
+  const header = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  };
+  if (userToken) {
+    header.Authorization = `Bearer ${userToken}`;
+  }
+  return header;
+}
+
+// if i change this params later
+// i have to break all api call
+
+async function executeRequest(
+  method,
+  pathname,
+  body = {},
+  headers = {},
+) {
   console.log(body, 'executeRequest');
   console.log(pathname, 'pathname');
 
+
   fetchInputObject = {
     method: method,
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      ...headers,
-    },
+    headers: await getHeaders(),
     body: JSON.stringify(body),
   };
+
+  console.log(fetchInputObject, 'headers');
+
 
   if (method == 'GET' || method == 'DELETE') {
     delete fetchInputObject.body;
   }
 
-  try
-  {
-  var response = await fetch(
-    `https://dfarm.herokuapp.com/${pathname}`,
-    fetchInputObject,
-  );
-
-
+  try {
+    var response = await fetch(`${baseURL}${pathname}`, fetchInputObject);
+  } catch (e) {
+    return await {error: true, errorMessage: 'Network failed'};
   }
-  catch(e)
-  {
-    return await { error: true, errorMessage: 'Network failed',  }
-  }
-  console.log(response,'dsdsd')
+  console.log(response, 'dsdsd');
 
   const statusCode = response.status;
   const data = method == 'DELETE' ? {} : await response.json();

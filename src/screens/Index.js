@@ -1,4 +1,4 @@
-export {Milk, AddMilk, SelectAnimalTag} from './main/milk/Index';
+export {Milk, MilkPerDay, AddMilk, SelectAnimalTag} from './main/milk/Index';
 export {Animal, AddAnimal, AnimalDetail} from './main/animal/Index';
 export {FeedItem, AddFeedItem, SelectFeedItemDate} from './main/feedItem/Index';
 export {User, AddUser} from './main/user/Index';

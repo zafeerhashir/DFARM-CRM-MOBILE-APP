@@ -10,15 +10,17 @@ import {Input} from './Input';
 import {MYModal} from './Modal';
 import {SmartView} from './SmartView';
 import {formatDate} from '../conversions/Index';
-import styles,{shadow} from '../assets/styles/Index';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import styles, {shadow} from '../assets/styles/Index';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 function EditMilk(props) {
-  const animalTagId = props.selectedItem.animalTagId;
+  // const animalTagId = props.selectedItem.animal._id;
   const milkId = props.selectedItem._id;
   const [milkAM, setMilkAM] = useState(props.selectedItem.milkProduceAM);
   const [milkPM, setMilkPM] = useState(props.selectedItem.milkProducePM);
+  const [rate, setRate] = useState(props.selectedItem.rate);
   const [date, setDate] = useState(formatDate(props.selectedItem.date));
+  const [rateError, setRateError] = useState(true);
   const [milkAMError, setMilkAMError] = useState(true);
   const [milkPMError, setMilkPMError] = useState(true);
   const [dateError, setDateError] = useState(true);
@@ -31,11 +33,11 @@ function EditMilk(props) {
       date,
       milkProduceAM: parseInt(milkAM),
       milkProducePM: milkPM == '' ? 0 : parseInt(milkPM),
+      rate
     };
 
     const payload = {
       postBodyEditMilk,
-      animalTagId,
       milkId,
     };
     dispatch(editMilk(payload));
@@ -93,18 +95,33 @@ function EditMilk(props) {
           regex={literRegex}
         />
 
-     
+        {props.milkPerDay && (
+          <Input
+            label={'Rate'}
+            required={false}
+            keyboardType={'number-pad'}
+            maxLength={8}
+            ref={rateRef}
+            value={rate}
+            placeholder={'Enter Rate'}
+            errorMessage={'Rate must be in number'}
+            onChangeText={value => setRate(value)}
+            error={error => {
+              setRateError(error);
+            }}
+            regex={literRegex}
+          />
+        )}
+
         <Button
-          error={[milkAMError, milkAMError]}
+          error={[milkAMError, milkPMError, rateError]}
           title={'Edit'}
           onPress={() => callApi()}
         />
-       
       </View>
     </MYModal>
   );
 }
-
 
 export {EditMilk};
 
@@ -114,7 +131,7 @@ const addMilkStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: color.white,
-    ...shadow
+    ...shadow,
   },
   dismissRow: {
     borderWidth: 0,

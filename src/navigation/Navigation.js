@@ -21,6 +21,7 @@ import {
   SignInScreen,
   AddMilk,
   Milk,
+  MilkPerDay,
   DeleteMilk,
   SelectAnimalTag,
   AddAnimal,
@@ -55,6 +56,8 @@ function MilkTab() {
         indicatorStyle: {backgroundColor: color.white, height: '5%'},
         style: {backgroundColor: color.themeColor},
       }}>
+
+      <Tab.Screen name="MilkPerDay" component={MilkPerDay} />
       <Tab.Screen name="Milk" component={Milk} />
       <Tab.Screen name="Add" component={AddMilk} />
     </Tab.Navigator>

@@ -154,6 +154,29 @@ function milk(state = initialState, action) {
         milkData: [],
       };
 
+      case constant.FILTER_MILK_PER_DAY_DATA_START:
+        return {
+          ...state,
+          milkLoading: true,
+          milkLoadingError: false,
+        };
+  
+      case constant.FILTER_MILK_PER_DAY_DATA_SUCCESS:
+        return {
+          ...state,
+          milkData: action.payload,
+          milkLoadingError: false,
+          milkLoading: false,
+        };
+  
+      case constant.FILTER_MILK_PER_DAY_DATA_FAILURE:
+        return {
+          ...state,
+          milkLoadingError: true,
+          milkLoading: false,
+          milkData: [],
+        };  
+
     case constant.SEARCH_ANIMAL_TAG:
       if (
         action.payload.searchTerm.trim().length >= 1 &&

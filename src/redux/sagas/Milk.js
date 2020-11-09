@@ -8,17 +8,7 @@ async function serverErrorDialogue(message) {
 }
 
 async function modifyMilkData(response) {
-  var data = [];
-  for (let i = 0; i < response.length; i++) {
-    for (let e of response[i].milk) {
-      let milkObject = e;
-      milkObject.animalTagId = response[i]._id;
-      milkObject.tag = response[i].tag;
-      data.push(milkObject);
-    }
-  }
-
-  return await data;
+  return await response.filter((x) => x.animal !== null )
 }
 
 function* getMilk() {
@@ -33,6 +23,7 @@ function* getMilk() {
     });
   } else {
     var data = yield call(modifyMilkData, response.data);
+    alert(JSON.stringify(data))
     console.log(response.data, 'modifyMilkData');
     yield put({
       type: constant.GET_MILK_SUCCESS,
@@ -45,8 +36,8 @@ function* addMilk(action) {
   console.log(action, 'addMilk');
   const response = yield call(
     network.post,
-    `modules/milk/${action.payload.animalTagId}`,
-    action.payload.postBodyAddMilk,
+    `modules/milk`,
+    action.payload,
   );
 
   if (response.error) {
@@ -59,6 +50,36 @@ function* addMilk(action) {
     yield put({type: constant.ADD_MILK_SUCCESS});
   }
 }
+
+
+function* filterMilkPerDayData(action) {
+  const response = yield call(network.get, 'modules/milk');
+  if (response.error) {
+    serverErrorDialogue(response.errorMessage);
+    yield put({
+      type: constant.FILTER_MILK_PER_DAY_DATA_FAILURE,
+      payload: response.errorMessage,
+    });
+  } else {
+    var modifyData = response.data.filter((x) => x.animal === null)
+    console.log(modifyData, 'modifyMilkperdayData');
+    const fromDate = new Date(action.payload.fromDate);
+    const toDate = new Date(action.payload.toDate);
+
+    const data = modifyData.filter(x => {
+      const currentDate = new Date(x.date);
+      if (currentDate >= fromDate && currentDate <= toDate) {
+        return x;
+      }
+    });
+
+    yield put({
+      type: constant.FILTER_MILK_PER_DAY_DATA_SUCCESS,
+      payload: data,
+    });
+  }
+}
+
 
 function* filterMilkData(action) {
   const response = yield call(network.get, 'modules/milk');
@@ -93,7 +114,7 @@ function* deleteMilk(action) {
 
   const response = yield call(
     network.delete,
-    `modules/milk/${action.payload.animalTagId}/${action.payload._id}`,
+    `modules/milk/${action.payload.animalTagId}}`,
   );
   if (response.error) {
     serverErrorDialogue(response.errorMessage);
@@ -113,7 +134,7 @@ function* editMilk(action) {
 
   const response = yield call(
     network.patch,
-    `modules/milk/${action.payload.animalTagId}/${action.payload.milkId}`,
+    `modules/milk/${action.payload.animalTagId}`,
     action.payload.postBodyEditMilk,
   );
 
@@ -151,6 +172,7 @@ function* getAnimalTag() {
 }
 
 function* milkWatcherSaga() {
+  yield takeLatest(constant.FILTER_MILK_PER_DAY_DATA_START, filterMilkPerDayData);
   yield takeLatest(constant.FILTER_MILK_DATA_START, filterMilkData);
   yield takeLatest(constant.GET_MILK_START, getMilk);
   yield takeLatest(constant.ADD_MILK_START, addMilk);

@@ -20,11 +20,11 @@ import {
 import {
   deleteMilk,
   editMilkVisible,
-  filterMilkData,
+  filterMilkPerDayData,
 } from '../../../redux/actions/Index';
 import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
 
-function Milk({navigation}) {
+function MilkPerDay({navigation}) {
   const [toDate, setToDate] = useState(currentDate());
   const [fromDate, setFromDate] = useState(agoDate(7));
   const [visible, setVisible] = useState(false);
@@ -33,21 +33,21 @@ function Milk({navigation}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getFilterMilkData();
+    getFilterMilkPerDayData();
     const unsubscribe = navigation.addListener('focus', () => {
-      getFilterMilkData();
+      getFilterMilkPerDayData();
     });
     return unsubscribe;
   }, [navigation, fromDate, toDate, milkReducerState.editMilkVisible]);
 
   const onRefresh = useCallback(() => {
-    getFilterMilkData();
+    getFilterMilkPerDayData();
   }, [milkReducerState.milkLoading]);
 
-  const getFilterMilkData = async () => {
+  const getFilterMilkPerDayData = async () => {
     if (fromDate !== '' && toDate !== '') {
       const body = {toDate: toDate, fromDate: fromDate};
-      dispatch(filterMilkData(body));
+      dispatch(filterMilkPerDayData(body));
     }
   };
 
@@ -55,7 +55,7 @@ function Milk({navigation}) {
     setVisible(false);
     const payload = {animalTagId: item.animalTagId, _id: item._id};
     dispatch(deleteMilk(payload));
-    getFilterMilkData();
+    getFilterMilkPerDayData();
   };
 
   const getTotalMilk = () => {
@@ -130,7 +130,7 @@ function Milk({navigation}) {
       )}
 
       {milkReducerState.editMilkVisible && (
-        <EditMilk selectedItem={selectedItem} />
+        <EditMilk milkPerDay={true} selectedItem={selectedItem} />
       )}
       {console.log(selectedItem, 'selectedItem')}
 
@@ -151,8 +151,6 @@ function Milk({navigation}) {
               style={milkStyles.cardContainer}>
               <View style={milkStyles.cardContainerChild}>
                 <Row label={'Date'} value={formatDate(item.date)} />
-
-            { item.animal !== null && <Row label={'Animal Tag'} value={item.animal.tag} /> }
                 <Row
                   label={'Morning Milk'}
                   value={`${item.milkProduceAM} liter`}
@@ -161,10 +159,22 @@ function Milk({navigation}) {
                   label={'Evening Milk'}
                   value={`${item.milkProducePM} liter`}
                 />
+            
+                <Row
+                  label={'Rate'}
+                  value={item.rate}
+                />
+
                 <Row
                   label={'Total Milk'}
                   value={item.milkProduceAM + item.milkProducePM}
                 />
+
+               <Row
+                  label={'Total Milk Amount'}
+                  value={(item.milkProduceAM + item.milkProducePM)*item.rate}
+                />
+                
               </View>
             </TouchableOpacity>
           )}
@@ -174,7 +184,7 @@ function Milk({navigation}) {
   );
 }
 
-export {Milk};
+export {MilkPerDay};
 
 import {shadow} from '../../../assets/styles/Index';
 
