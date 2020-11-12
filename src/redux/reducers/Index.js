@@ -1,6 +1,7 @@
 import {combineReducers} from 'redux';
 import {milk} from './Milk';
 import {animal} from './Animal';
+import {medicine} from './Medicine';
 import {feedItem} from './FeedItem';
 import { onBoarding } from './onBoarding';
 import { personalInformation } from './PersonalInformation';
@@ -13,6 +14,6 @@ export const rootReducer = combineReducers({
   feedItem,
   onBoarding,
   personalInformation,
-  user
-
+  user,
+  medicine
 });

@@ -1,5 +1,8 @@
 import constant from '../constant/Index';
 
+
+/// Milks
+
 export const getMilk = () => ({
   type: constant.GET_MILK_START,
 });
@@ -307,5 +310,40 @@ export const selectedUser = body => ({
 
 export const searchUser = body => ({
   type: constant.SEARCH_USER,
+  payload: body,
+});
+
+
+//  Medicine
+
+
+export const getMilk = () => ({
+  type: constant.GET_MILK_START,
+});
+
+
+export const addMedicine = body => ({
+  type: constant.ADD_MEDICINE_START,
+  payload: body,
+});
+
+
+export const filterMedicineData = body => ({
+  type: constant.FILTER_MEDICINE_DATA_START,
+  payload: body,
+});
+
+export const deleteMedicine = body => ({
+  type: constant.DELETE_MEDICINE_START,
+  payload: body,
+});
+
+export const editMedicine = body => ({
+  type: constant.EDIT_MEDICINE_START,
+  payload: body,
+});
+
+export const editMedicineVisible = body => ({
+  type: constant.EDIT_MEDICINE_VISIBLE,
   payload: body,
 });

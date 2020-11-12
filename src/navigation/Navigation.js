@@ -35,7 +35,9 @@ import {
   ChangePassword,
   Login,
   User,
-  AddUser
+  AddUser,
+  AddMedicine,
+  Medicine
 } from '../screens/Index';
 import color from '../assets/color/Index';
 import {clockRunning} from 'react-native-reanimated';
@@ -47,6 +49,68 @@ import {restoreToken, logout} from '../redux/actions/Index';
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
+
+
+
+
+function MedicineTab() {
+  return (
+    <Tab.Navigator
+      tabBarOptions={{
+        activeTintColor: color.white,
+        indicatorStyle: {backgroundColor: color.white, height: '5%'},
+        style: {backgroundColor: color.themeColor},
+      }}>
+
+      <Tab.Screen name="Milk" component={Medicine} />
+      <Tab.Screen name="Add" component={AddMedicine} />
+    </Tab.Navigator>
+  );
+}
+
+function MedicineStack({navigation}) {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Medicine"
+        component={MedicineTab}
+        options={{
+          headerStyle: {
+            backgroundColor: color.themeColor,
+          },
+          headerTitleStyle: {
+            color: color.white,
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.openDrawer()}
+              style={navigationStyles.headerLeft}>
+              <Image
+                style={navigationStyles.headerLeftImage}
+                source={require('../assets/img/menu.png')}
+              />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+
+      {/* <Stack.Screen
+        name="Animal Tag"
+        component={SelectAnimalTag}
+        options={{
+          title: 'ANIMAL TAGS',
+          headerStyle: {
+            backgroundColor: color.themeColor,
+            height: navigationStyles.headerHeight.height,
+          },
+          headerTitleStyle: {
+            color: color.white,
+          },
+          headerTintColor: color.white,
+        }} */}
+    </Stack.Navigator>
+  );
+}
 
 function MilkTab() {
   return (
@@ -63,6 +127,7 @@ function MilkTab() {
     </Tab.Navigator>
   );
 }
+
 
 function MilkStack({navigation}) {
   return (
@@ -360,6 +425,8 @@ function MainDrawer() {
       <Drawer.Screen name="MILK" component={MilkStack} />
       <Drawer.Screen name="FEED" component={FeedItemStack} />
       <Drawer.Screen name="ANIMAL" component={AnimalStack} />
+      <Drawer.Screen name="Medicine" component={MedicineStack} />
+
       {onBoardingReducerState.user.role.roleName == 'SUPER_USER' &&
       <Drawer.Screen name="USER" component={UserStack} />
       }
