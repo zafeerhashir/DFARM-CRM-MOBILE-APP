@@ -19,7 +19,7 @@ import {
 } from '../../../components/Index';
 import {
   deleteMilk,
-  editMilkVisible,
+  editMilkPerDayVisible,
   filterMilkPerDayData,
 } from '../../../redux/actions/Index';
 import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
@@ -32,13 +32,19 @@ function MilkPerDay({navigation}) {
   const milkReducerState = useSelector(state => state.milk);
   const dispatch = useDispatch();
 
+  useEffect(() =>{
+    if(selectedItem !== false){
+      setVisible(true)
+    }
+  },[selectedItem])
+
   useEffect(() => {
     getFilterMilkPerDayData();
     const unsubscribe = navigation.addListener('focus', () => {
       getFilterMilkPerDayData();
     });
     return unsubscribe;
-  }, [navigation, fromDate, toDate, milkReducerState.editMilkVisible]);
+  }, [navigation, fromDate, toDate, milkReducerState.editMilkPerDayVisible]);
 
   const onRefresh = useCallback(() => {
     getFilterMilkPerDayData();
@@ -61,7 +67,7 @@ function MilkPerDay({navigation}) {
   const getTotalMilk = () => {
     var total = 0;
 
-    for (let e of milkReducerState.milkData) {
+    for (let e of milkReducerState.milkPerDayData) {
       total = total + (e.milkProduceAM + e.milkProducePM);
     }
 
@@ -114,7 +120,7 @@ function MilkPerDay({navigation}) {
 
         <View style={milkStyles.countValueContainer}>
           <Text style={milkStyles.countValue}>
-            {milkReducerState.milkData.length == 0 ? '0' : getTotalMilk()}
+            {milkReducerState.milkPerDayData.length == 0 ? '0' : getTotalMilk()}
           </Text>
         </View>
       </View>
@@ -122,31 +128,31 @@ function MilkPerDay({navigation}) {
       {visible && (
         <CardLongPressView
           onEditPress={() => {
-            dispatch(editMilkVisible({visible: true})), setVisible(false);
+            dispatch(editMilkPerDayVisible({visible: true})), setVisible(false);
           }}
           onDeletePress={() => _deleteMilk(selectedItem)}
           onTabOut={() => setVisible(false)}
         />
       )}
 
-      {milkReducerState.editMilkVisible && (
+      {milkReducerState.editMilkPerDayVisible && (
         <EditMilk milkPerDay={true} selectedItem={selectedItem} />
       )}
-      {console.log(selectedItem, 'selectedItem')}
+      {console.log(selectedItem, 'milkperday')}
 
-      {milkReducerState.milkData.length == 0 &&
+      {milkReducerState.milkPerDayData.length == 0 &&
       milkReducerState.milkLoading == false ? (
         <View style={milkStyles.noRecordView}>
           <Text style={milkStyles.noRecordText}>No Record Found</Text>
         </View>
       ) : (
         <FlatList
-          data={milkReducerState.milkData}
+          data={milkReducerState.milkPerDayData}
           keyExtractor={(item) => item._id}
           renderItem={({item}) => (
             <TouchableOpacity
-              onLongPress={() => {
-                setVisible(true), setSelectedItem(item);
+              onLongPress={ async() => {
+                 setSelectedItem(item);
               }}
               style={milkStyles.cardContainer}>
               <View style={milkStyles.cardContainerChild}>

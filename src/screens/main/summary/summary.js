@@ -21,34 +21,32 @@ import {
   deleteMilk,
   editMilkVisible,
   filterMilkData,
+  getSummaryData_ 
 } from '../../../redux/actions/Index';
 import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
 
-function Milk({navigation}) {
+function Summary({navigation}) {
   const [toDate, setToDate] = useState(currentDate());
   const [fromDate, setFromDate] = useState(agoDate(7));
-  const [visible, setVisible] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(false);
-  const milkReducerState = useSelector(state => state.milk);
+  const summayReducerState = useSelector(state => state.Summary);
   const dispatch = useDispatch();
 
-
   useEffect(() => {
-    getFilterMilkData();
+    getSummaryData();
     const unsubscribe = navigation.addListener('focus', () => {
-      getFilterMilkData();
+      getSummaryData();
     });
     return unsubscribe;
-  }, [navigation, fromDate, toDate, milkReducerState.editMilkVisible]);
+  }, [navigation, fromDate, toDate,]);
 
   const onRefresh = useCallback(() => {
-    getFilterMilkData();
-  }, [milkReducerState.milkLoading]);
+    getSummaryData();
+  }, [summayReducerState.summaryLoading]);
 
-  const getFilterMilkData = async () => {
+  const getSummaryData = async () => {
     if (fromDate !== '' && toDate !== '') {
       const body = {toDate: toDate, fromDate: fromDate};
-      dispatch(filterMilkData(body));
+      dispatch(getSummaryData_(body));
     }
   };
 
@@ -56,36 +54,25 @@ function Milk({navigation}) {
     setVisible(false);
     const payload = {animalTagId: item.animalTagId, _id: item._id};
     dispatch(deleteMilk(payload));
-    getFilterMilkData();
+    getSummaryData();
   };
 
   const getTotalMilk = () => {
     var total = 0;
 
-    for (let e of milkReducerState.milkData) {
+    for (let e of summayReducerState.milkData) {
       total = total + (e.milkProduceAM + e.milkProducePM);
     }
 
     return <NumberFormatter value={total} suffix={' liter'} />;
   };
-  // refreshing={milkReducerState.milkLoading}
-  // onRefresh={() => onRefresh()}
 
   return (
-    //   <ListView
-    //   refreshControl={
-    //   <RefreshControl
-    //   refreshing={milkReducerState.milkLoading}
-    //   onRefresh={() => onRefresh()}
-    // />}
-
-    //   >
-
     <ListView
-      refreshing={milkReducerState.milkLoading}
+      refreshing={summayReducerState.summaryLoading}
       onRefresh={() => onRefresh()}>
-      <View style={milkStyles.pickerRow}>
-        <View style={milkStyles.pickerColumnLeft}>
+      <View style={summaryStyles.pickerRow}>
+        <View style={summaryStyles.pickerColumnLeft}>
           <Date
             required={false}
             date={fromDate}
@@ -95,7 +82,7 @@ function Milk({navigation}) {
             }}
           />
         </View>
-        <View style={milkStyles.pickerColumnRight}>
+        <View style={summaryStyles.pickerColumnRight}>
           <Date
             required={false}
             minDate={fromDate}
@@ -108,78 +95,42 @@ function Milk({navigation}) {
         </View>
       </View>
 
-      <View style={milkStyles.countContainer}>
-        <View style={milkStyles.countLabelContainer}>
-          <Text style={milkStyles.countLabel}>Total Milk</Text>
+      <View style={summaryStyles.countContainer}>
+        <View style={summaryStyles.countLabelContainer}>
+          <Text style={summaryStyles.countLabel}>Total Milk</Text>
         </View>
 
-        <View style={milkStyles.countValueContainer}>
-          <Text style={milkStyles.countValue}>
-            {milkReducerState.milkData.length == 0 ? '0' : getTotalMilk()}
+        <View style={summaryStyles.countValueContainer}>
+          <Text style={summaryStyles.countValue}>
+            {summayReducerState.milkData.length == 0 ? '0' : getTotalMilk()}
           </Text>
         </View>
       </View>
 
-      {visible && (
-        <CardLongPressView
-          onEditPress={() => {
-            dispatch(editMilkVisible({visible: true})), setVisible(false);
-          }}
-          onDeletePress={() => _deleteMilk(selectedItem)}
-          onTabOut={() => setVisible(false)}
-        />
-      )}
+      <View style={summaryStyles.cardContainer}>
+        <View style={summaryStyles.cardContainerChild}>
+          <Row label={'Date'} value={formatDate(item.date)} />
 
-      {/* {milkReducerState.editMilkVisible && (
-        <EditMilk  selectedItem={selectedItem} />
-      )} */}
-      {console.log(selectedItem, 'selectedItem')}
-
-      {milkReducerState.milkData.length == 0 &&
-      milkReducerState.milkLoading == false ? (
-        <View style={milkStyles.noRecordView}>
-          <Text style={milkStyles.noRecordText}>No Record Found</Text>
-        </View>
-      ) : (
-        <FlatList
-          data={milkReducerState.milkData}
-          keyExtractor={(item) => item._id}
-          renderItem={({item}) => (
-            <TouchableOpacity
-              onLongPress={() => {
-                setVisible(true), setSelectedItem(item);
-              }}
-              style={milkStyles.cardContainer}>
-              <View style={milkStyles.cardContainerChild}>
-                <Row label={'Date'} value={formatDate(item.date)} />
-
-            { item.animal !== null && <Row label={'Animal Tag'} value={item.animal.tag} /> }
-                <Row
-                  label={'Morning Milk'}
-                  value={`${item.milkProduceAM} liter`}
-                />
-                <Row
-                  label={'Evening Milk'}
-                  value={`${item.milkProducePM} liter`}
-                />
-                <Row
-                  label={'Total Milk'}
-                  value={item.milkProduceAM + item.milkProducePM}
-                />
-              </View>
-            </TouchableOpacity>
+          {item.animal !== null && (
+            <Row label={'Animal Tag'} value={item.animal.tag} />
           )}
-        />
-      )}
+          <Row label={'Morning Milk'} value={`${item.milkProduceAM} liter`} />
+          <Row label={'Evening Milk'} value={`${item.milkProducePM} liter`} />
+          <Row
+            label={'Total Milk'}
+            value={item.milkProduceAM + item.milkProducePM}
+          />
+        </View>
+      </View>
     </ListView>
   );
 }
 
-export {Milk};
+export {Summary};
 
 import {shadow} from '../../../assets/styles/Index';
 
-const milkStyles = {
+const summaryStyles = {
   pickerRow: {
     width: '90%',
     alignItems: 'center',

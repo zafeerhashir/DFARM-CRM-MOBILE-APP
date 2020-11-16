@@ -2,7 +2,11 @@ import React, {useEffect, useRef, useState, useCallback} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import color from '../assets/color/Index';
-import {editMilk, editMilkVisible} from '../redux/actions/Index';
+import {
+  editMilk,
+  editMilkVisible,
+  editMilkPerDayVisible,
+} from '../redux/actions/Index';
 import {literRegex} from '../validations/Index';
 import {Button} from './Button';
 import {Date} from './DatePicker';
@@ -14,6 +18,7 @@ import styles, {shadow} from '../assets/styles/Index';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 function EditMilk(props) {
+  console.log(props, 'editmilkprops');
   // const animalTagId = props.selectedItem.animal._id;
   const milkId = props.selectedItem._id;
   const [milkAM, setMilkAM] = useState(props.selectedItem.milkProduceAM);
@@ -33,7 +38,7 @@ function EditMilk(props) {
       date,
       milkProduceAM: parseInt(milkAM),
       milkProducePM: milkPM == '' ? 0 : parseInt(milkPM),
-      rate
+      rate,
     };
 
     const payload = {
@@ -45,13 +50,21 @@ function EditMilk(props) {
 
   const onLayout = useCallback();
 
+  const onDismiss = () => {
+    if (props.milkPerDay) {
+      dispatch(editMilkPerDayVisible({visible: false}));
+    } else {
+      dispatch(editMilkVisible({visible: false}));
+    }
+  };
+
   return (
     <MYModal>
       <View style={addMilkStyles.modalView}>
         <View style={addMilkStyles.dismissRow}>
           <TouchableOpacity
             style={addMilkStyles.dismissTextContainer}
-            onPress={() => dispatch(editMilkVisible({visible: false}))}>
+            onPress={() => onDismiss()}>
             <Text style={{color: color.lightGrey}}>Dismiss</Text>
           </TouchableOpacity>
         </View>
@@ -69,7 +82,7 @@ function EditMilk(props) {
         <Input
           label={'Milk Produce AM'}
           keyboardType={'number-pad'}
-          maxLength={2}
+          maxLength={8}
           value={milkAM}
           placeholder={'Enter Milk Produce AM'}
           errorMessage={'Morning Milk must be in liter'}
@@ -84,7 +97,7 @@ function EditMilk(props) {
           label={'Milk Produce PM'}
           keyboardType={'number-pad'}
           required={false}
-          maxLength={2}
+          maxLength={8}
           value={milkPM}
           placeholder={'Enter Milk Produce PM'}
           errorMessage={'Evening Milk must be in liter'}
@@ -101,7 +114,6 @@ function EditMilk(props) {
             required={false}
             keyboardType={'number-pad'}
             maxLength={8}
-            ref={rateRef}
             value={rate}
             placeholder={'Enter Rate'}
             errorMessage={'Rate must be in number'}

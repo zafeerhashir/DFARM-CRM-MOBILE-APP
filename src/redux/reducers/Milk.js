@@ -5,10 +5,12 @@ const initialState = {
   selectAnimalTagItem: {tag: '', id: ''},
   animalTagData: [],
   milkData: [],
+  milkPerDayData: [],
   milkLoading: false,
   milkLoadingError: false,
   editMilkLoading: false,
   editMilkVisible: false,
+  editMilkPerDayVisible: false,
   selectAnimalTagVisible: false,
   animalTagSearchResults:[],
   animalTagSearchTerm: ''
@@ -74,6 +76,13 @@ function milk(state = initialState, action) {
         editMilkVisible: action.payload.visible,
       };
 
+      case constant.EDIT_MILK_PER_DAY_VISIBLE:
+      return {
+        ...state,
+        editMilkPerDayVisible: action.payload.visible,
+      };
+
+
     case constant.SELECT_ANIMAL_TAG_VISIBLE:
       return {
         ...state,
@@ -100,6 +109,7 @@ function milk(state = initialState, action) {
         milkLoadingError: false,
         editMilkLoading: false,
         editMilkVisible: false,
+        editMilkPerDayVisible: false,
       };
 
     case constant.EDIT_Milk_FAILURE:
@@ -108,6 +118,7 @@ function milk(state = initialState, action) {
         milkLoadingError: true,
         editMilkLoading: false,
         editMilkVisible: false,
+        editMilkPerDayVisible: false,
       };
 
     case constant.DELETE_MILK_START:
@@ -164,7 +175,7 @@ function milk(state = initialState, action) {
       case constant.FILTER_MILK_PER_DAY_DATA_SUCCESS:
         return {
           ...state,
-          milkData: action.payload,
+          milkPerDayData: action.payload,
           milkLoadingError: false,
           milkLoading: false,
         };
@@ -174,7 +185,7 @@ function milk(state = initialState, action) {
           ...state,
           milkLoadingError: true,
           milkLoading: false,
-          milkData: [],
+          milkPerDayData: [],
         };  
 
     case constant.SEARCH_ANIMAL_TAG:

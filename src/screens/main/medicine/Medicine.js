@@ -33,7 +33,7 @@ function Medicine({navigation}) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getMedicineData();
+    getMedicineMilkData();
     const unsubscribe = navigation.addListener('focus', () => {
       getMedicineMilkData();
     });

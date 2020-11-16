@@ -42,11 +42,11 @@ async function executeRequest(
   }
 
   try {
+    console.log(`${baseURL}${pathname}`,'fullurl')
     var response = await fetch(`${baseURL}${pathname}`, fetchInputObject);
   } catch (e) {
     return await {error: true, errorMessage: 'Network failed'};
   }
-  console.log(response, 'dsdsd');
 
   const statusCode = response.status;
   const data = method == 'DELETE' ? {} : await response.json();

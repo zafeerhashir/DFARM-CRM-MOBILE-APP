@@ -39,6 +39,11 @@ export const editMilkVisible = body => ({
   payload: body,
 });
 
+export const editMilkPerDayVisible = body => ({
+  type: constant.EDIT_MILK_PER_DAY_VISIBLE,
+  payload: body,
+})
+
 export const selectAnimalTagVisible = body => ({
   type: constant.SELECT_ANIMAL_TAG_VISIBLE,
   payload: body,
@@ -317,11 +322,6 @@ export const searchUser = body => ({
 //  Medicine
 
 
-export const getMilk = () => ({
-  type: constant.GET_MILK_START,
-});
-
-
 export const addMedicine = body => ({
   type: constant.ADD_MEDICINE_START,
   payload: body,
@@ -345,5 +345,13 @@ export const editMedicine = body => ({
 
 export const editMedicineVisible = body => ({
   type: constant.EDIT_MEDICINE_VISIBLE,
+  payload: body,
+});
+
+
+// summary 
+
+export const getSummaryData_ = body => ({
+  type: constant.GET_SUMMARY_START,
   payload: body,
 });

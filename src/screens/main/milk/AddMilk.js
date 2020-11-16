@@ -37,7 +37,7 @@ function AddMilk({navigation}) {
       animal: milkReducerState.selectAnimalTagItem.id ,
     };
     
-    if(milkReducerState.selectAnimalTagItem.id){
+    if(milkReducerState.selectAnimalTagItem.id == ''){
       delete postBodyAddMilk.animal
     }
 
