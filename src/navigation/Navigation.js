@@ -353,7 +353,7 @@ function SummaryStack({navigation}) {
         name="Summary"
         component={Summary}
         options={{
-          title: 'Summary',
+          title: 'SUMMARY',
           headerStyle: {
             backgroundColor: color.themeColor,
             height: navigationStyles.headerHeight.height,
