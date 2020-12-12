@@ -16,6 +16,7 @@ import {
   Row,
   ListView,
   NumberFormatter,
+  PDFGenerator
 } from '../../../components/Index';
 import {
   deleteMedicine,
@@ -23,6 +24,7 @@ import {
   filterMedicineData,
 } from '../../../redux/actions/Index';
 import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
+import { currency } from '../../../constants'
 
 function Medicine({navigation}) {
   const [toDate, setToDate] = useState(currentDate());
@@ -38,7 +40,7 @@ function Medicine({navigation}) {
       getMedicineMilkData();
     });
     return unsubscribe;
-  }, [navigation, fromDate, toDate, medicineReducerState.editMedicineVisible]);
+  }, [navigation, fromDate, toDate, medicineReducerState.editMedicineVisible, ]);
 
   const onRefresh = useCallback(() => {
     getMedicineMilkData();
@@ -59,19 +61,25 @@ function Medicine({navigation}) {
   };
 
 
+  const dataFormatter = () => {
+    const data = []
+    for(let p of medicineReducerState.medicineData){
+       data.push({
+          Date: formatDate(p.date),
+          AnimalTag: p.animal ? p.animal.tag : '',
+          Price: `${p.price} ${currency.PKR}`,
+          Purpose: p.purpose,
+          Name: p.name
+       })
+    }
+    return data
+  }
+
   // refreshing={medicineReducerState.medicineLoading}
   // onRefresh={() => onRefresh()}
 
   return (
-    //   <ListView
-    //   refreshControl={
-    //   <RefreshControl
-    //   refreshing={medicineReducerState.medicineLoading}
-    //   onRefresh={() => onRefresh()}
-    // />}
-
-    //   >
-
+   <>
     <ListView
       refreshing={medicineReducerState.medicineLoading}
       onRefresh={() => onRefresh()}>
@@ -137,7 +145,7 @@ function Medicine({navigation}) {
                 {item.animal !== null && (
                   <Row label={'Animal Tag'} value={item.animal.tag} />
                 )}
-                <Row label={'Price'} value={item.price} />
+                <Row label={'Price'} value={`${item.price} ${currency.PKR}`} />
                 <Row label={'Name'} value={item.name} />
                 <Row label={'Purpose'} value={item.purpose} />
               </View>
@@ -146,6 +154,14 @@ function Medicine({navigation}) {
         />
       )}
     </ListView>
+     {medicineReducerState.medicineData.length !== 0 &&
+      <PDFGenerator
+          keys={['AnimalTag', 'Price', 'Name', 'Date', 'Purpose']}
+          data={dataFormatter()}
+          name={'Medicine'}
+        />
+      }
+    </>
   );
 }
 

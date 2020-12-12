@@ -3,7 +3,7 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import color from '../assets/color/Index';
 import {editMedicine, editMedicineVisible} from '../redux/actions/Index';
-import {literRegex} from '../validations/Index';
+import {literRegex, charactersRegex} from '../validations/Index';
 import {Button} from './Button';
 import {Date} from './DatePicker';
 import {Input} from './Input';
@@ -13,13 +13,14 @@ import {formatDate} from '../conversions/Index';
 import styles, {shadow} from '../assets/styles/Index';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-function EditMilk(props) {
+function EditMedicine(props) {
+  console.log(props,'EditMedicine')
   // const animalTagId = props.selectedItem.animal._id;
   const medicineId = props.selectedItem._id;
   const [price, setPrice] = useState(props.selectedItem.price);
   const [name, setName] = useState(props.selectedItem.name);
   const [purpose, setPurpose] = useState(props.selectedItem.purpose);
-  const [date, setDate] = useState(props.selectedItem.date);
+  const [date, setDate] = useState(formatDate(props.selectedItem.date));
   const [purposeError, setPurposeError] = useState(true);
   const [priceError, setPriceError] = useState(true);
   const [nameError, setNameError] = useState(true);
@@ -72,20 +73,6 @@ function EditMilk(props) {
       />
 
       <Input
-        displayOnly={true}
-        label={'Animal Tag'}
-        ref={animalTagRef}
-        value={milkReducerState.selectAnimalTagItem.tag}
-        placeholder={'Select Animal Tag'}
-        onChangeText={(value) => searchMilkAnimalTag(value)}
-        onPress={() => navigation.navigate('Animal Tag')}
-        errorMessage={'The value must be numeric'}
-        error={(error) => {
-          setAnimalTagError(error);
-        }}
-      />
-
-      <Input
         label={'Price'}
         keyboardType={'number-pad'}
         maxLength={8}
@@ -127,8 +114,7 @@ function EditMilk(props) {
       />
 
     <Button
-        loading={medicineReducerState.medicineLoading}
-        error={[priceError, nameError, purposeError, animalTagError]}
+        error={[priceError, nameError, purposeError]}
         title={'Submit'}
         onPress={() => callApi()}
       />
@@ -138,7 +124,7 @@ function EditMilk(props) {
   );
 }
 
-export {EditMilk};
+export {EditMedicine};
 
 const medicineMilkStyles = {
   modalView: {

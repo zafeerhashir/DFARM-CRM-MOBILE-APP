@@ -16,8 +16,10 @@ import {SmartView} from './SmartView';
 import {formatDate} from '../conversions/Index';
 import styles, {shadow} from '../assets/styles/Index';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import PropTypes from 'prop-types';
 
 function EditMilk(props) {
+  
   console.log(props, 'editmilkprops');
   // const animalTagId = props.selectedItem.animal._id;
   const milkId = props.selectedItem._id;
@@ -30,6 +32,11 @@ function EditMilk(props) {
   const [milkPMError, setMilkPMError] = useState(true);
   const [dateError, setDateError] = useState(true);
   const dispatch = useDispatch();
+  const error = [milkAMError, milkPMError, rateError];
+
+  if(!props.milkPerDay){
+    error.splice(2,1)
+  }
 
   useEffect(() => {}, []);
 
@@ -85,7 +92,7 @@ function EditMilk(props) {
           maxLength={8}
           value={milkAM}
           placeholder={'Enter Milk Produce AM'}
-          errorMessage={'Morning Milk must be in liter'}
+          errorMessage={'Morning Milk must be in seer'}
           onChangeText={value => setMilkAM(value)}
           error={error => {
             setMilkAMError(error);
@@ -100,7 +107,7 @@ function EditMilk(props) {
           maxLength={8}
           value={milkPM}
           placeholder={'Enter Milk Produce PM'}
-          errorMessage={'Evening Milk must be in liter'}
+          errorMessage={'Evening Milk must be in seer'}
           onChangeText={value => setMilkPM(value)}
           error={error => {
             setMilkPMError(error);
@@ -111,7 +118,6 @@ function EditMilk(props) {
         {props.milkPerDay && (
           <Input
             label={'Rate'}
-            required={false}
             keyboardType={'number-pad'}
             maxLength={8}
             value={rate}
@@ -126,13 +132,17 @@ function EditMilk(props) {
         )}
 
         <Button
-          error={[milkAMError, milkPMError, rateError]}
+          error={error}
           title={'Edit'}
           onPress={() => callApi()}
         />
       </View>
     </MYModal>
   );
+}
+
+EditMilk.defaultProps = {
+  milkPerDay: false
 }
 
 export {EditMilk};

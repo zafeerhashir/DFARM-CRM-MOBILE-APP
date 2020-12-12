@@ -14,8 +14,9 @@ function* getSummary(action) {
   const { fromDate, toDate } = action.payload
   
   const response = yield call(network.get, `modules/report?fromdate=${fromDate}&todate=${toDate}`);
+  console.log(response,'getSummary')
 
-  if (response.error) {
+  if(response.error) {
     serverErrorDialogue(response.errorMessage);
 
     yield put({
@@ -27,6 +28,7 @@ function* getSummary(action) {
       type: constant.GET_SUMMARY_SUCCESS,
       payload: response.data,
     });
+    
   }
 }
 

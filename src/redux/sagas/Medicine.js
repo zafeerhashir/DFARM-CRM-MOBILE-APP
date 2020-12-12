@@ -85,7 +85,7 @@ function* deleteMedicine(action) {
 
   const response = yield call(
     network.delete,
-    `modules/medicine/${action.payload.id}}`,
+    `modules/medicine/${action.payload.id}`,
   );
   if (response.error) {
     serverErrorDialogue(response.errorMessage);

@@ -47,6 +47,7 @@ async function executeRequest(
   } catch (e) {
     return await {error: true, errorMessage: 'Network failed'};
   }
+  console.log(response.status,"response.status")
 
   const statusCode = response.status;
   const data = method == 'DELETE' ? {} : await response.json();

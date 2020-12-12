@@ -3,7 +3,7 @@ import {gainsboro} from 'color-name';
 
 const initialState = {
   animalTagData: [],
-  summaryData: [],
+  summaryData: null,
   summaryLoading: false,
   summaryLoadingError: false,
 

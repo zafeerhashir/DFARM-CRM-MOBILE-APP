@@ -16,19 +16,21 @@ import {
   Row,
   ListView,
   NumberFormatter,
+  PDFGenerator,
 } from '../../../components/Index';
 import {
   deleteMilk,
   editMilkVisible,
   filterMilkData,
-  getSummaryData_ 
+  getSummaryData_,
 } from '../../../redux/actions/Index';
-import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
+import {agoDate, currentDate, formatNumber} from './../../../conversions/Index';
+import {currency} from '../../../constants';
 
 function Summary({navigation}) {
   const [toDate, setToDate] = useState(currentDate());
-  const [fromDate, setFromDate] = useState(agoDate(7));
-  const summayReducerState = useSelector(state => state.Summary);
+  const [fromDate, setFromDate] = useState(agoDate(1));
+  const summaryReducerState = useSelector(state => state.summary);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -37,11 +39,11 @@ function Summary({navigation}) {
       getSummaryData();
     });
     return unsubscribe;
-  }, [navigation, fromDate, toDate,]);
+  }, [navigation, fromDate, toDate]);
 
   const onRefresh = useCallback(() => {
     getSummaryData();
-  }, [summayReducerState.summaryLoading]);
+  }, [summaryReducerState.summaryLoading]);
 
   const getSummaryData = async () => {
     if (fromDate !== '' && toDate !== '') {
@@ -50,79 +52,109 @@ function Summary({navigation}) {
     }
   };
 
-  const _deleteMilk = item => {
-    setVisible(false);
-    const payload = {animalTagId: item.animalTagId, _id: item._id};
-    dispatch(deleteMilk(payload));
-    getSummaryData();
-  };
-
-  const getTotalMilk = () => {
-    var total = 0;
-
-    for (let e of summayReducerState.milkData) {
-      total = total + (e.milkProduceAM + e.milkProducePM);
+  const getTotalExpensive = () => {
+    let totalExpensive = 0;
+    const expensive = {...summaryReducerState.summaryData};
+    delete expensive.milkPrice;
+    for (const [key, value] of Object.entries(expensive)) {
+      if (Number(value)) {
+        totalExpensive += value;
+      }
     }
-
-    return <NumberFormatter value={total} suffix={' liter'} />;
+    return `${formatNumber(totalExpensive)} ${currency.PKR}`;
+  };
+  const nullHandler = value => {
+    if (value === null) {
+      return '0';
+    } else {
+      return formatNumber(value);
+    }
   };
 
   return (
-    <ListView
-      refreshing={summayReducerState.summaryLoading}
-      onRefresh={() => onRefresh()}>
-      <View style={summaryStyles.pickerRow}>
-        <View style={summaryStyles.pickerColumnLeft}>
-          <Date
-            required={false}
-            date={fromDate}
-            placeholder={'Select from date'}
-            onDateChange={date => {
-              setFromDate(date);
-            }}
-          />
-        </View>
-        <View style={summaryStyles.pickerColumnRight}>
-          <Date
-            required={false}
-            minDate={fromDate}
-            date={toDate}
-            placeholder={'Select to date'}
-            onDateChange={date => {
-              setToDate(date);
-            }}
-          />
-        </View>
-      </View>
-
-      <View style={summaryStyles.countContainer}>
-        <View style={summaryStyles.countLabelContainer}>
-          <Text style={summaryStyles.countLabel}>Total Milk</Text>
+    <>
+      <ListView
+        refreshing={summaryReducerState.summaryLoading}
+        onRefresh={() => onRefresh()}>
+        <View style={summaryStyles.pickerRow}>
+          <View style={summaryStyles.pickerColumnLeft}>
+            <Date
+              required={false}
+              date={fromDate}
+              placeholder={'Select from date'}
+              onDateChange={date => {
+                setFromDate(date);
+              }}
+            />
+          </View>
+          <View style={summaryStyles.pickerColumnRight}>
+            <Date
+              required={false}
+              minDate={fromDate}
+              date={toDate}
+              placeholder={'Select to date'}
+              onDateChange={date => {
+                setToDate(date);
+              }}
+            />
+          </View>
         </View>
 
-        <View style={summaryStyles.countValueContainer}>
-          <Text style={summaryStyles.countValue}>
-            {summayReducerState.milkData.length == 0 ? '0' : getTotalMilk()}
-          </Text>
-        </View>
-      </View>
-
-      <View style={summaryStyles.cardContainer}>
-        <View style={summaryStyles.cardContainerChild}>
-          <Row label={'Date'} value={formatDate(item.date)} />
-
-          {item.animal !== null && (
-            <Row label={'Animal Tag'} value={item.animal.tag} />
-          )}
-          <Row label={'Morning Milk'} value={`${item.milkProduceAM} liter`} />
-          <Row label={'Evening Milk'} value={`${item.milkProducePM} liter`} />
-          <Row
-            label={'Total Milk'}
-            value={item.milkProduceAM + item.milkProducePM}
-          />
-        </View>
-      </View>
-    </ListView>
+        {summaryReducerState.summaryData && (
+          <View style={summaryStyles.cardContainer}>
+            <View style={summaryStyles.cardContainerChild}>
+              <Row label={'Expenses'} />
+              <Row
+                label={'Total Animal Purchase Amount'}
+                value={`${nullHandler(
+                  summaryReducerState.summaryData.animalPrice,
+                )}  ${currency.PKR}`}
+              />
+              <Row
+                label={'Total Feed Amount'}
+                value={`${nullHandler(
+                  summaryReducerState.summaryData.feedPrice,
+                )} ${currency.PKR}`}
+              />
+              <Row
+                label={'Total Medicine Amount'}
+                value={`${nullHandler(
+                  summaryReducerState.summaryData.medicinePrice,
+                )} ${currency.PKR}`}
+              />
+              <Row label={'Total Expenses'} value={getTotalExpensive()} />
+              <Row label={'Income'} />
+              <Row
+                label={'Total Milk Amount'}
+                value={`${nullHandler(
+                  summaryReducerState.summaryData.milkPrice,
+                )} ${currency.PKR}`}
+              />
+              <Row
+                label={'Total Income'}
+                value={`${nullHandler(
+                  summaryReducerState.summaryData.milkPrice,
+                )} ${currency.PKR}`}
+              />
+            </View>
+          </View>
+        )}
+      </ListView>
+      {summaryReducerState.summaryData &&
+      <PDFGenerator
+        keys={['milkPrice', 'feedPrice', 'animalPrice', 'medicinePrice','fromDate','toDate',]}
+        data={[{
+          milkPrice: `${nullHandler(summaryReducerState.summaryData.milkPrice)} ${currency.PKR}`,
+          feedPrice: `${nullHandler(summaryReducerState.summaryData.feedPrice)} ${currency.PKR}`,
+          animalPrice: `${nullHandler(summaryReducerState.summaryData.animalPrice)} ${currency.PKR}`,
+          medicinePrice: `${nullHandler(summaryReducerState.summaryData.medicinePrice)} ${currency.PKR}`,
+          fromDate,
+          toDate
+        }]}
+        name={'Summary'}
+      />
+      }
+    </>
   );
 }
 
@@ -185,7 +217,6 @@ const summaryStyles = {
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 0,
-    paddingHorizontal: 8,
     marginBottom: 15,
   },
 
@@ -193,7 +224,7 @@ const summaryStyles = {
     width: '95%',
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 0,
+    paddingHorizontal: 10,
     ...styles.abstractCardStyles,
   },
 

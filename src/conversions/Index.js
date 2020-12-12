@@ -48,3 +48,12 @@ export function currentDate() {
 
   return today;
 }
+
+export function currentDateTime() {
+  return new window.Date();
+}
+
+
+export function formatNumber(value) {
+  return value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+}

@@ -53,8 +53,9 @@ function* addMilk(action) {
 
 
 function* filterMilkPerDayData(action) {
-
+  console.log(action,'actionfilterMilkPerDayData')
   const response = yield call(network.get, 'modules/milk');
+  console.log(response,'filterMilkPerDayData')
   if (response.error) {
     serverErrorDialogue(response.errorMessage);
     yield put({
@@ -83,7 +84,6 @@ function* filterMilkPerDayData(action) {
 
 
 function* filterMilkData(action) {
-
   const response = yield call(network.get, 'modules/milk');
   if (response.error) {
     serverErrorDialogue(response.errorMessage);
@@ -116,7 +116,7 @@ function* deleteMilk(action) {
 
   const response = yield call(
     network.delete,
-    `modules/milk/${action.payload.animalTagId}}`,
+    `modules/milk/${action.payload.id}`,
   );
   if (response.error) {
     serverErrorDialogue(response.errorMessage);
@@ -136,7 +136,7 @@ function* editMilk(action) {
 
   const response = yield call(
     network.patch,
-    `modules/milk/${action.payload.animalTagId}`,
+    `modules/milk/${action.payload.milkId}`,
     action.payload.postBodyEditMilk,
   );
 

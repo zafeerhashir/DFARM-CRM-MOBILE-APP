@@ -57,6 +57,7 @@ function SelectAnimalTag({navigation}) {
         ) : (
           <FlatList
             data={milkReducerState.animalTagSearchResults}
+            keyExtractor={(item) => item._Id}
             renderItem={({item}) => (
               <TouchableOpacity
                 onPress={() => {

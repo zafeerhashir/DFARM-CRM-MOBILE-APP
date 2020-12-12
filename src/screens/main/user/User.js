@@ -107,6 +107,7 @@ function User({navigation}) {
         ) : (
           <FlatList
             data={userReducerState.userSearchResults}
+            keyExtractor={(item) => item._Id}
             renderItem={({item}) => (
               <TouchableOpacity
                 onLongPress={() => {

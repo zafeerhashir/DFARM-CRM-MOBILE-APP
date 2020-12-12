@@ -131,6 +131,7 @@ function FeedItemDate({navigation}) {
         ) : (
           <FlatList
             refreshing={milkReducerState.milkLoading}
+            keyExtractor={(item) => item._Id}
             onRefresh={() => onRefresh()}
             data={milkReducerState.milkData}
             renderItem={({item}) => (
@@ -144,11 +145,11 @@ function FeedItemDate({navigation}) {
                   <Row label={'Animal Tag'} value={item.tag} />
                   <Row
                     label={'Morning Milk'}
-                    value={`${item.milkProduceAM} liter`}
+                    value={`${item.milkProduceAM} seer`}
                   />
                   <Row
                     label={'Evening Milk'}
-                    value={`${item.milkProducePM} liter`}
+                    value={`${item.milkProducePM} seer`}
                   />
                   <Row
                     label={'Total Milk'}

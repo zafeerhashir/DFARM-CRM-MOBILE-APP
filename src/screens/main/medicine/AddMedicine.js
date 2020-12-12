@@ -69,20 +69,7 @@ function AddMedicine({ navigation }) {
         }}
       />
 
-      <Input
-        label={'Price'}
-        keyboardType={'number-pad'}
-        maxLength={8}
-        ref={priceRef}
-        value={price}
-        placeholder={'Enter Price'}
-        errorMessage={'Price must be in a number'}
-        onChangeText={(value) => setPrice(value)}
-        error={(error) => {
-          setPriceError(error);
-        }}
-        regex={literRegex}
-      />
+
 
       <Input
         label={'Name'}
@@ -108,6 +95,21 @@ function AddMedicine({ navigation }) {
           setPurposeError(error);
         }}
         regex={charactersRegex}
+      />
+
+      <Input
+        label={'Price'}
+        keyboardType={'number-pad'}
+        maxLength={8}
+        ref={priceRef}
+        value={price}
+        placeholder={'Enter Price'}
+        errorMessage={'Price must be in a number'}
+        onChangeText={(value) => setPrice(value)}
+        error={(error) => {
+          setPriceError(error);
+        }}
+        regex={literRegex}
       />
 
       <Button

@@ -16,6 +16,7 @@ import {
   Row,
   ListView,
   NumberFormatter,
+  PDFGenerator
 } from '../../../components/Index';
 import {
   deleteMilk,
@@ -23,6 +24,7 @@ import {
   filterMilkPerDayData,
 } from '../../../redux/actions/Index';
 import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
+import {currency}from '../../../constants'
 
 function MilkPerDay({navigation}) {
   const [toDate, setToDate] = useState(currentDate());
@@ -44,7 +46,7 @@ function MilkPerDay({navigation}) {
       getFilterMilkPerDayData();
     });
     return unsubscribe;
-  }, [navigation, fromDate, toDate, milkReducerState.editMilkPerDayVisible]);
+  }, [navigation, fromDate, toDate, visible, milkReducerState.editMilkPerDayVisible]);
 
   const onRefresh = useCallback(() => {
     getFilterMilkPerDayData();
@@ -53,13 +55,14 @@ function MilkPerDay({navigation}) {
   const getFilterMilkPerDayData = async () => {
     if (fromDate !== '' && toDate !== '') {
       const body = {toDate: toDate, fromDate: fromDate};
+      console.log(body)
       dispatch(filterMilkPerDayData(body));
     }
   };
 
   const _deleteMilk = item => {
     setVisible(false);
-    const payload = {animalTagId: item.animalTagId, _id: item._id};
+    const payload = {animalTagId: item.animalTagId, id: item._id};
     dispatch(deleteMilk(payload));
     getFilterMilkPerDayData();
   };
@@ -71,8 +74,24 @@ function MilkPerDay({navigation}) {
       total = total + (e.milkProduceAM + e.milkProducePM);
     }
 
-    return <NumberFormatter value={total} suffix={' liter'} />;
+    return <NumberFormatter value={total} suffix={' seer'} />;
   };
+  
+  const dataFormatter = () => {
+    const data = []
+    for(let p of milkReducerState.milkPerDayData){
+       data.push({
+          Date: formatDate(p.date),
+          MorningMilk: p.milkProduceAM,
+          EveningMilk: p.milkProducePM,
+          Rate: p.rate,
+          TotalMilk:`${p.milkProducePM + p.milkProduceAM}`,
+          TotalMilkAmount: `${(p.milkProducePM + p.milkProduceAM)*p.rate} ${currency.PKR}`,
+       })
+    }
+    return data
+  }
+
   // refreshing={milkReducerState.milkLoading}
   // onRefresh={() => onRefresh()}
 
@@ -85,7 +104,7 @@ function MilkPerDay({navigation}) {
     // />}
 
     //   >
-
+    <>
     <ListView
       refreshing={milkReducerState.milkLoading}
       onRefresh={() => onRefresh()}>
@@ -138,7 +157,6 @@ function MilkPerDay({navigation}) {
       {milkReducerState.editMilkPerDayVisible && (
         <EditMilk milkPerDay={true} selectedItem={selectedItem} />
       )}
-      {console.log(selectedItem, 'milkperday')}
 
       {milkReducerState.milkPerDayData.length == 0 &&
       milkReducerState.milkLoading == false ? (
@@ -159,11 +177,11 @@ function MilkPerDay({navigation}) {
                 <Row label={'Date'} value={formatDate(item.date)} />
                 <Row
                   label={'Morning Milk'}
-                  value={`${item.milkProduceAM} liter`}
+                  value={`${item.milkProduceAM} seer`}
                 />
                 <Row
                   label={'Evening Milk'}
-                  value={`${item.milkProducePM} liter`}
+                  value={`${item.milkProducePM} seer`}
                 />
             
                 <Row
@@ -178,7 +196,7 @@ function MilkPerDay({navigation}) {
 
                <Row
                   label={'Total Milk Amount'}
-                  value={(item.milkProduceAM + item.milkProducePM)*item.rate}
+                  value={`${(item.milkProduceAM + item.milkProducePM)*item.rate} ${currency.PKR}`}
                 />
                 
               </View>
@@ -187,6 +205,14 @@ function MilkPerDay({navigation}) {
         />
       )}
     </ListView>
+    {milkReducerState.milkData.length !== 0 &&
+    <PDFGenerator
+        keys={['MorningMilk', 'EveningMilk', 'TotalMilk', 'Rate', 'Date', 'TotalMilkAmount']}
+        data={dataFormatter()}
+        name={'Milk'}
+      />
+    }
+  </>
   );
 }
 

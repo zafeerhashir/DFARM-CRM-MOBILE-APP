@@ -18,6 +18,7 @@ import {
   selectedAnimal,
   searchAnimal,
 } from '../../../redux/actions/Index';
+import {formatDate} from '../../../conversions/Index';
 
 function Animal({navigation}) {
   const animalReducerState = useSelector(state => state.animal);
@@ -68,7 +69,7 @@ function Animal({navigation}) {
   const _deleteAnimal = () => {
     setVisible(false);
     const payload = {
-      animalTagId: animalReducerState.selectedAnimal.animalTagId,
+      animalTagId: animalReducerState.selectedAnimal._id,
     };
     dispatch(deleteAnimal(payload));
   };
@@ -132,19 +133,26 @@ function Animal({navigation}) {
         ) : (
           <FlatList
             data={animalReducerState.animalSearchResults}
+            keyExtractor={(item) => item._Id}
             renderItem={({item}) => (
               <TouchableOpacity
                 onLongPress={() => {
                   setVisible(true),
                     dispatch(
                       selectedAnimal({
-                        selectedAnimal: {tag: item.tag, animalTagId: item._id},
+                        selectedAnimal: item,
                       }),
                     );
                 }}
                 style={animalStyles.cardContainer}>
                 <View style={[animalStyles.cardContainerChild]}>
-                  <Row label={'Animal Tag'} value={item.tag} />
+                    <Row label={'Animal Tag'} value={item.tag} />
+                    <Row label={'Origin'} value={item.origin} />
+                    {
+                      item.purchaseDate !== undefined &&
+                      <Row label={'Purchase Date'} value={formatDate(item.purchaseDate)} />
+                    }
+                    <Row label={'Price'} value={item.price} />
                 </View>
               </TouchableOpacity>
             )}
@@ -277,7 +285,6 @@ const animalStyles = StyleSheet.create({
     width: '95%',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 50,
     ...styles.abstractCardStyles,
   },
 

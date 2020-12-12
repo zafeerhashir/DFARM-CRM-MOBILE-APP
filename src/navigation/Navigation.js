@@ -37,7 +37,8 @@ import {
   User,
   AddUser,
   AddMedicine,
-  Medicine
+  Medicine,
+  Summary
 } from '../screens/Index';
 import color from '../assets/color/Index';
 import {clockRunning} from 'react-native-reanimated';
@@ -50,9 +51,6 @@ const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
-
-
-
 function MedicineTab() {
   return (
     <Tab.Navigator
@@ -61,8 +59,7 @@ function MedicineTab() {
         indicatorStyle: {backgroundColor: color.white, height: '5%'},
         style: {backgroundColor: color.themeColor},
       }}>
-
-      <Tab.Screen name="Milk" component={Medicine} />
+      <Tab.Screen name="Medicine" component={Medicine} />
       <Tab.Screen name="Add" component={AddMedicine} />
     </Tab.Navigator>
   );
@@ -72,7 +69,7 @@ function MedicineStack({navigation}) {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Medicine"
+        name="MEDICINE"
         component={MedicineTab}
         options={{
           headerStyle: {
@@ -120,14 +117,12 @@ function MilkTab() {
         indicatorStyle: {backgroundColor: color.white, height: '5%'},
         style: {backgroundColor: color.themeColor},
       }}>
-
       <Tab.Screen name="MilkPerDay" component={MilkPerDay} />
       <Tab.Screen name="Milk" component={Milk} />
       <Tab.Screen name="Add" component={AddMilk} />
     </Tab.Navigator>
   );
 }
-
 
 function MilkStack({navigation}) {
   return (
@@ -155,6 +150,28 @@ function MilkStack({navigation}) {
         }}
       />
 
+      {/* <Stack.Screen
+        name="Animal Tag"
+        component={SelectAnimalTag}
+        options={{
+          title: 'ANIMAL TAGS',
+          headerStyle: {
+            backgroundColor: color.themeColor,
+            height: navigationStyles.headerHeight.height,
+          },
+          headerTitleStyle: {
+            color: color.white,
+          },
+          headerTintColor: color.white,
+        }}
+      /> */}
+    </Stack.Navigator>
+  );
+}
+
+function SelectAnimalTagStack({navigation}) {
+  return (
+    <Stack.Navigator>
       <Stack.Screen
         name="Animal Tag"
         component={SelectAnimalTag}
@@ -246,7 +263,6 @@ function UserTab() {
   );
 }
 
-
 function UserStack({navigation}) {
   return (
     <Stack.Navigator>
@@ -329,6 +345,39 @@ function FeedItemStack({navigation}) {
   );
 }
 
+
+function SummaryStack({navigation}) {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Summary"
+        component={Summary}
+        options={{
+          title: 'Summary',
+          headerStyle: {
+            backgroundColor: color.themeColor,
+            height: navigationStyles.headerHeight.height,
+          },
+          headerTitleStyle: {
+            color: color.white,
+          },
+
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.openDrawer()}
+              style={navigationStyles.headerLeft}>
+              <Image
+                style={navigationStyles.headerLeftImage}
+                source={require('../assets/img/menu.png')}
+              />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 function ChangePasswordStack({navigation}) {
   return (
     <Stack.Navigator>
@@ -375,14 +424,15 @@ function CustomDrawerContent(props) {
             <Text style={navigationStyles.roundText}>
               {onBoardingReducerState.user.userName.charAt(0).toUpperCase()}
             </Text>
-            
           </View>
           <View>
             <Text style={navigationStyles.usernameText}>
               {onBoardingReducerState.user.userName}
             </Text>
             <Text style={navigationStyles.roleText}>
-              {onBoardingReducerState.user.role.roleName == 'SUPER_USER' ? 'SUPER USER': 'BASIC USER'}
+              {onBoardingReducerState.user.role.roleName == 'SUPER_USER'
+                ? 'SUPER USER'
+                : 'BASIC USER'}
             </Text>
           </View>
         </View>
@@ -400,6 +450,7 @@ function CustomDrawerContent(props) {
     </DrawerContentScrollView>
   );
 }
+
 
 function MainDrawer() {
   const onBoardingReducerState = useSelector(state => state.onBoarding);
@@ -425,18 +476,18 @@ function MainDrawer() {
       <Drawer.Screen name="MILK" component={MilkStack} />
       <Drawer.Screen name="FEED" component={FeedItemStack} />
       <Drawer.Screen name="ANIMAL" component={AnimalStack} />
-      <Drawer.Screen name="Medicine" component={MedicineStack} />
+      <Drawer.Screen name="MEDICINE" component={MedicineStack} />
+      <Drawer.Screen name="SUMMARY" component={SummaryStack} />
 
-      {onBoardingReducerState.user.role.roleName == 'SUPER_USER' &&
-      <Drawer.Screen name="USER" component={UserStack} />
-      }
+      {onBoardingReducerState.user.role.roleName == 'SUPER_USER' && (
+        <Drawer.Screen name="USER" component={UserStack} />
+      )}
       <Drawer.Screen name="CHANGE PASSWORD" component={ChangePasswordStack} />
     </Drawer.Navigator>
   );
 }
 
 const navigationRef = React.createRef();
-
 
 function SplashScreen() {
   return (
@@ -448,7 +499,6 @@ function SplashScreen() {
     </View>
   );
 }
-
 
 function Navigation() {
   const onBoardingReducerState = useSelector(state => state.onBoarding);
@@ -470,30 +520,49 @@ function Navigation() {
           />
         ) : onBoardingReducerState.userToken == null ? (
           // No token found, user isn't signed in
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{
-              title: 'DAIRY FARM',
-              headerStyle: {
-                backgroundColor: color.themeColor,
-                height: navigationStyles.headerHeight.height,
-              },
-              headerTitleStyle: {
-                color: color.white,
-                fontWeight: 'bold',
-              },
-              headerTintColor: color.white,
-              headerShown: false,
-            }}
-          />
-        ) : (
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{
+                title: 'DAIRY FARM',
+                headerStyle: {
+                  backgroundColor: color.themeColor,
+                  height: navigationStyles.headerHeight.height,
+                },
+                headerTitleStyle: {
+                  color: color.white,
+                  fontWeight: 'bold',
+                },
+                headerTintColor: color.white,
+                headerShown: false,
+              }}
+            />
+          ) : (
           // User is signed in
+          <>
           <Stack.Screen
             name="Main"
             component={MainDrawer}
             options={{headerShown: false}}
           />
+
+          <Stack.Screen
+          name="Animal Tag"
+          component={SelectAnimalTag}
+          options={{
+          title: 'ANIMAL TAGS',
+          headerStyle: {
+            backgroundColor: color.themeColor,
+            height: navigationStyles.headerHeight.height,
+          },
+          headerTitleStyle: {
+            color: color.white,
+          },
+          headerTintColor: color.white,
+          }}
+        />  
+        </>
+        
         )}
       </Stack.Navigator>
     </NavigationContainer>
@@ -501,8 +570,6 @@ function Navigation() {
 }
 
 export default Navigation;
-
-
 
 const splashScreenStyles = {
   container: {
@@ -520,8 +587,6 @@ const splashScreenStyles = {
     fontWeight: 'bold',
   },
 };
-
-
 
 const navigationStyles = {
   headerLeft: {
@@ -561,7 +626,7 @@ const navigationStyles = {
     marginLeft: '15%',
     fontSize: 18,
   },
-  roleText:{
+  roleText: {
     color: 'white',
     marginLeft: '15%',
     fontSize: 8,
