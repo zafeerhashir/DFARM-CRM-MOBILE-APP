@@ -52,7 +52,7 @@ function AnimalDetail({navigation}) {
     return (
       <NumberFormatter
         value={total}
-        suffix={' liter'}
+        suffix={' seer'}
       />
     );
   };
@@ -114,11 +114,11 @@ function AnimalDetail({navigation}) {
                   <Row label={'Date'} value={formatDate(item.date)} />
                   <Row
                     label={'Morning Milk'}
-                    value={`${item.milkProduceAM} liter`}
+                    value={`${item.milkProduceAM} seer`}
                   />
                   <Row
                     label={'Evening Milk'}
-                    value={`${item.milkProducePM} liter`}
+                    value={`${item.milkProducePM} seer`}
                   />
                   <Row
                     label={'Total Milk'}

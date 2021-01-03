@@ -85,7 +85,7 @@ function* deleteMedicine(action) {
 
   const response = yield call(
     network.delete,
-    `modules/medicine/${action.payload.id}}`,
+    `modules/medicine/${action.payload.id}`,
   );
   if (response.error) {
     serverErrorDialogue(response.errorMessage);
@@ -151,5 +151,5 @@ function* medicineWatcherSaga() {
   yield takeLatest(constant.GET_ANIMAL_TAG_START, getAnimalTag);
 }
 
-export { medicineWatcherSaga };
+export {medicineWatcherSaga};
 

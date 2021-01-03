@@ -80,6 +80,7 @@ function SelectAnimalTag(props) {
           ) : (
             <FlatList
               data={milkReducerState.animalTagData}
+              keyExtractor={(item) => item._Id}
               renderItem={({item}) => (
                 <TouchableOpacity
                   onPress={() =>

@@ -31,11 +31,11 @@ const rowStyles = {
   },
 
   columnOne: {
-    width: '70%',
+    width: '40%',
     justifyContent: 'center',
   },
   columnTwo: {
-    width: '30%',
+    width: '60%',
     justifyContent: 'center',
     alignItems: 'flex-end',
   },

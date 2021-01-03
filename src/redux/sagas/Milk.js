@@ -12,6 +12,7 @@ async function modifyMilkData(response) {
 }
 
 function* getMilk() {
+
   const response = yield call(network.get, 'modules/milk');
 
   if (response.error) {
@@ -23,7 +24,6 @@ function* getMilk() {
     });
   } else {
     var data = yield call(modifyMilkData, response.data);
-    alert(JSON.stringify(data))
     console.log(response.data, 'modifyMilkData');
     yield put({
       type: constant.GET_MILK_SUCCESS,
@@ -53,7 +53,9 @@ function* addMilk(action) {
 
 
 function* filterMilkPerDayData(action) {
+  console.log(action,'actionfilterMilkPerDayData')
   const response = yield call(network.get, 'modules/milk');
+  console.log(response,'filterMilkPerDayData')
   if (response.error) {
     serverErrorDialogue(response.errorMessage);
     yield put({
@@ -114,7 +116,7 @@ function* deleteMilk(action) {
 
   const response = yield call(
     network.delete,
-    `modules/milk/${action.payload.animalTagId}}`,
+    `modules/milk/${action.payload.id}`,
   );
   if (response.error) {
     serverErrorDialogue(response.errorMessage);
@@ -134,7 +136,7 @@ function* editMilk(action) {
 
   const response = yield call(
     network.patch,
-    `modules/milk/${action.payload.animalTagId}`,
+    `modules/milk/${action.payload.milkId}`,
     action.payload.postBodyEditMilk,
   );
 
@@ -182,4 +184,5 @@ function* milkWatcherSaga() {
 }
 
 export { milkWatcherSaga };
+
 

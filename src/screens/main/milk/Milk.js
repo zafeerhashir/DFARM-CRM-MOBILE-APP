@@ -16,6 +16,7 @@ import {
   Row,
   ListView,
   NumberFormatter,
+  PDFGenerator
 } from '../../../components/Index';
 import {
   deleteMilk,
@@ -32,13 +33,14 @@ function Milk({navigation}) {
   const milkReducerState = useSelector(state => state.milk);
   const dispatch = useDispatch();
 
+
   useEffect(() => {
     getFilterMilkData();
     const unsubscribe = navigation.addListener('focus', () => {
       getFilterMilkData();
     });
     return unsubscribe;
-  }, [navigation, fromDate, toDate, milkReducerState.editMilkVisible]);
+  }, [navigation, fromDate, toDate, visible, milkReducerState.editMilkVisible]);
 
   const onRefresh = useCallback(() => {
     getFilterMilkData();
@@ -53,7 +55,8 @@ function Milk({navigation}) {
 
   const _deleteMilk = item => {
     setVisible(false);
-    const payload = {animalTagId: item.animalTagId, _id: item._id};
+    console.log(JSON.stringify(item),'itemdeletemilk')
+    const payload = {animalTagId: item.animalTagId, id: item._id};
     dispatch(deleteMilk(payload));
     getFilterMilkData();
   };
@@ -65,10 +68,12 @@ function Milk({navigation}) {
       total = total + (e.milkProduceAM + e.milkProducePM);
     }
 
-    return <NumberFormatter value={total} suffix={' liter'} />;
+    return <NumberFormatter value={total} suffix={' seer'} />;
   };
   // refreshing={milkReducerState.milkLoading}
   // onRefresh={() => onRefresh()}
+
+
 
   return (
     //   <ListView
@@ -79,7 +84,7 @@ function Milk({navigation}) {
     // />}
 
     //   >
-
+    <>
     <ListView
       refreshing={milkReducerState.milkLoading}
       onRefresh={() => onRefresh()}>
@@ -155,11 +160,11 @@ function Milk({navigation}) {
             { item.animal !== null && <Row label={'Animal Tag'} value={item.animal.tag} /> }
                 <Row
                   label={'Morning Milk'}
-                  value={`${item.milkProduceAM} liter`}
+                  value={`${item.milkProduceAM} seer`}
                 />
                 <Row
                   label={'Evening Milk'}
-                  value={`${item.milkProducePM} liter`}
+                  value={`${item.milkProducePM} seer`}
                 />
                 <Row
                   label={'Total Milk'}
@@ -171,8 +176,11 @@ function Milk({navigation}) {
         />
       )}
     </ListView>
+   
+    </>
   );
 }
+
 
 export {Milk};
 

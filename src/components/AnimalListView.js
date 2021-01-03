@@ -137,6 +137,7 @@ function Milk({navigation}) {
         >
           <FlatList
             data={milkReducerState.milkData}
+            keyExtractor={(item) => item._Id}
             renderItem={({item}) => (
               <TouchableOpacity
                 activeOpacity={0.6}
@@ -147,11 +148,11 @@ function Milk({navigation}) {
                   <Row label={'Animal Tag'} value={item.tag} />
                   <Row
                     label={'Morning Milk'}
-                    value={`${item.milkProduceAM} liter`}
+                    value={`${item.milkProduceAM} seer`}
                   />
                   <Row
                     label={'Evening Milk'}
-                    value={`${item.milkProducePM} liter`}
+                    value={`${item.milkProducePM} seer`}
                   />
                   <Row
                     label={'Total Milk'}
@@ -186,7 +187,7 @@ function Milk({navigation}) {
             <View style={milkStyles.cardContainerChildOne}>
               <View style={milkStyles.cardContainerChildOneRow}>
                 <View style={milkStyles.cardContainerChildOneColLabel}>
-                  <Text style={{fontSize: 15}}>Morning Milk (liter)</Text>
+                  <Text style={{fontSize: 15}}>Morning Milk (seer)</Text>
                 </View>
 
                 <View style={milkStyles.cardContainerChildOneColText}>
@@ -196,7 +197,7 @@ function Milk({navigation}) {
 
               <View style={milkStyles.cardContainerChildOneRow}>
                 <View style={milkStyles.cardContainerChildOneColLabel}>
-                  <Text style={{fontSize: 15}}>Evening Milk (liter)</Text>
+                  <Text style={{fontSize: 15}}>Evening Milk (seer)</Text>
                 </View>
 
                 <View style={milkStyles.cardContainerChildOneColText}>

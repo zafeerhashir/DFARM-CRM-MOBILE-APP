@@ -10,7 +10,8 @@ import {
   Row,
   ListView,
   EditFeedItem,
-  NumberFormatter
+  NumberFormatter,
+  PDFGenerator
 } from '../../../components/Index';
 import {
   deleteFeedItem,
@@ -19,6 +20,7 @@ import {
   editFeedItemVisible,
 } from '../../../redux/actions/Index';
 import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
+import { currency } from '../../../constants'
 
 function FeedItem({navigation}) {
   const [toDate, setToDate] = useState(currentDate());
@@ -51,14 +53,14 @@ function FeedItem({navigation}) {
     setVisible(false);
     const payload = {feedItemDateId: item.feedItemDateId, feedItemId: item._id};
     dispatch(deleteFeedItem(payload));
-    getData();
+    getData()
   };
 
   const getTotalFeedPrice = () => {
     var total = 0;
 
     for (let e of feedItemReducerState.feedItemData) {
-      total = total + (e.price + e.price);
+      total = total + (e.price);
     }
     return (
       <NumberFormatter
@@ -68,7 +70,22 @@ function FeedItem({navigation}) {
     );
   };
 
+  const dataFormatter = () => {
+    const data = []
+    for(let p of feedItemReducerState.feedItemData){
+       data.push({
+          Date: formatDate(p.date),
+          FeedName: p.name,
+          FeedUnit: p.unit,
+          FeedQuantity: p.quantity,
+          FeedPrice: `${p.price} ${currency.PKR}`
+       })
+    }
+    return data
+  }
+
   return (
+    <>
     <ListView
       refreshing={feedItemReducerState.feedItemLoading}
       onRefresh={() => onRefresh()}>
@@ -131,6 +148,7 @@ function FeedItem({navigation}) {
         ) : (
           <FlatList
             data={feedItemReducerState.feedItemData}
+            keyExtractor={(item) => item._Id}
             renderItem={({item}) => (
               <TouchableOpacity
                 onLongPress={() => {
@@ -143,7 +161,7 @@ function FeedItem({navigation}) {
                   <Row label={'Feed Unit'} value={item.unit} />
                   <Row label={'Feed Quantity'} value={item.quantity} />
 
-                  <Row label={'Feed price'} value={`${item.price} PKR`} />
+                  <Row label={'Feed Price'} value={`${item.price} ${currency.PKR}`} />
                 </View>
               </TouchableOpacity>
             )}
@@ -151,6 +169,14 @@ function FeedItem({navigation}) {
         )}
       </View>
     </ListView>
+     {feedItemReducerState.feedItemData.length !== 0 &&
+      <PDFGenerator
+          keys={['Date', 'FeedName', 'FeedUnit', 'FeedQuantity', 'FeedPrice']}
+          data={dataFormatter()}
+          name={'Feed'}
+        />
+      }
+    </>
   );
 }
 

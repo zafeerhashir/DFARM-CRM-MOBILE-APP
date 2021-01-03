@@ -5,6 +5,7 @@ import {medicineWatcherSaga} from './Medicine'
 import { onBoardingWatcherSaga } from '../sagas/onBoarding' 
 import {personalInformationWatcherSaga} from './PersonalInformation';
 import {userWatcherSaga} from './User'
+import {summaryWatcherSaga} from './Summary'
 import {all} from 'redux-saga/effects';
 
 
@@ -17,6 +18,6 @@ export default function* rootSaga() {
     feedItemWatcherSaga(),
     onBoardingWatcherSaga(),
     personalInformationWatcherSaga(),
-
+    summaryWatcherSaga()
   ]);
 }

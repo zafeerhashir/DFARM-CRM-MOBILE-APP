@@ -100,6 +100,7 @@ function FeedDetail({navigation}) {
         ) : (
           <FlatList
             refreshing={animalReducerState.animalMilkLoading}
+            keyExtractor={(item) => item._Id}
             onRefresh={() => onRefresh()}
             data={animalReducerState.animalMilkData}
             renderItem={({item}) => (
@@ -109,11 +110,11 @@ function FeedDetail({navigation}) {
                   <Row label={'Animal Tag'} value={item.tag} />
                   <Row
                     label={'Morning Milk'}
-                    value={`${item.milkProduceAM} liter`}
+                    value={`${item.milkProduceAM} seer`}
                   />
                   <Row
                     label={'Evening Milk'}
-                    value={`${item.milkProducePM} liter`}
+                    value={`${item.milkProducePM} seer`}
                   />
                   <Row
                     label={'Total Milk'}

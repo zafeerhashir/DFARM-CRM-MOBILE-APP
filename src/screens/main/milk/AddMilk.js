@@ -37,7 +37,7 @@ function AddMilk({navigation}) {
       animal: milkReducerState.selectAnimalTagItem.id ,
     };
     
-    if(milkReducerState.selectAnimalTagItem.id){
+    if(milkReducerState.selectAnimalTagItem.id == ''){
       delete postBodyAddMilk.animal
     }
 
@@ -78,7 +78,7 @@ function AddMilk({navigation}) {
         ref={milkAMRef}
         value={milkAM}
         placeholder={'Enter Morning Milk'}
-        errorMessage={'Morning Milk must be in liter'}
+        errorMessage={'Morning Milk must be in seer'}
         onChangeText={value => setMilkAM(value)}
         error={error => {
           setMilkAMError(error);
@@ -95,7 +95,7 @@ function AddMilk({navigation}) {
         ref={milkPMRef}
         value={milkPM}
         placeholder={'Enter Evening Milk'}
-        errorMessage={'Evening Milk must be in liter'}
+        errorMessage={'Evening Milk must be in seer'}
         onChangeText={value => setMilkPM(value)}
         error={error => {
           setMilkPMError(error);

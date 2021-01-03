@@ -4,18 +4,41 @@ import {useDispatch, useSelector} from 'react-redux';
 import color from '../assets/color/Index';
 import styles,{shadow} from '../assets/styles/Index';
 import {editAnimal, editAnimalVisible, getAnimal } from '../redux/actions/Index';
-import {animalTagRegex} from '../validations/Index';
+import { animalTagRegex, literRegex, charactersRegex } from '../validations/Index';
 import {Button} from './Button';
 import {Input} from './Input';
+import {Date} from './DatePicker';
 import {MYModal} from './Modal';
+import {currentDate} from '../conversions/Index';
+import PropTypes from 'prop-types';
+
+
 
 function EditAnimal(props) {
-  const animalTagId = props.selectedItem.animalTagId;
-  const [animalTag, setAnimalTag] = useState(props.selectedItem.tag);
-  const [animalTagError, setAnimalTagError] = useState('');
-  const dispatch = useDispatch();
+  console.log(props,'EditAnimal')
+  const { selectedItem } = props
+  const animalTagId = selectedItem._id;
+  const [animalTag, setAnimalTag] = useState(selectedItem.tag);
+  const [price, setPrice] = useState(selectedItem.price ? selectedItem.price : '');
+  const [date, setDate] = useState(selectedItem.purchaseDate ? currentDate(selectedItem.date) : '');
+  const [origin, setOrigin] = useState(selectedItem.origin ? selectedItem.origin : '');
+  const [priceError, setPriceError] = useState(false);
+  const [originError, setOriginError] = useState(false);
+  const [animalTagError, setAnimalTagError] = useState(false);
   const animalReducerState = useSelector(state => state.animal);
+  const dispatch = useDispatch();
   const animalTagRef = useRef();
+  const priceRef = useRef();
+  const originRef = useRef();
+  const dateRef = useRef();
+  const errors = [animalTagError, originError, priceError]
+
+  if(selectedItem.origin === undefined){
+    delete errors.splice(1,1)
+  }
+  if(selectedItem.price === undefined){
+    delete errors.splice(2,1)
+  }
 
 
   useEffect(() => {}, []);
@@ -24,6 +47,14 @@ function EditAnimal(props) {
     const postBodyEditAnimal = {
       tag: animalTag,
     };
+
+    if(origin !== ''){
+      postBodyEditAnimal.origin = origin
+    }
+
+    if(price !== ''){
+      postBodyEditAnimal.price = price
+    }
 
     const payload = {
       postBodyEditAnimal,
@@ -45,6 +76,16 @@ function EditAnimal(props) {
           </TouchableOpacity>
         </View>
 
+        {selectedItem.purchaseDate !== undefined &&
+        <Date
+          date={date}
+          ref={dateRef}
+          onDateChange={date => {
+            setDate(date);
+          }}
+        />
+        }
+
         <Input
           label={'Animal Tag'}
           maxLength={8}
@@ -59,9 +100,43 @@ function EditAnimal(props) {
           regex={animalTagRegex}
         />
 
+      {selectedItem.origin !== undefined &&
+      <Input
+        label={'Origin'}
+        ref={originRef}
+        required={false}
+        value={origin}
+        placeholder={'Enter Origin'}
+        errorMessage={'Name must be in alphabets'}
+        onChangeText={(value) => setOrigin(value)}
+        error={(error) => {
+          setOriginError(error);
+        }}
+        regex={charactersRegex}
+      />
+      }
+
+      {selectedItem.price !== undefined &&
+      <Input
+        label={'Price'}
+        keyboardType={'number-pad'}
+        maxLength={8}
+        ref={priceRef}
+        required={false}
+        value={price}
+        placeholder={'Enter Price'}
+        errorMessage={'Price must be in a number'}
+        onChangeText={(value) => setPrice(value)}
+        error={(error) => {
+          setPriceError(error);
+        }}
+        regex={literRegex}
+      />
+      }
+
         <Button
           loading={animalReducerState.editAnimalLoading}
-          error={[animalTagError]}
+          error={errors}
           title={'Edit'}
           onPress={() => callApi()}
         />
@@ -69,7 +144,6 @@ function EditAnimal(props) {
     </MYModal>
   );
 }
-
 
 export {EditAnimal};
 

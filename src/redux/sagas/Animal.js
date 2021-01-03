@@ -9,6 +9,7 @@ async function serverErrorDialogue(message) {
 
 function* getAnimal() {
   const response = yield call(network.get, 'modules/animal');
+  console.log(response,'getAnimal')
   if (response.error) {
     serverErrorDialogue(response.errorMessage);
     yield put({
@@ -76,15 +77,16 @@ function* deleteAnimal(action) {
     network.delete,
     `modules/animal/${action.payload.animalTagId}`,
   );
+  console.log(response,'deletedeleteAnimal')
   if (response.error) {
     serverErrorDialogue(response.errorMessage);
     yield put({
-      type: constant.DELETE_MILK_FAILURE,
+      type: constant.DELETE_ANIMAL_FAILURE,
       payload: response.errorMessage,
     });
   } else {
     yield put({
-      type: constant.DELETE_MILK_SUCCESS,
+      type: constant.DELETE_ANIMAL_SUCCESS,
     });
   }
 }
