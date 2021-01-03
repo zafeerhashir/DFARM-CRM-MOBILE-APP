@@ -19,6 +19,7 @@ import {
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {
   SignInScreen,
+  AddMilkPerDay,
   AddMilk,
   Milk,
   MilkPerDay,
@@ -124,6 +125,7 @@ function MilkTab() {
       <Tab.Screen name="MilkPerDay" component={MilkPerDay} />
       <Tab.Screen name="Milk" component={Milk} />
       <Tab.Screen name="Add" component={AddMilk} />
+      <Tab.Screen name="AddMilkPerDay" component={AddMilkPerDay} />
     </Tab.Navigator>
   );
 }
