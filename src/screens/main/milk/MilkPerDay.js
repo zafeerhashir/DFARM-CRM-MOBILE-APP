@@ -12,7 +12,7 @@ import styles from '../../../assets/styles/Index';
 import {
   CardLongPressView,
   Date,
-  EditMilk,
+  EditMilkPerDay,
   Row,
   ListView,
   NumberFormatter,
@@ -25,6 +25,8 @@ import {
 } from '../../../redux/actions/Index';
 import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
 import {currency}from '../../../constants'
+
+const MAAN_PER_LITER = 40
 
 function MilkPerDay({navigation}) {
   const [toDate, setToDate] = useState(currentDate());
@@ -67,26 +69,41 @@ function MilkPerDay({navigation}) {
     getFilterMilkPerDayData();
   };
 
+
+  const totalMilk = (item) => {
+  const  { milkGallonAM, milkLiterAM, milkGallonPM, milkLiterPM } = item
+  var extraGallon = 0
+  var totalLiter = milkLiterAM + milkLiterPM 
+  if(totalLiter >= MAAN_PER_LITER){
+    const covnersionResult = (totalLiter / MAAN_PER_LITER).toFixed(2).split('.')
+    extraGallon = parseInt(covnersionResult[0])
+    totalLiter = totalLiter - (extraGallon*MAAN_PER_LITER)
+    totalLiter = totalLiter + parseInt(covnersionResult[1])
+  }
+  const totalMaan = milkGallonAM + milkGallonPM + extraGallon
+  return `${totalMaan}.${totalLiter}`
+  }
+
   const getTotalMilk = () => {
     var total = 0;
-
     for (let e of milkReducerState.milkPerDayData) {
-      total = total + (e.milkProduceAM + e.milkProducePM);
-    }
-
-    return <NumberFormatter value={total} suffix={' seer'} />;
+      total = total + totalMilk(e)
+    return <NumberFormatter value={total} suffix={'maan/seer'} />;
   };
   
-  const dataFormatter = () => {
+  const dataFormatter = async() => {
     const data = []
     for(let p of milkReducerState.milkPerDayData){
+       const TotalMilkMaanSeer = totalMilk(p)
        data.push({
           Date: formatDate(p.date),
-          MorningMilk: p.milkProduceAM,
-          EveningMilk: p.milkProducePM,
+          MorningMilkMaan: p.milkGallonAM,
+          MorningMilkSeer: p.milkLiterAM,
+          EveningMilkMaan: p.milkGallonPM,
+          EveningMilkSeer: p.milkLiterPM,
           Rate: p.rate,
-          TotalMilk:`${p.milkProducePM + p.milkProduceAM}`,
-          TotalMilkAmount: `${(p.milkProducePM + p.milkProduceAM)*p.rate} ${currency.PKR}`,
+          TotalMilkMaanSeer,
+          TotalMilkAmount: `${(p.milkGallonAM + p.milkLiterAM + p.milkGallonPM + milkLiterPM)*p.rate} ${currency.PKR}`,
        })
     }
     return data
@@ -155,7 +172,7 @@ function MilkPerDay({navigation}) {
       )}
 
       {milkReducerState.editMilkPerDayVisible && (
-        <EditMilk milkPerDay={true} selectedItem={selectedItem} />
+        <EditMilkPerDay milkPerDay={true} selectedItem={selectedItem} />
       )}
 
       {milkReducerState.milkPerDayData.length == 0 &&
@@ -177,11 +194,11 @@ function MilkPerDay({navigation}) {
                 <Row label={'Date'} value={formatDate(item.date)} />
                 <Row
                   label={'Morning Milk'}
-                  value={`${item.milkProduceAM} seer`}
+                  value={`${item.milkProduceAM} Seer`}
                 />
                 <Row
                   label={'Evening Milk'}
-                  value={`${item.milkProducePM} seer`}
+                  value={`${item.milkProducePM} Seer`}
                 />
             
                 <Row
@@ -296,4 +313,4 @@ const milkStyles = {
     color: color.black,
     fontSize: 18,
   },
-};
+}

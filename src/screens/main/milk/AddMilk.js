@@ -121,7 +121,7 @@ function AddMilk({navigation}) {
 
       <Button
         loading={milkReducerState.milkLoading}
-        error={[milkAMError, milkPMError, rateError]}
+        error={[milkAMError, milkPMError, rateError, animalTagError]}
         title={'Submit'}
         onPress={() => callApi()}
       />
