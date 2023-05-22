@@ -10,7 +10,7 @@ function Row(props) {
       </View>
 
       <View style={rowStyles.columnTwo}>
-      <Text style={rowStyles.value}>{props.value}</Text>
+        <Text style={rowStyles.value}>{props.value}</Text>
       </View>
     </View>
   );
@@ -19,8 +19,8 @@ function Row(props) {
 export {Row};
 
 const rowStyles = {
-  label:{color: color.black},
-  value:{color: color.black},
+  label: {color: color.black},
+  value: {color: color.black},
 
   container: {
     width: '90%',

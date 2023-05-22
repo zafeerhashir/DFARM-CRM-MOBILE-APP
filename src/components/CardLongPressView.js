@@ -1,10 +1,9 @@
 import React, {useEffect, useState, useCallback} from 'react';
 import {Platform, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {MYModal} from './Modal';
-import styles,{shadow} from '../assets/styles/Index';
+import styles, {shadow} from '../assets/styles/Index';
 import color from '../assets/color/Index';
-import {ConfirmationModel} from './ConfirmationModel'
-
+import {ConfirmationModel} from './ConfirmationModel';
 
 function CardLongPressView(props) {
   const [visible, setVisible] = useState(false);
@@ -15,40 +14,51 @@ function CardLongPressView(props) {
         <View style={cardLongPressViewStyles.dismissRow}>
           <TouchableOpacity
             style={cardLongPressViewStyles.dismissTextContainer}
-            onPress={props.onTabOut}>
+            onPress={props.onTabOut}
+          >
             <Text style={{color: color.lightGrey}}>Dismiss</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity
           onPress={props.onEditPress}
-          style={cardLongPressViewStyles.rowContainer}>
+          style={cardLongPressViewStyles.rowContainer}
+        >
           <View style={cardLongPressViewStyles.row}>
-            <Text style={cardLongPressViewStyles.cardLongPressOptionText}>Edit</Text>
+            <Text style={cardLongPressViewStyles.cardLongPressOptionText}>
+              Edit
+            </Text>
           </View>
         </TouchableOpacity>
-        
-        {visible && 
-          <ConfirmationModel 
-          message={'Are you sure, You want to delete this record?'} 
-          onPress={props.onDeletePress} 
-          onTabOut={props.onTabOut}
-          />}
+
+        {visible && (
+          <ConfirmationModel
+            message={'Are you sure, You want to delete this record?'}
+            onPress={props.onDeletePress}
+            onTabOut={props.onTabOut}
+          />
+        )}
         <TouchableOpacity
           onPress={() => setVisible(true)}
-          style={cardLongPressViewStyles.rowContainer}>
+          style={cardLongPressViewStyles.rowContainer}
+        >
           <View style={cardLongPressViewStyles.row}>
-          <Text style={cardLongPressViewStyles.cardLongPressOptionText}>Delete</Text>
+            <Text style={cardLongPressViewStyles.cardLongPressOptionText}>
+              Delete
+            </Text>
           </View>
         </TouchableOpacity>
-        {props.viewDetails &&
-        <TouchableOpacity
-          onPress={props.onDetailsPress}
-          style={cardLongPressViewStyles.rowContainer}>
-          <View style={cardLongPressViewStyles.row}>
-            <Text style={cardLongPressViewStyles.cardLongPressOptionText}>View Details</Text>
-          </View>
-        </TouchableOpacity>
-        }
+        {props.viewDetails && (
+          <TouchableOpacity
+            onPress={props.onDetailsPress}
+            style={cardLongPressViewStyles.rowContainer}
+          >
+            <View style={cardLongPressViewStyles.row}>
+              <Text style={cardLongPressViewStyles.cardLongPressOptionText}>
+                View Details
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )}
       </View>
     </MYModal>
   );
@@ -56,9 +66,8 @@ function CardLongPressView(props) {
 export {CardLongPressView};
 
 const cardLongPressViewStyles = StyleSheet.create({
-
-  cardLongPressOptionText:{
-  color:color.black
+  cardLongPressOptionText: {
+    color: color.black,
   },
   dismissRow: {
     borderWidth: 0,
@@ -82,7 +91,7 @@ const cardLongPressViewStyles = StyleSheet.create({
     height: 35,
     borderWidth: 0,
     paddingHorizontal: 20,
-    marginBottom: 5
+    marginBottom: 5,
   },
 
   row: {
@@ -90,7 +99,7 @@ const cardLongPressViewStyles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
     backgroundColor: color.white,
-    ...shadow
+    ...shadow,
   },
 
   container: {
@@ -123,7 +132,7 @@ const cardLongPressViewStyles = StyleSheet.create({
     width: '60%',
     borderWidth: 0.5,
     justifyContent: 'center',
-    paddingTop:10,
+    paddingTop: 10,
     paddingBottom: 10,
     borderRadius: styles.borderRadius,
   },

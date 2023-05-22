@@ -16,7 +16,7 @@ import styles from '../../../assets/styles/Index';
 function FeedDetail({navigation}) {
   const [toDate, setToDate] = useState(currentDate());
   const [fromDate, setFromDate] = useState(agoDate(7));
-  const animalReducerState = useSelector(state => state.animal);
+  const animalReducerState = useSelector((state) => state.animal);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -60,7 +60,7 @@ function FeedDetail({navigation}) {
               required={false}
               date={fromDate}
               placeholder={'Select from date'}
-              onDateChange={date => {
+              onDateChange={(date) => {
                 setFromDate(date), getAnimalMilkData();
               }}
             />
@@ -71,7 +71,7 @@ function FeedDetail({navigation}) {
               minDate={fromDate}
               date={toDate}
               placeholder={'Select to date'}
-              onDateChange={date => {
+              onDateChange={(date) => {
                 setToDate(date), getAnimalMilkData();
               }}
             />

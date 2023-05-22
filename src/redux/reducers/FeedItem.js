@@ -68,57 +68,55 @@ function feedItem(state = initialState, action) {
         feedItemLoading: false,
       };
 
-      case constant.EDIT_FEED_ITEM_START:
-        return {
-          ...state,
-          editFeedItemLoadingError: false,
-          editFeedItemLoading: true,
-        };
-  
-      case constant.EDIT_FEED_ITEM_SUCCESS:
-        return {
-          ...state,
-          editFeedItemLoadingError: false,
-          editFeedItemLoading: false,
-          editFeedItemVisible: false
-        };
-  
-      case constant.EDIT_FEED_ITEM_FAILURE:
-        return {
-          ...state,
-          editFeedItemLoadingError: true,
-          editFeedItemLoading: false,
-          editFeedItemVisible: false
+    case constant.EDIT_FEED_ITEM_START:
+      return {
+        ...state,
+        editFeedItemLoadingError: false,
+        editFeedItemLoading: true,
+      };
 
-        };
+    case constant.EDIT_FEED_ITEM_SUCCESS:
+      return {
+        ...state,
+        editFeedItemLoadingError: false,
+        editFeedItemLoading: false,
+        editFeedItemVisible: false,
+      };
 
-        case constant.EDIT_FEED_ITEM_VISIBLE:
-          return {
-            ...state,
-            editFeedItemVisible: action.payload.visible,
-          };
+    case constant.EDIT_FEED_ITEM_FAILURE:
+      return {
+        ...state,
+        editFeedItemLoadingError: true,
+        editFeedItemLoading: false,
+        editFeedItemVisible: false,
+      };
 
+    case constant.EDIT_FEED_ITEM_VISIBLE:
+      return {
+        ...state,
+        editFeedItemVisible: action.payload.visible,
+      };
 
-          case constant.DELETE_FEED_ITEM_START:
-            return {
-              ...state,
-              milkLoadingError: false,
-              milkLoading: true,
-            };
-      
-          case constant.DELETE_FEED_ITEM_SUCCESS:
-            return {
-              ...state,
-              milkLoadingError: false,
-              milkLoading: false,
-            };
-      
-          case constant.DELETE_FEED_ITEM_FAILURE:
-            return {
-              ...state,
-              milkLoadingError: true,
-              milkLoading: false,
-            };
+    case constant.DELETE_FEED_ITEM_START:
+      return {
+        ...state,
+        milkLoadingError: false,
+        milkLoading: true,
+      };
+
+    case constant.DELETE_FEED_ITEM_SUCCESS:
+      return {
+        ...state,
+        milkLoadingError: false,
+        milkLoading: false,
+      };
+
+    case constant.DELETE_FEED_ITEM_FAILURE:
+      return {
+        ...state,
+        milkLoadingError: true,
+        milkLoading: false,
+      };
 
     default:
       return state;

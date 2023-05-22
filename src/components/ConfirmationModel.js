@@ -11,7 +11,8 @@ function ConfirmationModel(props) {
         <View style={ConfirmationModelStyles.dismissRow}>
           <TouchableOpacity
             style={ConfirmationModelStyles.dismissTexContainer}
-            onPress={props.onTabOut}>
+            onPress={props.onTabOut}
+          >
             <Text style={{color: color.lightGrey}}>Dismiss</Text>
           </TouchableOpacity>
         </View>
@@ -21,7 +22,8 @@ function ConfirmationModel(props) {
         <View style={ConfirmationModelStyles.buttonRow}>
           <TouchableOpacity
             style={ConfirmationModelStyles.buttonRowContainer}
-            onPress={props.onPress}>
+            onPress={props.onPress}
+          >
             <Text style={{color: color.themeColor}}>OK</Text>
           </TouchableOpacity>
         </View>

@@ -127,7 +127,7 @@ function IInput(props, ref) {
             secureTextEntry={props.secureTextEntry}
             style={[inputStyles.input, props.inputStyles]}
             keyboardType={props.keyboardType}
-            onChangeText={value => onChangeRowInput(value)}
+            onChangeText={(value) => onChangeRowInput(value)}
             onFocus={props.onFocus}
             placeholder={props.placeholder}
             placeholderTextColor={
@@ -158,7 +158,7 @@ const inputStyles = {
 
   displayOnlyValue: {
     paddingLeft: 5,
-    color:color.black
+    color: color.black,
   },
   placeholderText: {
     color: color.grey,

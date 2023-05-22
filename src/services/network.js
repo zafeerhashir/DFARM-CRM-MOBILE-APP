@@ -1,9 +1,6 @@
 import {tryStatement} from '@babel/types';
 
 async function executeRequest(method, pathname, body = {}, headers = {}) {
-  console.log(body, 'executeRequest');
-  console.log(pathname, 'pathname');
-
   fetchInputObject = {
     method: method,
     headers: {
@@ -18,20 +15,14 @@ async function executeRequest(method, pathname, body = {}, headers = {}) {
     delete fetchInputObject.body;
   }
 
-  try
-  {
-  var response = await fetch(
-    `https://dfarm.herokuapp.com/${pathname}`,
-    fetchInputObject,
-  );
-
-
+  try {
+    var response = await fetch(
+      `https://dfarm.herokuapp.com/${pathname}`,
+      fetchInputObject,
+    );
+  } catch (e) {
+    return await {error: true, errorMessage: 'Network failed'};
   }
-  catch(e)
-  {
-    return await { error: true, errorMessage: 'Network failed',  }
-  }
-  console.log(response,'dsdsd')
 
   const statusCode = response.status;
   const data = method == 'DELETE' ? {} : await response.json();

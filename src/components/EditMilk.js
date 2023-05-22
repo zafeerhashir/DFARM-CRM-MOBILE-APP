@@ -10,8 +10,8 @@ import {Input} from './Input';
 import {MYModal} from './Modal';
 import {SmartView} from './SmartView';
 import {formatDate} from '../conversions/Index';
-import styles,{shadow} from '../assets/styles/Index';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import styles, {shadow} from '../assets/styles/Index';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 function EditMilk(props) {
   const animalTagId = props.selectedItem.animalTagId;
@@ -49,17 +49,18 @@ function EditMilk(props) {
         <View style={addMilkStyles.dismissRow}>
           <TouchableOpacity
             style={addMilkStyles.dismissTextContainer}
-            onPress={() => dispatch(editMilkVisible({visible: false}))}>
+            onPress={() => dispatch(editMilkVisible({visible: false}))}
+          >
             <Text style={{color: color.lightGrey}}>Dismiss</Text>
           </TouchableOpacity>
         </View>
 
         <Date
           date={date}
-          onDateChange={date => {
+          onDateChange={(date) => {
             setDate(date);
           }}
-          error={error => {
+          error={(error) => {
             setDateError(error);
           }}
         />
@@ -71,8 +72,8 @@ function EditMilk(props) {
           value={milkAM}
           placeholder={'Enter Milk Produce AM'}
           errorMessage={'Morning Milk must be in liter'}
-          onChangeText={value => setMilkAM(value)}
-          error={error => {
+          onChangeText={(value) => setMilkAM(value)}
+          error={(error) => {
             setMilkAMError(error);
           }}
           regex={literRegex}
@@ -86,25 +87,22 @@ function EditMilk(props) {
           value={milkPM}
           placeholder={'Enter Milk Produce PM'}
           errorMessage={'Evening Milk must be in liter'}
-          onChangeText={value => setMilkPM(value)}
-          error={error => {
+          onChangeText={(value) => setMilkPM(value)}
+          error={(error) => {
             setMilkPMError(error);
           }}
           regex={literRegex}
         />
 
-     
         <Button
           error={[milkAMError, milkAMError]}
           title={'Edit'}
           onPress={() => callApi()}
         />
-       
       </View>
     </MYModal>
   );
 }
-
 
 export {EditMilk};
 
@@ -114,7 +112,7 @@ const addMilkStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: color.white,
-    ...shadow
+    ...shadow,
   },
   dismissRow: {
     borderWidth: 0,

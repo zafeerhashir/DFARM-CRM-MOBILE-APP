@@ -12,7 +12,7 @@ import {
 } from '../../../redux/actions/Index';
 
 function SelectAnimalTag({navigation}) {
-  const milkReducerState = useSelector(state => state.milk);
+  const milkReducerState = useSelector((state) => state.milk);
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -30,7 +30,8 @@ function SelectAnimalTag({navigation}) {
   return (
     <ListView
       refreshing={milkReducerState.milkLoading}
-      onRefresh={() => onRefresh()}>
+      onRefresh={() => onRefresh()}
+    >
       <View style={selectAnimalTagStyles.form}>
         <SearchBar
           lightTheme
@@ -38,7 +39,7 @@ function SelectAnimalTag({navigation}) {
           containerStyle={styles.searchBarContainerStyle}
           inputContainerStyle={styles.searchBarInputContainerStyle}
           inputStyle={styles.searchBarInputStyle}
-          onChangeText={searchTerm =>
+          onChangeText={(searchTerm) =>
             dispatch(searchMilkAnimalTag({searchTerm}))
           }
           value={milkReducerState.animalTagSearchTerm}
@@ -63,7 +64,8 @@ function SelectAnimalTag({navigation}) {
                   dispatch(selectAnimalTagItem({tag: item.tag, id: item._id}));
                   navigation.goBack();
                 }}
-                style={selectAnimalTagStyles.cardContainer}>
+                style={selectAnimalTagStyles.cardContainer}
+              >
                 <View style={[selectAnimalTagStyles.cardContainerChild]}>
                   <Row label={'Animal Tag'} value={item.tag} />
                 </View>

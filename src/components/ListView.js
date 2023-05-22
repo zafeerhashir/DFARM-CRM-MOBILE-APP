@@ -17,7 +17,8 @@ function ListView(props) {
         }
         // refreshControl={props.refreshControl}
 
-        contentContainerStyle={[listViewStyles.keyboardAwareScrollViewStyle]}>
+        contentContainerStyle={[listViewStyles.keyboardAwareScrollViewStyle]}
+      >
         {props.children}
       </ScrollView>
     </>

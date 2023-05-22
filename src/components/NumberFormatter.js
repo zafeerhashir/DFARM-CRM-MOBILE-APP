@@ -4,7 +4,6 @@ import {ImagePropTypes} from 'react-native';
 import color from '../assets/color/Index';
 import NumberFormat from 'react-number-format';
 
-
 function NumberFormatter(props) {
   return (
     <NumberFormat
@@ -12,7 +11,7 @@ function NumberFormatter(props) {
       displayType={'text'}
       thousandSeparator={true}
       suffix={props.suffix}
-      renderText={value => (
+      renderText={(value) => (
         <Text style={numberFormatterStyles.countValue}>{value}</Text>
       )}
     />

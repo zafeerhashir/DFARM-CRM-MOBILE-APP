@@ -22,7 +22,7 @@ function FeedItemDate({navigation}) {
   const [fromDate, setFromDate] = useState(agoDate(7));
   const [visible, setVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(false);
-  const milkReducerState = useSelector(state => state.milk);
+  const milkReducerState = useSelector((state) => state.milk);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -52,7 +52,7 @@ function FeedItemDate({navigation}) {
     }
   };
 
-  const _deleteMilk = item => {
+  const _deleteMilk = (item) => {
     setVisible(false);
     const payload = {animalTagId: item.animalTagId, _id: item._id};
     dispatch(deleteMilk(payload));
@@ -78,7 +78,7 @@ function FeedItemDate({navigation}) {
               required={false}
               date={fromDate}
               placeholder={'Select from date'}
-              onDateChange={date => {
+              onDateChange={(date) => {
                 setFromDate(date), getFilterMilkData();
               }}
             />
@@ -89,7 +89,7 @@ function FeedItemDate({navigation}) {
               minDate={fromDate}
               date={toDate}
               placeholder={'Select to date'}
-              onDateChange={date => {
+              onDateChange={(date) => {
                 setToDate(date), getFilterMilkData();
               }}
             />
@@ -138,7 +138,8 @@ function FeedItemDate({navigation}) {
                 onLongPress={() => {
                   setVisible(true), setSelectedItem(item);
                 }}
-                style={milkStyles.cardContainer}>
+                style={milkStyles.cardContainer}
+              >
                 <View style={milkStyles.cardContainerChild}>
                   <Row label={'Date'} value={formatDate(item.date)} />
                   <Row label={'Animal Tag'} value={item.tag} />
@@ -211,7 +212,6 @@ const milkStyles = {
     marginBottom: 0,
   },
 
- 
   cardContainer: {
     minWidth: '100%',
     alignItems: 'center',
@@ -229,7 +229,6 @@ const milkStyles = {
     ...styles.abstractCardStyles,
   },
 
-  
   noRecordView: {
     marginTop: '25%',
     height: 30,

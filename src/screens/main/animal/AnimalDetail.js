@@ -8,7 +8,7 @@ import {
   Row,
   ListView,
   EditMilk,
-  NumberFormatter
+  NumberFormatter,
 } from '../../../components/Index';
 import {getAnimalMilk} from '../../../redux/actions/Index';
 import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
@@ -17,7 +17,7 @@ import styles from '../../../assets/styles/Index';
 function AnimalDetail({navigation}) {
   const [toDate, setToDate] = useState(currentDate());
   const [fromDate, setFromDate] = useState(agoDate(7));
-  const animalReducerState = useSelector(state => state.animal);
+  const animalReducerState = useSelector((state) => state.animal);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -48,19 +48,15 @@ function AnimalDetail({navigation}) {
     for (let e of animalReducerState.animalMilkData) {
       total = total + (e.milkProduceAM + e.milkProducePM);
     }
-   
-    return (
-      <NumberFormatter
-        value={total}
-        suffix={' liter'}
-      />
-    );
+
+    return <NumberFormatter value={total} suffix={' liter'} />;
   };
 
   return (
     <ListView
       refreshing={animalReducerState.animalMilkLoading}
-      onRefresh={() => onRefresh()}>
+      onRefresh={() => onRefresh()}
+    >
       <View style={animalDetailStyles.parentContainer}>
         <View style={animalDetailStyles.pickerRow}>
           <View style={animalDetailStyles.pickerColumnLeft}>
@@ -68,7 +64,7 @@ function AnimalDetail({navigation}) {
               required={false}
               date={fromDate}
               placeholder={'Select from date'}
-              onDateChange={date => {
+              onDateChange={(date) => {
                 setFromDate(date);
               }}
             />
@@ -79,7 +75,7 @@ function AnimalDetail({navigation}) {
               minDate={fromDate}
               date={toDate}
               placeholder={'Select to date'}
-              onDateChange={date => {
+              onDateChange={(date) => {
                 setToDate(date);
               }}
             />
@@ -88,11 +84,11 @@ function AnimalDetail({navigation}) {
 
         <View style={animalDetailStyles.countContainer}>
           <View style={animalDetailStyles.countLabelContainer}>
-            <Text style={animalDetailStyles.countLabel} >Total Milk</Text>
+            <Text style={animalDetailStyles.countLabel}>Total Milk</Text>
           </View>
 
           <View style={animalDetailStyles.countValueContainer}>
-            <Text style={animalDetailStyles.countValue} >
+            <Text style={animalDetailStyles.countValue}>
               {animalReducerState.animalMilkData.length == 0
                 ? '0'
                 : getTotalMilk()}
@@ -137,16 +133,13 @@ function AnimalDetail({navigation}) {
 export {AnimalDetail};
 
 const animalDetailStyles = {
-
-  countLabel:{
-    color:color.black
-
+  countLabel: {
+    color: color.black,
   },
-  countValue:{
-   color:color.black
+  countValue: {
+    color: color.black,
   },
 
-  
   pickerRow: {
     width: '90%',
     marginBottom: 20,

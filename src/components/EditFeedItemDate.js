@@ -49,17 +49,18 @@ function EditMilk(props) {
         <View style={addMilkStyles.dismissRow}>
           <TouchableOpacity
             style={addMilkStyles.dismissTextContainer}
-            onPress={() => dispatch(editMilkVisible({visible: false}))}>
+            onPress={() => dispatch(editMilkVisible({visible: false}))}
+          >
             <Text style={{color: color.lightGrey}}>Dismiss</Text>
           </TouchableOpacity>
         </View>
 
         <Date
           date={date}
-          onDateChange={date => {
+          onDateChange={(date) => {
             setDate(date);
           }}
-          error={error => {
+          error={(error) => {
             setDateError(error);
           }}
         />
@@ -71,8 +72,8 @@ function EditMilk(props) {
           value={milkAM}
           placeholder={'Enter Milk Produce AM'}
           errorMessage={'The value must be numeric'}
-          onChangeText={value => setMilkAM(value)}
-          error={error => {
+          onChangeText={(value) => setMilkAM(value)}
+          error={(error) => {
             setMilkAMError(error);
           }}
           regex={literRegex}
@@ -86,8 +87,8 @@ function EditMilk(props) {
           value={milkPM}
           placeholder={'Enter Milk Produce PM'}
           errorMessage={'The value must be numeric'}
-          onChangeText={value => setMilkPM(value)}
-          error={error => {
+          onChangeText={(value) => setMilkPM(value)}
+          error={(error) => {
             setMilkPMError(error);
           }}
           regex={literRegex}

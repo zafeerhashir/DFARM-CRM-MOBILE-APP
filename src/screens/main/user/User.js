@@ -14,12 +14,12 @@ import {
   getUser,
   deleteUser,
   editUserPasswordVisible,
-   selectedUser,
+  selectedUser,
   searchUser,
 } from '../../../redux/actions/Index';
 
 function User({navigation}) {
-  const userReducerState = useSelector(state => state.user);
+  const userReducerState = useSelector((state) => state.user);
   const [visible, setVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedItem, setSelectedItem] = useState(false);
@@ -48,13 +48,13 @@ function User({navigation}) {
     };
     dispatch(deleteUser(payload));
     getData();
-
   };
 
   return (
     <ListView
       refreshing={userReducerState.userLoading}
-      onRefresh={() => onRefresh()}>
+      onRefresh={() => onRefresh()}
+    >
       <View style={userStyles.form}>
         <SearchBar
           lightTheme
@@ -62,7 +62,7 @@ function User({navigation}) {
           containerStyle={styles.searchBarContainerStyle}
           inputContainerStyle={styles.searchBarInputContainerStyle}
           inputStyle={styles.searchBarInputStyle}
-          onChangeText={searchTerm => dispatch(searchUser({searchTerm}))}
+          onChangeText={(searchTerm) => dispatch(searchUser({searchTerm}))}
           value={userReducerState.userSearchTerm}
           placeholderTextColor={color.grey}
           clearIcon={false}
@@ -78,7 +78,7 @@ function User({navigation}) {
             <Text style={userStyles.countValue}>
               {userReducerState.userData == 0
                 ? '0'
-                : userReducerState.userData.length }
+                : userReducerState.userData.length}
             </Text>
           </View>
         </View>
@@ -120,7 +120,8 @@ function User({navigation}) {
                       }),
                     );
                 }}
-                style={userStyles.cardContainer}>
+                style={userStyles.cardContainer}
+              >
                 <View style={[userStyles.cardContainerChild]}>
                   <Row label={'Username'} value={item.userName} />
                 </View>

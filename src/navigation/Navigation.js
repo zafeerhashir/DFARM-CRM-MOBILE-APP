@@ -34,7 +34,7 @@ import {
   ChangePassword,
   Login,
   User,
-  AddUser
+  AddUser,
 } from '../screens/Index';
 import color from '../assets/color/Index';
 import {clockRunning} from 'react-native-reanimated';
@@ -54,7 +54,8 @@ function MilkTab() {
         activeTintColor: color.white,
         indicatorStyle: {backgroundColor: color.white, height: '5%'},
         style: {backgroundColor: color.themeColor},
-      }}>
+      }}
+    >
       <Tab.Screen name="Milk" component={Milk} />
       <Tab.Screen name="Add" component={AddMilk} />
     </Tab.Navigator>
@@ -77,7 +78,8 @@ function MilkStack({navigation}) {
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
-              style={navigationStyles.headerLeft}>
+              style={navigationStyles.headerLeft}
+            >
               <Image
                 style={navigationStyles.headerLeftImage}
                 source={require('../assets/img/menu.png')}
@@ -113,7 +115,8 @@ function AnimalTab() {
         activeTintColor: color.white,
         indicatorStyle: {backgroundColor: color.white, height: '5%'},
         style: {backgroundColor: color.themeColor},
-      }}>
+      }}
+    >
       <Tab.Screen name="Animal" component={Animal} />
       <Tab.Screen name="Add" component={AddAnimal} />
     </Tab.Navigator>
@@ -136,7 +139,8 @@ function AnimalStack({navigation}) {
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
-              style={navigationStyles.headerLeft}>
+              style={navigationStyles.headerLeft}
+            >
               <Image
                 style={navigationStyles.headerLeftImage}
                 source={require('../assets/img/menu.png')}
@@ -171,13 +175,13 @@ function UserTab() {
         activeTintColor: color.white,
         indicatorStyle: {backgroundColor: color.white, height: '5%'},
         style: {backgroundColor: color.themeColor},
-      }}>
+      }}
+    >
       <Tab.Screen name="User" component={User} />
       <Tab.Screen name="Add" component={AddUser} />
     </Tab.Navigator>
   );
 }
-
 
 function UserStack({navigation}) {
   return (
@@ -195,7 +199,8 @@ function UserStack({navigation}) {
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
-              style={navigationStyles.headerLeft}>
+              style={navigationStyles.headerLeft}
+            >
               <Image
                 style={navigationStyles.headerLeftImage}
                 source={require('../assets/img/menu.png')}
@@ -215,7 +220,8 @@ function FeedItemTab() {
         activeTintColor: color.white,
         indicatorStyle: {backgroundColor: color.white, height: '5%'},
         style: {backgroundColor: color.themeColor},
-      }}>
+      }}
+    >
       <Tab.Screen name="Feed" component={FeedItem} />
       <Tab.Screen name="Add" component={AddFeedItem} />
     </Tab.Navigator>
@@ -238,7 +244,8 @@ function FeedItemStack({navigation}) {
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
-              style={navigationStyles.headerLeft}>
+              style={navigationStyles.headerLeft}
+            >
               <Image
                 style={navigationStyles.headerLeftImage}
                 source={require('../assets/img/menu.png')}
@@ -280,7 +287,8 @@ function ChangePasswordStack({navigation}) {
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
-              style={navigationStyles.headerLeft}>
+              style={navigationStyles.headerLeft}
+            >
               <Image
                 style={navigationStyles.headerLeftImage}
                 source={require('../assets/img/menu.png')}
@@ -294,7 +302,7 @@ function ChangePasswordStack({navigation}) {
 }
 
 function CustomDrawerContent(props) {
-  const onBoardingReducerState = useSelector(state => state.onBoarding);
+  const onBoardingReducerState = useSelector((state) => state.onBoarding);
   var userName = 's';
   const dispatch = useDispatch();
 
@@ -307,14 +315,15 @@ function CustomDrawerContent(props) {
             <Text style={navigationStyles.roundText}>
               {onBoardingReducerState.user.userName.charAt(0).toUpperCase()}
             </Text>
-            
           </View>
           <View>
             <Text style={navigationStyles.usernameText}>
               {onBoardingReducerState.user.userName}
             </Text>
             <Text style={navigationStyles.roleText}>
-              {onBoardingReducerState.user.role.roleName == 'SUPER_USER' ? 'SUPER USER': 'BASIC USER'}
+              {onBoardingReducerState.user.role.roleName == 'SUPER_USER'
+                ? 'SUPER USER'
+                : 'BASIC USER'}
             </Text>
           </View>
         </View>
@@ -334,7 +343,7 @@ function CustomDrawerContent(props) {
 }
 
 function MainDrawer() {
-  const onBoardingReducerState = useSelector(state => state.onBoarding);
+  const onBoardingReducerState = useSelector((state) => state.onBoarding);
   return (
     <Drawer.Navigator
       drawerContentOptions={{
@@ -353,20 +362,20 @@ function MainDrawer() {
         },
       }}
       drawerType={'slide'}
-      drawerContent={props => <CustomDrawerContent {...props} />}>
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+    >
       <Drawer.Screen name="MILK" component={MilkStack} />
       <Drawer.Screen name="FEED" component={FeedItemStack} />
       <Drawer.Screen name="ANIMAL" component={AnimalStack} />
-      {onBoardingReducerState.user.role.roleName == 'SUPER_USER' &&
-      <Drawer.Screen name="USER" component={UserStack} />
-      }
+      {onBoardingReducerState.user.role.roleName == 'SUPER_USER' && (
+        <Drawer.Screen name="USER" component={UserStack} />
+      )}
       <Drawer.Screen name="CHANGE PASSWORD" component={ChangePasswordStack} />
     </Drawer.Navigator>
   );
 }
 
 const navigationRef = React.createRef();
-
 
 function SplashScreen() {
   return (
@@ -379,9 +388,8 @@ function SplashScreen() {
   );
 }
 
-
 function Navigation() {
-  const onBoardingReducerState = useSelector(state => state.onBoarding);
+  const onBoardingReducerState = useSelector((state) => state.onBoarding);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -432,8 +440,6 @@ function Navigation() {
 
 export default Navigation;
 
-
-
 const splashScreenStyles = {
   container: {
     flex: 1,
@@ -450,8 +456,6 @@ const splashScreenStyles = {
     fontWeight: 'bold',
   },
 };
-
-
 
 const navigationStyles = {
   headerLeft: {
@@ -491,7 +495,7 @@ const navigationStyles = {
     marginLeft: '15%',
     fontSize: 18,
   },
-  roleText:{
+  roleText: {
     color: 'white',
     marginLeft: '15%',
     fontSize: 8,

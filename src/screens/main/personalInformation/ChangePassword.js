@@ -9,9 +9,9 @@ import {currentDate} from './../../../conversions/Index';
 
 function ChangePassword({navigation}) {
   const personalInformationReducerState = useSelector(
-    state => state.personalInformation,
+    (state) => state.personalInformation,
   );
-  const onBoardingReducerState = useSelector(state => state.onBoarding);
+  const onBoardingReducerState = useSelector((state) => state.onBoarding);
 
   const dispatch = useDispatch();
   const [newPassword, setNewPassword] = useState('');
@@ -47,8 +47,8 @@ function ChangePassword({navigation}) {
         value={newPassword}
         placeholder={'Enter New Password'}
         errorMessage={'Password consists of at least six letters and numbers '}
-        onChangeText={value => setNewPassword(value)}
-        error={error => {
+        onChangeText={(value) => setNewPassword(value)}
+        error={(error) => {
           setNewPasswordError(error);
         }}
         regex={passwordRegex}
@@ -62,8 +62,8 @@ function ChangePassword({navigation}) {
         value={confirmPassword}
         placeholder={'Enter Confirm Password'}
         errorMessage={'Password does not match'}
-        onChangeText={value => setConfirmPassword(value)}
-        error={error => {
+        onChangeText={(value) => setConfirmPassword(value)}
+        error={(error) => {
           setConfirmPasswordError(error);
         }}
         regex={new RegExp(`${newPassword}`)}
@@ -89,7 +89,6 @@ function ChangePassword({navigation}) {
 export {ChangePassword};
 
 const addPersonalInformationStyles = {
-
   policyContainer: {
     height: 50,
     justifyContent: 'center',

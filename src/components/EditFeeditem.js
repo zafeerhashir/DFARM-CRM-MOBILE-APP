@@ -7,21 +7,20 @@ import {
   addFeedItemDate,
   editFeedItemVisible,
 } from '../redux/actions/Index';
-import {literRegex,charactersRegex,integerRegex} from '../validations/Index';
+import {literRegex, charactersRegex, integerRegex} from '../validations/Index';
 import {Button} from './Button';
 import {Date} from './DatePicker';
 import {Input} from './Input';
 import {MYModal} from './Modal';
 import {SmartView} from './SmartView';
 import {formatDate} from '../conversions/Index';
-import styles,{ shadow} from '../assets/styles/Index';
+import styles, {shadow} from '../assets/styles/Index';
 
 function EditFeedItem(props) {
   const feedItemId = props.selectedItem._id;
   const feedItemDateId = props.selectedItem.feedItemDateId;
-  const feedItemReducerState = useSelector(state => state.feedItem);
+  const feedItemReducerState = useSelector((state) => state.feedItem);
   const dispatch = useDispatch();
-
 
   const [feedName, setFeedName] = useState(props.selectedItem.name);
   const [feedUnit, setFeedUnit] = useState(props.selectedItem.unit);
@@ -44,10 +43,10 @@ function EditFeedItem(props) {
 
   const callApi = () => {
     const postBodyEditFeedItem = {
-          unit: feedUnit == '' ? 0 : feedUnit,
-          quantity: feedQuantity == '' ? 0 : feedQuantity,
-          name: feedName,
-          price: feedPrice,
+      unit: feedUnit == '' ? 0 : feedUnit,
+      quantity: feedQuantity == '' ? 0 : feedQuantity,
+      name: feedName,
+      price: feedPrice,
     };
 
     const payload = {
@@ -68,7 +67,8 @@ function EditFeedItem(props) {
         <View style={editFeedItemStyles.dismissRow}>
           <TouchableOpacity
             style={editFeedItemStyles.dismissTextContainer}
-            onPress={() => dispatch(editFeedItemVisible({visible: false}))}>
+            onPress={() => dispatch(editFeedItemVisible({visible: false}))}
+          >
             <Text style={{color: color.lightGrey}}>Dismiss</Text>
           </TouchableOpacity>
         </View>
@@ -76,7 +76,7 @@ function EditFeedItem(props) {
         <Date
           date={date}
           ref={dateRef}
-          onDateChange={date => {
+          onDateChange={(date) => {
             setDate(date);
             dispatch(addFeedItemDate({date: date}));
           }}
@@ -88,8 +88,8 @@ function EditFeedItem(props) {
           value={feedName}
           placeholder={'Enter Feed Name'}
           errorMessage={'Feed Name must be characters'}
-          onChangeText={value => setFeedName(value)}
-          error={error => {
+          onChangeText={(value) => setFeedName(value)}
+          error={(error) => {
             setFeedNameError(error);
           }}
           regex={charactersRegex}
@@ -103,8 +103,8 @@ function EditFeedItem(props) {
           value={feedUnit}
           placeholder={'Enter Feed Unit'}
           errorMessage={'Feed Unit must be numeric'}
-          onChangeText={value => setFeedUnit(value)}
-          error={error => {
+          onChangeText={(value) => setFeedUnit(value)}
+          error={(error) => {
             setFeedUnitError(error);
           }}
           regex={integerRegex}
@@ -118,8 +118,8 @@ function EditFeedItem(props) {
           value={feedQuantity}
           placeholder={'Enter Feed Quantity'}
           errorMessage={'Feed Quantity must be numeric'}
-          onChangeText={value => setFeedQuantity(value)}
-          error={error => {
+          onChangeText={(value) => setFeedQuantity(value)}
+          error={(error) => {
             setFeedQuantityError(error);
           }}
           regex={integerRegex}
@@ -133,8 +133,8 @@ function EditFeedItem(props) {
           value={feedPrice}
           placeholder={'Feed Price'}
           errorMessage={'Feed Price must be numeric'}
-          onChangeText={value => setFeedPrice(value)}
-          error={error => {
+          onChangeText={(value) => setFeedPrice(value)}
+          error={(error) => {
             setFeedPriceError(error);
           }}
           regex={integerRegex}
@@ -164,7 +164,7 @@ const editFeedItemStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: color.white,
-    ...shadow
+    ...shadow,
   },
   dismissRow: {
     borderWidth: 0,

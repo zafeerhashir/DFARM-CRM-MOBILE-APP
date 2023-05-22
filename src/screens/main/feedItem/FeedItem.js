@@ -10,7 +10,7 @@ import {
   Row,
   ListView,
   EditFeedItem,
-  NumberFormatter
+  NumberFormatter,
 } from '../../../components/Index';
 import {
   deleteFeedItem,
@@ -25,7 +25,7 @@ function FeedItem({navigation}) {
   const [fromDate, setFromDate] = useState(agoDate(7));
   const [visible, setVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(false);
-  const feedItemReducerState = useSelector(state => state.feedItem);
+  const feedItemReducerState = useSelector((state) => state.feedItem);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -47,7 +47,7 @@ function FeedItem({navigation}) {
     }
   };
 
-  const _deleteMilk = item => {
+  const _deleteMilk = (item) => {
     setVisible(false);
     const payload = {feedItemDateId: item.feedItemDateId, feedItemId: item._id};
     dispatch(deleteFeedItem(payload));
@@ -60,18 +60,14 @@ function FeedItem({navigation}) {
     for (let e of feedItemReducerState.feedItemData) {
       total = total + (e.price + e.price);
     }
-    return (
-      <NumberFormatter
-        value={total}
-        suffix={' PKR'}
-      />
-    );
+    return <NumberFormatter value={total} suffix={' PKR'} />;
   };
 
   return (
     <ListView
       refreshing={feedItemReducerState.feedItemLoading}
-      onRefresh={() => onRefresh()}>
+      onRefresh={() => onRefresh()}
+    >
       <View style={FeedItemStyles.parentContainer}>
         <View style={FeedItemStyles.pickerRow}>
           <View style={FeedItemStyles.pickerColumnLeft}>
@@ -79,7 +75,7 @@ function FeedItem({navigation}) {
               required={false}
               date={fromDate}
               placeholder={'Select from date'}
-              onDateChange={date => {
+              onDateChange={(date) => {
                 setFromDate(date);
               }}
             />
@@ -90,7 +86,7 @@ function FeedItem({navigation}) {
               minDate={fromDate}
               date={toDate}
               placeholder={'Select to date'}
-              onDateChange={date => {
+              onDateChange={(date) => {
                 setToDate(date);
               }}
             />
@@ -136,7 +132,8 @@ function FeedItem({navigation}) {
                 onLongPress={() => {
                   setVisible(true), setSelectedItem(item);
                 }}
-                style={FeedItemStyles.cardContainer}>
+                style={FeedItemStyles.cardContainer}
+              >
                 <View style={FeedItemStyles.cardContainerChild}>
                   <Row label={'Date'} value={formatDate(item.date)} />
                   <Row label={'Feed Name'} value={item.name} />

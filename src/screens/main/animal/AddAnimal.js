@@ -1,15 +1,13 @@
-import React, { useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Button, Input, SmartView } from '../../../components/Index';
-import { addAnimal } from '../../../redux/actions/Index';
-import { animalTagRegex } from '../../../validations/Index';
-
-
+import React, {useRef, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {Button, Input, SmartView} from '../../../components/Index';
+import {addAnimal} from '../../../redux/actions/Index';
+import {animalTagRegex} from '../../../validations/Index';
 
 function AddAnimal() {
   const [animalTag, setAnimalTag] = useState('');
   const [animalTagError, setAnimalTagError] = useState('');
-  const animalReducerState = useSelector(state => state.animal);
+  const animalReducerState = useSelector((state) => state.animal);
   const dispatch = useDispatch();
   const animalTagRef = useRef();
 
@@ -20,7 +18,6 @@ function AddAnimal() {
 
     dispatch(addAnimal(payload));
     animalTagRef.current.clear();
-
   };
 
   return (
@@ -33,8 +30,8 @@ function AddAnimal() {
         value={animalTag}
         placeholder={'Enter Animal Tag'}
         errorMessage={'Animal Tag only contain letters and numbers '}
-        onChangeText={value => setAnimalTag(value)}
-        error={error => {
+        onChangeText={(value) => setAnimalTag(value)}
+        error={(error) => {
           setAnimalTagError(error);
         }}
         regex={animalTagRegex}
@@ -50,7 +47,7 @@ function AddAnimal() {
   );
 }
 
-export { AddAnimal };
+export {AddAnimal};
 
 const addMilkStyles = {
   container: {

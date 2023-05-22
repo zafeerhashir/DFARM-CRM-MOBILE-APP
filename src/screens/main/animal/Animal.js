@@ -20,7 +20,7 @@ import {
 } from '../../../redux/actions/Index';
 
 function Animal({navigation}) {
-  const animalReducerState = useSelector(state => state.animal);
+  const animalReducerState = useSelector((state) => state.animal);
   const [visible, setVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedItem, setSelectedItem] = useState(false);
@@ -43,12 +43,12 @@ function Animal({navigation}) {
     dispatch(getAnimal());
   };
 
-  const onChangeText = async searchTerm => {
+  const onChangeText = async (searchTerm) => {
     setSearchTerm(searchTerm);
 
     if (searchTerm.trim().length >= 1 && data.length != 0) {
       try {
-        var suggestion = await data.sort().filter(x => {
+        var suggestion = await data.sort().filter((x) => {
           return new RegExp(searchTerm, 'i').test(x.tag);
         });
       } catch (e) {
@@ -76,7 +76,8 @@ function Animal({navigation}) {
   return (
     <ListView
       refreshing={animalReducerState.animalLoading}
-      onRefresh={() => onRefresh()}>
+      onRefresh={() => onRefresh()}
+    >
       <View style={animalStyles.form}>
         <SearchBar
           lightTheme
@@ -84,7 +85,7 @@ function Animal({navigation}) {
           containerStyle={styles.searchBarContainerStyle}
           inputContainerStyle={styles.searchBarInputContainerStyle}
           inputStyle={styles.searchBarInputStyle}
-          onChangeText={searchTerm => dispatch(searchAnimal({searchTerm}))}
+          onChangeText={(searchTerm) => dispatch(searchAnimal({searchTerm}))}
           value={animalReducerState.animalSearchTerm}
           placeholderTextColor={color.grey}
           clearIcon={false}
@@ -93,7 +94,7 @@ function Animal({navigation}) {
 
         <View style={animalStyles.countContainer}>
           <View style={animalStyles.countLabelContainer}>
-            <Text  style={animalStyles.countLabel} >Total Animal</Text>
+            <Text style={animalStyles.countLabel}>Total Animal</Text>
           </View>
 
           <View style={animalStyles.countValueContainer}>
@@ -142,7 +143,8 @@ function Animal({navigation}) {
                       }),
                     );
                 }}
-                style={animalStyles.cardContainer}>
+                style={animalStyles.cardContainer}
+              >
                 <View style={[animalStyles.cardContainerChild]}>
                   <Row label={'Animal Tag'} value={item.tag} />
                 </View>
@@ -158,13 +160,11 @@ function Animal({navigation}) {
 export {Animal};
 
 const animalStyles = StyleSheet.create({
-
-  countLabel:{
-    color:color.black
-
+  countLabel: {
+    color: color.black,
   },
-  countValue:{
-   color:color.black
+  countValue: {
+    color: color.black,
   },
 
   countContainer: {

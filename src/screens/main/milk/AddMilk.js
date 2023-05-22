@@ -1,13 +1,17 @@
-import React, { useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {useRef, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import color from '../../../assets/color/Index';
-import { Button, Date, Input, SmartView } from '../../../components/Index';
-import { addMilk, searchMilkAnimalTag, selectAnimalTagItem } from '../../../redux/actions/Index';
-import { literRegex } from '../../../validations/Index';
-import { currentDate } from './../../../conversions/Index';
+import {Button, Date, Input, SmartView} from '../../../components/Index';
+import {
+  addMilk,
+  searchMilkAnimalTag,
+  selectAnimalTagItem,
+} from '../../../redux/actions/Index';
+import {literRegex} from '../../../validations/Index';
+import {currentDate} from './../../../conversions/Index';
 
 function AddMilk({navigation}) {
-  const milkReducerState = useSelector(state => state.milk);
+  const milkReducerState = useSelector((state) => state.milk);
   const [milkAM, setMilkAM] = useState('');
   const [milkPM, setMilkPM] = useState('');
   const [date, setDate] = useState(currentDate());
@@ -20,8 +24,6 @@ function AddMilk({navigation}) {
   const milkPMRef = useRef();
   const dateRef = useRef();
   const animalTagRef = useRef();
-
-
 
   const callApi = () => {
     const postBodyAddMilk = {
@@ -36,8 +38,7 @@ function AddMilk({navigation}) {
     milkAMRef.current.clear();
     milkPMRef.current.clear();
     dispatch(addMilk(payload));
-    dispatch(selectAnimalTagItem({tag: '', id: ''}));    
-
+    dispatch(selectAnimalTagItem({tag: '', id: ''}));
   };
 
   return (
@@ -45,7 +46,7 @@ function AddMilk({navigation}) {
       <Date
         date={date}
         ref={dateRef}
-        onDateChange={date => {
+        onDateChange={(date) => {
           setDate(date);
         }}
       />
@@ -56,10 +57,10 @@ function AddMilk({navigation}) {
         ref={animalTagRef}
         value={milkReducerState.selectAnimalTagItem.tag}
         placeholder={'Select Animal Tag'}
-        onChangeText={value => searchMilkAnimalTag(value)}
+        onChangeText={(value) => searchMilkAnimalTag(value)}
         onPress={() => navigation.navigate('Animal Tag')}
         errorMessage={'The value must be numeric'}
-        error={error => {
+        error={(error) => {
           setAnimalTagError(error);
         }}
       />
@@ -72,8 +73,8 @@ function AddMilk({navigation}) {
         value={milkAM}
         placeholder={'Enter Morning Milk'}
         errorMessage={'Morning Milk must be in liter'}
-        onChangeText={value => setMilkAM(value)}
-        error={error => {
+        onChangeText={(value) => setMilkAM(value)}
+        error={(error) => {
           setMilkAMError(error);
         }}
         regex={literRegex}
@@ -88,8 +89,8 @@ function AddMilk({navigation}) {
         value={milkPM}
         placeholder={'Enter Evening Milk'}
         errorMessage={'Evening Milk must be in liter'}
-        onChangeText={value => setMilkPM(value)}
-        error={error => {
+        onChangeText={(value) => setMilkPM(value)}
+        error={(error) => {
           setMilkPMError(error);
         }}
         regex={literRegex}
@@ -105,9 +106,8 @@ function AddMilk({navigation}) {
   );
 }
 
-
-export { AddMilk };
-export { Date };
+export {AddMilk};
+export {Date};
 
 const addMilkStyles = {
   container: {

@@ -10,9 +10,8 @@ const initialState = {
   editAnimalLoading: false,
   editAnimalVisible: false,
   selectedAnimal: '',
-  animalSearchTerm:'',
-  animalSearchResults:[]
-
+  animalSearchTerm: '',
+  animalSearchResults: [],
 };
 
 function animal(state = initialState, action) {
@@ -120,48 +119,43 @@ function animal(state = initialState, action) {
         editAnimalVisible: action.payload.visible,
       };
 
-      case constant.SELECTED_ANIMAL:
+    case constant.SELECTED_ANIMAL:
       return {
         ...state,
         selectedAnimal: action.payload.selectedAnimal,
       };
 
-      case constant.SEARCH_ANIMAL:
-
-       
-
-        if ( action.payload.searchTerm.trim().length >= 1 && state.animalSearchResults.length != 0) {
-          try {
-            var suggestion =  state.animalSearchResults.sort().filter(x => {
-              return new RegExp(action.payload.searchTerm, 'i').test(x.tag);
-            });
-          } catch (e) {
-            // this.setState({searchFound: false});
-          }
-
-          return {
-            ...state,
-            animalSearchResults: suggestion,
-            animalSearchTerm:action.payload.searchTerm
-          };
-    
-          // if (suggestion.length == 0) {
-          //   setData(suggestion);
-          // } else {
-          //   setData(suggestion);
-          // }
-        } else {
-          return {
-            ...state,
-            animalSearchResults: state.animalData,
-            animalSearchTerm:action.payload.searchTerm
-
-          };
+    case constant.SEARCH_ANIMAL:
+      if (
+        action.payload.searchTerm.trim().length >= 1 &&
+        state.animalSearchResults.length != 0
+      ) {
+        try {
+          var suggestion = state.animalSearchResults.sort().filter((x) => {
+            return new RegExp(action.payload.searchTerm, 'i').test(x.tag);
+          });
+        } catch (e) {
+          // this.setState({searchFound: false});
         }
 
+        return {
+          ...state,
+          animalSearchResults: suggestion,
+          animalSearchTerm: action.payload.searchTerm,
+        };
 
-     
-
+        // if (suggestion.length == 0) {
+        //   setData(suggestion);
+        // } else {
+        //   setData(suggestion);
+        // }
+      } else {
+        return {
+          ...state,
+          animalSearchResults: state.animalData,
+          animalSearchTerm: action.payload.searchTerm,
+        };
+      }
 
     default:
       return state;

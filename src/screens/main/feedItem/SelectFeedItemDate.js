@@ -27,7 +27,7 @@ import {
 import {feedItem} from '../../../redux/reducers/FeedItem';
 
 function SelectFeedItemDate({navigation}) {
-  const feedItemReducerState = useSelector(state => state.feedItem);
+  const feedItemReducerState = useSelector((state) => state.feedItem);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -52,7 +52,7 @@ function SelectFeedItemDate({navigation}) {
           containerStyle={styles.searchBarContainerStyle}
           inputContainerStyle={styles.searchBarInputContainerStyle}
           inputStyle={styles.searchBarInputStyle}
-          onChangeText={searchTerm => dispatch(searchFeedDate({searchTerm}))}
+          onChangeText={(searchTerm) => dispatch(searchFeedDate({searchTerm}))}
           value={feedItemReducerState.animalTagSearchTerm}
           placeholderTextColor={color.grey}
           clearIcon={false}
@@ -82,7 +82,8 @@ function SelectFeedItemDate({navigation}) {
                   );
                   navigation.goBack();
                 }}
-                style={selectAnimalTagStyles.cardContainer}>
+                style={selectAnimalTagStyles.cardContainer}
+              >
                 <View style={[selectAnimalTagStyles.cardContainerChild]}>
                   <Row label={'Date'} value={formatDate(item.date)} />
                 </View>

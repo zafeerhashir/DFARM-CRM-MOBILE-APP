@@ -2,8 +2,12 @@ import React, {useCallback, useEffect, useState, useRef} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import color from '../assets/color/Index';
-import styles,{shadow} from '../assets/styles/Index';
-import { editUserPasswordVisible, getUser, editUserPassword } from '../redux/actions/Index';
+import styles, {shadow} from '../assets/styles/Index';
+import {
+  editUserPasswordVisible,
+  getUser,
+  editUserPassword,
+} from '../redux/actions/Index';
 import {passwordRegex} from '../validations/Index';
 import {Button} from './Button';
 import {Input} from './Input';
@@ -13,8 +17,7 @@ function EditUserPassword(props) {
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const dispatch = useDispatch();
-  const userReducerState = useSelector(state => state.user);
-
+  const userReducerState = useSelector((state) => state.user);
 
   useEffect(() => {}, []);
 
@@ -24,13 +27,12 @@ function EditUserPassword(props) {
     };
 
     const payload = {
-        postBodyEditUserPassword,
-        userId:userReducerState.selectedUser.userId,
+      postBodyEditUserPassword,
+      userId: userReducerState.selectedUser.userId,
     };
-    dispatch(editUserPasswordVisible(payload))
+    dispatch(editUserPasswordVisible(payload));
     dispatch(getUser());
   };
-
 
   return (
     <MYModal>
@@ -38,24 +40,25 @@ function EditUserPassword(props) {
         <View style={editUserStyles.dismissRow}>
           <TouchableOpacity
             style={editUserStyles.dismissTextContainer}
-            onPress={() => dispatch(editUserPasswordVisible({visible: false}))}>
+            onPress={() => dispatch(editUserPasswordVisible({visible: false}))}
+          >
             <Text style={{color: color.lightGrey}}>Dismiss</Text>
           </TouchableOpacity>
         </View>
 
         <Input
-        autoCapitalize={'none'}
-        label={'Password'}
-        maxLength={16}
-        value={password}
-        placeholder={'Enter Password'}
-        errorMessage={'Password characters is not correct '}
-        onChangeText={value => setPassword(value)}
-        error={error => {
-          setPasswordError(error);
-        }}
-        regex={passwordRegex}
-      />
+          autoCapitalize={'none'}
+          label={'Password'}
+          maxLength={16}
+          value={password}
+          placeholder={'Enter Password'}
+          errorMessage={'Password characters is not correct '}
+          onChangeText={(value) => setPassword(value)}
+          error={(error) => {
+            setPasswordError(error);
+          }}
+          regex={passwordRegex}
+        />
 
         <Button
           loading={userReducerState.changeUserPasswordLoading}
@@ -68,7 +71,6 @@ function EditUserPassword(props) {
   );
 }
 
-
 export {EditUserPassword};
 
 const editUserStyles = {
@@ -77,8 +79,7 @@ const editUserStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: color.white,
-    ...shadow
-
+    ...shadow,
   },
   dismissRow: {
     borderWidth: 0,

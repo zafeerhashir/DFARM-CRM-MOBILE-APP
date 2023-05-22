@@ -2,8 +2,8 @@ import React, {useCallback, useEffect, useState, useRef} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import color from '../assets/color/Index';
-import styles,{shadow} from '../assets/styles/Index';
-import {editAnimal, editAnimalVisible, getAnimal } from '../redux/actions/Index';
+import styles, {shadow} from '../assets/styles/Index';
+import {editAnimal, editAnimalVisible, getAnimal} from '../redux/actions/Index';
 import {animalTagRegex} from '../validations/Index';
 import {Button} from './Button';
 import {Input} from './Input';
@@ -14,9 +14,8 @@ function EditAnimal(props) {
   const [animalTag, setAnimalTag] = useState(props.selectedItem.tag);
   const [animalTagError, setAnimalTagError] = useState('');
   const dispatch = useDispatch();
-  const animalReducerState = useSelector(state => state.animal);
+  const animalReducerState = useSelector((state) => state.animal);
   const animalTagRef = useRef();
-
 
   useEffect(() => {}, []);
 
@@ -29,10 +28,9 @@ function EditAnimal(props) {
       postBodyEditAnimal,
       animalTagId,
     };
-    dispatch(editAnimal(payload))
+    dispatch(editAnimal(payload));
     dispatch(getAnimal());
   };
-
 
   return (
     <MYModal>
@@ -40,7 +38,8 @@ function EditAnimal(props) {
         <View style={EditAnimalStyles.dismissRow}>
           <TouchableOpacity
             style={EditAnimalStyles.dismissTextContainer}
-            onPress={() => dispatch(editAnimalVisible({visible: false}))}>
+            onPress={() => dispatch(editAnimalVisible({visible: false}))}
+          >
             <Text style={{color: color.lightGrey}}>Dismiss</Text>
           </TouchableOpacity>
         </View>
@@ -52,8 +51,8 @@ function EditAnimal(props) {
           value={animalTag}
           placeholder={'Enter Animal Tag'}
           errorMessage={'Animal Tag only contain letters and numbers '}
-          onChangeText={value => setAnimalTag(value)}
-          error={error => {
+          onChangeText={(value) => setAnimalTag(value)}
+          error={(error) => {
             setAnimalTagError(error);
           }}
           regex={animalTagRegex}
@@ -70,7 +69,6 @@ function EditAnimal(props) {
   );
 }
 
-
 export {EditAnimal};
 
 const EditAnimalStyles = {
@@ -79,8 +77,7 @@ const EditAnimalStyles = {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: color.white,
-    ...shadow
-
+    ...shadow,
   },
   dismissRow: {
     borderWidth: 0,

@@ -1,5 +1,5 @@
-import { Alert } from 'react-native';
-import { call, put, takeLatest } from 'redux-saga/effects';
+import {Alert} from 'react-native';
+import {call, put, takeLatest} from 'redux-saga/effects';
 import network from '../../services/network';
 import constant from '../constant/Index';
 
@@ -33,7 +33,6 @@ function* getMilk() {
     });
   } else {
     var data = yield call(modifyMilkData, response.data);
-    console.log(response.data, 'modifyMilkData');
     yield put({
       type: constant.GET_MILK_SUCCESS,
       payload: data,
@@ -42,7 +41,6 @@ function* getMilk() {
 }
 
 function* addMilk(action) {
-  console.log(action, 'addMilk');
   const response = yield call(
     network.post,
     `modules/milk/${action.payload.animalTagId}`,
@@ -70,11 +68,10 @@ function* filterMilkData(action) {
     });
   } else {
     var modifyData = yield call(modifyMilkData, response.data);
-    console.log(modifyData, 'modifyMilkData');
     const fromDate = new Date(action.payload.fromDate);
     const toDate = new Date(action.payload.toDate);
 
-    const data = modifyData.filter(x => {
+    const data = modifyData.filter((x) => {
       const currentDate = new Date(x.date);
       if (currentDate >= fromDate && currentDate <= toDate) {
         return x;
@@ -89,8 +86,6 @@ function* filterMilkData(action) {
 }
 
 function* deleteMilk(action) {
-  console.log(action, 'deleteMilk');
-
   const response = yield call(
     network.delete,
     `modules/milk/${action.payload.animalTagId}/${action.payload._id}`,
@@ -109,8 +104,6 @@ function* deleteMilk(action) {
 }
 
 function* editMilk(action) {
-  console.log(action, 'editMilk');
-
   const response = yield call(
     network.patch,
     `modules/milk/${action.payload.animalTagId}/${action.payload.milkId}`,
@@ -141,8 +134,6 @@ function* getAnimalTag() {
       payload: response.errorMessage,
     });
   } else {
-    console.log(response.data, 'GET_ANIMAL_SUCCESS');
-
     yield put({
       type: constant.GET_ANIMAL_TAG_SUCCESS,
       payload: response.data,
@@ -159,5 +150,4 @@ function* milkWatcherSaga() {
   yield takeLatest(constant.GET_ANIMAL_TAG_START, getAnimalTag);
 }
 
-export { milkWatcherSaga };
-
+export {milkWatcherSaga};

@@ -6,7 +6,7 @@ const initialState = {
   userLoadingError: false,
   changeUserPasswordLoading: false,
   changeUserPasswordVisible: false,
-  selectedUser:  {username: '', userId: ''},
+  selectedUser: {username: '', userId: ''},
   userSearchTerm: '',
   userSearchResults: [],
 };
@@ -109,7 +109,7 @@ function user(state = initialState, action) {
         state.userSearchResults.length != 0
       ) {
         try {
-          var suggestion = state.userSearchResults.sort().filter(x => {
+          var suggestion = state.userSearchResults.sort().filter((x) => {
             return new RegExp(action.payload.searchTerm, 'i').test(x.userName);
           });
         } catch (e) {

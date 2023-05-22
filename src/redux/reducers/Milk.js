@@ -10,8 +10,8 @@ const initialState = {
   editMilkLoading: false,
   editMilkVisible: false,
   selectAnimalTagVisible: false,
-  animalTagSearchResults:[],
-  animalTagSearchTerm: ''
+  animalTagSearchResults: [],
+  animalTagSearchTerm: '',
 };
 
 function milk(state = initialState, action) {
@@ -19,7 +19,6 @@ function milk(state = initialState, action) {
     case constant.GET_ANIMAL_TAG_START:
       return {...state, milkLoading: true};
     case constant.GET_ANIMAL_TAG_SUCCESS:
-      console.log(action.payload, '.GET_ANIMAL_TAG_SUCCESS');
       return {
         ...state,
         animalTagData: action.payload,
@@ -33,7 +32,6 @@ function milk(state = initialState, action) {
     case constant.GET_MILK_START:
       return {...state, milkLoadingError: false, milkLoading: true};
     case constant.GET_MILK_SUCCESS:
-      console.log(action.payload, 'milkData');
       return {
         ...state,
         milkData: action.payload,
@@ -160,11 +158,9 @@ function milk(state = initialState, action) {
         state.animalTagSearchResults.length != 0
       ) {
         try {
-          var suggestion = state.animalTagSearchResults
-            .sort()
-            .filter(x => {
-              return new RegExp(action.payload.searchTerm, 'i').test(x.tag);
-            });
+          var suggestion = state.animalTagSearchResults.sort().filter((x) => {
+            return new RegExp(action.payload.searchTerm, 'i').test(x.tag);
+          });
         } catch (e) {
           // this.setState({searchFound: false});
         }

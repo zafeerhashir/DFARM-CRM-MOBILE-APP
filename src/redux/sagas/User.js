@@ -18,15 +18,17 @@ function* getUser() {
   } else {
     yield put({
       type: constant.GET_USER_SUCCESS,
-      payload: response.data.pop().user
+      payload: response.data.pop().user,
     });
   }
 }
 
-
 function* addUser(action) {
-  console.log(action, 'addUser');
-  const response = yield call(network.post, `onboarding/adduser/BASIC_USER`, action.payload);
+  const response = yield call(
+    network.post,
+    `onboarding/adduser/BASIC_USER`,
+    action.payload,
+  );
 
   if (response.error) {
     serverErrorDialogue(response.errorMessage);
@@ -40,8 +42,6 @@ function* addUser(action) {
 }
 
 function* deleteUser(action) {
-  console.log(action, 'deleteUser');
-
   const response = yield call(
     network.delete,
     `modules/user/${action.payload.userId}`,
@@ -60,12 +60,11 @@ function* deleteUser(action) {
 }
 
 function* editUserPassword(action) {
-
-    console.log(action, 'changePassword');
   const response = yield call(
     network.post,
     `modules/user/changepassword/${action.payload.userId}`,
-    action.payload.postBodyEditUserPassword);
+    action.payload.postBodyEditUserPassword,
+  );
 
   if (response.error) {
     serverErrorDialogue(response.errorMessage);

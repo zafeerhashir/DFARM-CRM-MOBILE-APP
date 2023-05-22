@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import color from '../assets/color/Index';
-import styles,{shadow} from '../assets/styles/Index';
-
+import styles, {shadow} from '../assets/styles/Index';
 
 function Button(props) {
   const [disable, setDisable] = useState(true);
@@ -11,27 +10,23 @@ function Button(props) {
     validate();
   }, [props.error]);
 
-
-  const validate =  () =>
-  {
+  const validate = () => {
     const error = [];
     for (let e of props.error) {
       if (e == false) {
-         error.push(e);
+        error.push(e);
       }
-      
     }
-    if (error.length == props.error.length)      
-    setDisable(false);
-    else setDisable(true)
-  }
-
+    if (error.length == props.error.length) setDisable(false);
+    else setDisable(true);
+  };
 
   return (
     <TouchableOpacity
       style={[buttonStyles.container]}
       disabled={disable}
-      onPress={props.onPress}>
+      onPress={props.onPress}
+    >
       {props.loading ? (
         <ActivityIndicator color={color.white} size="large" />
       ) : (
@@ -53,10 +48,8 @@ const buttonStyles = {
     marginVertical: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius:5,
-    ...shadow
-
-
+    borderRadius: 5,
+    ...shadow,
   },
   disabled: {
     color: color.grey,

@@ -1,5 +1,13 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {FlatList, Text, View, TouchableOpacity, Alert, RefreshControl, ScrollView} from 'react-native';
+import {
+  FlatList,
+  Text,
+  View,
+  TouchableOpacity,
+  Alert,
+  RefreshControl,
+  ScrollView,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {SmartView, Row, Date} from '../../../components/Index';
 import {
@@ -17,31 +25,25 @@ function Milk({navigation}) {
   const [toDate] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   const [fromDate] = useState('');
-  const milkReducerState = useSelector(state => state.milk);
+  const milkReducerState = useSelector((state) => state.milk);
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       dispatch(getMilk());
-
     });
     return unsubscribe;
-  },[navigation])
-
+  }, [navigation]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getMilk());
-    setTimeout(()=>setRefreshing(false),1000)
+    setTimeout(() => setRefreshing(false), 1000);
   }, [refreshing]);
 
-
-  
   // useEffect(() => {
   //   dispatch(getMilk());
   // }, [fromDate, toDate]);
-
 
   const getFilterMilkData = () => {
     if (_fromDate !== '' && _toDate !== '') {
@@ -50,13 +52,13 @@ function Milk({navigation}) {
     }
   };
 
-  const _deleteMilk = item => {
+  const _deleteMilk = (item) => {
     const payload = {parentId: item.parentId, _id: item._id};
     dispatch(deleteMilk(payload));
     dispatch(getMilk());
   };
 
-  const onLongPress = item =>
+  const onLongPress = (item) =>
     Alert.alert(
       'Delete',
       'Are you sure, you want to delete this record?',
@@ -64,28 +66,25 @@ function Milk({navigation}) {
       {cancelable: false},
     );
 
-  const setFromDateHandler = async date => {
+  const setFromDateHandler = async (date) => {
     _fromDate = date;
     getFilterMilkData();
   };
 
-  const setToDateHandler = async date => {
+  const setToDateHandler = async (date) => {
     _toDate = date;
     getFilterMilkData();
   };
 
+  const getTotalMilk = () => {
+    var total = 0;
 
-  const getTotalMilk = () =>
-  {
-    var total = 0
-
-    for(let e of milkReducerState.milkData)
-    {
-      total = total + (e.milkProduceAM + e.milkProducePM)
+    for (let e of milkReducerState.milkData) {
+      total = total + (e.milkProduceAM + e.milkProducePM);
     }
-  
-    return total
-  }
+
+    return total;
+  };
 
   return (
     <SmartView refreshing={refreshing} loading={milkReducerState.milkLoading}>
@@ -97,7 +96,7 @@ function Milk({navigation}) {
                 required={false}
                 date={fromDate}
                 placeholder={'Select from date'}
-                onDateChange={date => setFromDateHandler(date)}
+                onDateChange={(date) => setFromDateHandler(date)}
               />
             </View>
 
@@ -106,61 +105,63 @@ function Milk({navigation}) {
                 required={false}
                 date={toDate}
                 placeholder={'Select to date'}
-                onDateChange={date => setToDateHandler(date)}
+                onDateChange={(date) => setToDateHandler(date)}
               />
             </View>
           </View>
 
-           
-            <View style={milkStyles.subChildTwoContainer}>
-              <View style={milkStyles.subSubChildTwoContainer}>
-                <Text>Total Milk</Text>
-              </View>
-  
-              <View style={milkStyles.subSubChildTwoContainerLabel}>
-                <Text>{milkReducerState.milkData.length == 0 ? '0' : getTotalMilk() }</Text>
-              </View>
+          <View style={milkStyles.subChildTwoContainer}>
+            <View style={milkStyles.subSubChildTwoContainer}>
+              <Text>Total Milk</Text>
             </View>
-            
+
+            <View style={milkStyles.subSubChildTwoContainerLabel}>
+              <Text>
+                {milkReducerState.milkData.length == 0 ? '0' : getTotalMilk()}
+              </Text>
+            </View>
+          </View>
         </View>
 
-        {milkReducerState.milkData.length == 0 && milkReducerState.milkLoading == false ? (
+        {milkReducerState.milkData.length == 0 &&
+        milkReducerState.milkLoading == false ? (
           <View style={milkStyles.noRecordView}>
             <Text style={milkStyles.noRecordText}>No Record Found</Text>
           </View>
         ) : (
           <ScrollView
-          // contentContainerStyle={styles.scrollView}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        >
-          <FlatList
-            data={milkReducerState.milkData}
-            renderItem={({item}) => (
-              <TouchableOpacity
-                activeOpacity={0.6}
-                onLongPress={() => onLongPress(item)}
-                style={milkStyles.cardContainer}>
-                <View style={milkStyles.cardContainerChild}>
-                  <Row label={'Date'} value={formatDate(item.date)} />
-                  <Row label={'Animal Tag'} value={item.tag} />
-                  <Row
-                    label={'Morning Milk'}
-                    value={`${item.milkProduceAM} liter`}
-                  />
-                  <Row
-                    label={'Evening Milk'}
-                    value={`${item.milkProducePM} liter`}
-                  />
-                  <Row
-                    label={'Total Milk'}
-                    value={item.milkProduceAM + item.milkProducePM}
-                  />
-                </View>
-              </TouchableOpacity>
-            )}
-          />
+            // contentContainerStyle={styles.scrollView}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            <FlatList
+              data={milkReducerState.milkData}
+              renderItem={({item}) => (
+                <TouchableOpacity
+                  activeOpacity={0.6}
+                  onLongPress={() => onLongPress(item)}
+                  style={milkStyles.cardContainer}
+                >
+                  <View style={milkStyles.cardContainerChild}>
+                    <Row label={'Date'} value={formatDate(item.date)} />
+                    <Row label={'Animal Tag'} value={item.tag} />
+                    <Row
+                      label={'Morning Milk'}
+                      value={`${item.milkProduceAM} liter`}
+                    />
+                    <Row
+                      label={'Evening Milk'}
+                      value={`${item.milkProducePM} liter`}
+                    />
+                    <Row
+                      label={'Total Milk'}
+                      value={item.milkProduceAM + item.milkProducePM}
+                    />
+                  </View>
+                </TouchableOpacity>
+              )}
+            />
           </ScrollView>
         )}
       </View>
@@ -330,8 +331,7 @@ const milkStyles = {
   noRecordView: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: '25%'
-
+    marginTop: '25%',
   },
   noRecordText: {
     color: color.black,

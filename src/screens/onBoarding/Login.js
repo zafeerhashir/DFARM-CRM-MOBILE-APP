@@ -5,11 +5,11 @@ import color from '../../assets/color/Index';
 import {shadow} from '../../assets/styles/Index';
 import {Button, Input, SmartView} from '../../components/Index';
 import {passwordRegex, usernameRegex} from '../../conversions/Index';
-import {login} from '../../redux/actions/Index'
+import {login} from '../../redux/actions/Index';
 const imagePath = require('../../assets/img/loginbackground.png');
 
 function Login() {
-  const onBoardingReducerState = useSelector(state => state.onBoarding);
+  const onBoardingReducerState = useSelector((state) => state.onBoarding);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
@@ -17,7 +17,6 @@ function Login() {
   const [passwordError, setPasswordError] = useState(true);
   const usernameRef = useRef();
   const passwordRef = useRef();
-
 
   const callApi = () => {
     const postBodyLogin = {
@@ -29,12 +28,8 @@ function Login() {
   };
 
   return (
-    <SmartView
-    extraScrollHeight={false}
-    >
-      <ImageBackground
-        source={imagePath}
-        style={onBoardingStyles.image}>
+    <SmartView extraScrollHeight={false}>
+      <ImageBackground source={imagePath} style={onBoardingStyles.image}>
         <Input
           autoCapitalize={'none'}
           containerStyles={onBoardingStyles.containerStyles}
@@ -46,9 +41,9 @@ function Login() {
           ref={usernameRef}
           value={username}
           placeholder={'Enter Username'}
-          onChangeText={value => setUsername(value)}
+          onChangeText={(value) => setUsername(value)}
           placeholderTextColor={color.white}
-          error={error => {
+          error={(error) => {
             setUsernameError(error);
           }}
           regex={usernameRegex}
@@ -66,9 +61,9 @@ function Login() {
           ref={passwordRef}
           value={password}
           placeholder={'Enter Password'}
-          onChangeText={value => setPassword(value)}
+          onChangeText={(value) => setPassword(value)}
           placeholderTextColor={color.white}
-          error={error => {
+          error={(error) => {
             setPasswordError(error);
           }}
           regex={passwordRegex}

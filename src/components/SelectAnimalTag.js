@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import color from '../assets/color/Index';
@@ -13,13 +13,13 @@ import {SmartView} from './SmartView';
 import {SearchBar} from 'react-native-elements';
 
 function SelectAnimalTag(props) {
-  const milkReducerState = useSelector(state => state.milk);
+  const milkReducerState = useSelector((state) => state.milk);
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {}, []);
 
-  const onChangeText = async searchTerm => {
+  const onChangeText = async (searchTerm) => {
     setSearchTerm(searchTerm);
 
     if (
@@ -29,7 +29,7 @@ function SelectAnimalTag(props) {
       try {
         var suggestion = await milkReducerState.animalTagData
           .sort()
-          .filter(x => {
+          .filter((x) => {
             return new RegExp(searchTerm, 'i').test(x.tag);
           });
       } catch (e) {
@@ -53,9 +53,8 @@ function SelectAnimalTag(props) {
           <View style={selectAnimalTagStyles.dismissRow}>
             <TouchableOpacity
               style={selectAnimalTagStyles.dismissTextContainer}
-              onPress={() =>
-                dispatch(selectAnimalTagVisible({visible: false}))
-              }>
+              onPress={() => dispatch(selectAnimalTagVisible({visible: false}))}
+            >
               <Text style={{color: color.lightGrey}}>Dismiss</Text>
             </TouchableOpacity>
           </View>
@@ -66,7 +65,7 @@ function SelectAnimalTag(props) {
             containerStyle={styles.searchBarContainerStyle}
             inputContainerStyle={styles.searchBarInputContainerStyle}
             inputStyle={styles.searchBarInputStyle}
-            onChangeText={searchTerm => onChangeText(searchTerm)}
+            onChangeText={(searchTerm) => onChangeText(searchTerm)}
             value={searchTerm}
           />
 
@@ -85,7 +84,8 @@ function SelectAnimalTag(props) {
                   onPress={() =>
                     dispatch(selectAnimalTagItem({tag: item.tag, id: item._id}))
                   }
-                  style={selectAnimalTagStyles.cardContainer}>
+                  style={selectAnimalTagStyles.cardContainer}
+                >
                   <View style={selectAnimalTagStyles.cardContainerChild}>
                     <Row label={'Animal Tag'} value={item.tag} />
                     <Row label={'Animal Tag'} value={item.tag} />

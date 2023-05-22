@@ -43,7 +43,8 @@ function IDate(props, ref) {
         <View style={datePickerStyles.pickerContainer}>
           <TouchableOpacity
             onPress={() => showDatepicker()}
-            style={datePickerStyles.pickerRow}>
+            style={datePickerStyles.pickerRow}
+          >
             <Image
               style={datePickerStyles.datePickerIcon}
               source={require('../assets/img/calendar.png')}
@@ -98,7 +99,7 @@ const datePickerStyles = {
     width: '90%',
     alignItems: 'flex-start',
     borderWidth: 0,
-    marginTop: 20
+    marginTop: 20,
   },
 
   placeholderInputContainer: {
@@ -115,7 +116,6 @@ const datePickerStyles = {
     backgroundColor: color.white,
     ...shadow,
     borderRadius: 5,
-
   },
   datePickerStyle: {
     width: 50,
@@ -132,7 +132,7 @@ const datePickerStyles = {
     borderWidth: 0,
     flexDirection: 'row',
   },
-  dateText: { color: color.black},
+  dateText: {color: color.black},
   placeholderText: {
     color: color.grey,
   },

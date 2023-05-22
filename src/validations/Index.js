@@ -6,8 +6,6 @@ export const charactersRegex = '^[a-zA-Z]*$';
 export const passwordRegex = '^[a-zA-Z0-9]{6,}$';
 export const usernameRegex = '^[a-zA-Z]*$';
 
-
-
 export const validationHandler = async (value, type) => {
   if (await requireFieldValidator(value)) {
     if (type == 'FLOAT') {
@@ -22,7 +20,7 @@ export const validationHandler = async (value, type) => {
   }
 };
 
-export const validateText = async value => {
+export const validateText = async (value) => {
   text = /^\s*([0-9a-zA-Z ]*)\s*$/;
 
   if (text.test(value)) {
@@ -32,7 +30,7 @@ export const validateText = async value => {
   }
 };
 
-export const alphabets = async value => {
+export const alphabets = async (value) => {
   text = /^\s*([a-zA-Z ]*)\s*$/;
 
   if (text.test(value)) {
@@ -42,7 +40,7 @@ export const alphabets = async value => {
   }
 };
 
-export const validateFloat = async int => {
+export const validateFloat = async (int) => {
   integer = /^((\d|[1-9]\d+)(\.\d{1})?|\.\d{1})$/;
 
   if (integer.test(int)) {
@@ -60,7 +58,7 @@ export const rangeValidator = async (int, range) => {
   }
 };
 
-export const requireFieldValidator = async value => {
+export const requireFieldValidator = async (value) => {
   if (value == null || value == undefined || value == '') {
     return await false;
   } else {

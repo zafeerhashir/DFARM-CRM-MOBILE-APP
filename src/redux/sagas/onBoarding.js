@@ -16,16 +16,15 @@ async function saveUser(response) {
 }
 
 async function getUser() {
-  let user = await AsyncStorage.getItem('user')
+  let user = await AsyncStorage.getItem('user');
   return await JSON.parse(user);
 }
 
 async function clearStorage() {
-  await AsyncStorage.clear()
+  await AsyncStorage.clear();
 }
 
 function* login(action) {
-  console.log(action, 'login');
   const response = yield call(network.post, `onboarding/login`, action.payload);
 
   if (response.error) {
@@ -40,12 +39,10 @@ function* login(action) {
   }
 }
 
-
 function* logout() {
-
   // let user = yield  call(getUser)
 
-  // console.log(user,'usrelogut')
+  //
 
   // const response = yield call(network.get, `modules/user/logout/${user._id}`);
 
@@ -56,23 +53,16 @@ function* logout() {
   //     payload: response.errorMessage,
   //   });
   // } else {
-    yield call(clearStorage)
-    yield put({type: constant.LOGOUT_SUCCESS});
+  yield call(clearStorage);
+  yield put({type: constant.LOGOUT_SUCCESS});
   // }
-
- 
 }
 function* restoreToken() {
-
-  let user = yield  call(getUser)
-  if(user == null)
-  {
+  let user = yield call(getUser);
+  if (user == null) {
     yield put({type: constant.RESTORE_TOKEN_FAILURE});
-
-  }
-  else
-  {
-  yield put({type: constant.RESTORE_TOKEN_SUCCESS, payload: user});
+  } else {
+    yield put({type: constant.RESTORE_TOKEN_SUCCESS, payload: user});
   }
 }
 

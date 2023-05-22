@@ -6,7 +6,7 @@ import {charactersRegex, integerRegex} from '../../../validations/Index';
 import {currentDate} from './../../../conversions/Index';
 
 function AddFeedItem({navigation}) {
-  const feedItemReducerState = useSelector(state => state.feedItem);
+  const feedItemReducerState = useSelector((state) => state.feedItem);
   const [feedName, setFeedName] = useState('');
   const [feedUnit, setFeedUnit] = useState('');
   const [feedQuantity, setFeedQuantity] = useState('');
@@ -30,11 +30,9 @@ function AddFeedItem({navigation}) {
     const unsubscribe = navigation.addListener('focus', () => {
       /// date is select but not added
       dispatch(addFeedItemDate({date: date}));
-
     });
     return unsubscribe;
   }, [navigation]);
-
 
   const callApi = () => {
     const postBodyAddFeedItem = {
@@ -65,7 +63,7 @@ function AddFeedItem({navigation}) {
       <Date
         date={date}
         ref={dateRef}
-        onDateChange={date => {
+        onDateChange={(date) => {
           setDate(date);
           dispatch(addFeedItemDate({date: date}));
         }}
@@ -77,8 +75,8 @@ function AddFeedItem({navigation}) {
         value={feedName}
         placeholder={'Enter Feed Name'}
         errorMessage={'Feed Name must be characters'}
-        onChangeText={value => setFeedName(value)}
-        error={error => {
+        onChangeText={(value) => setFeedName(value)}
+        error={(error) => {
           setFeedNameError(error);
         }}
         regex={charactersRegex}
@@ -92,8 +90,8 @@ function AddFeedItem({navigation}) {
         value={feedUnit}
         placeholder={'Enter Feed Unit'}
         errorMessage={'Feed Unit must be numeric'}
-        onChangeText={value => setFeedUnit(value)}
-        error={error => {
+        onChangeText={(value) => setFeedUnit(value)}
+        error={(error) => {
           setFeedUnitError(error);
         }}
         regex={integerRegex}
@@ -107,8 +105,8 @@ function AddFeedItem({navigation}) {
         value={feedQuantity}
         placeholder={'Enter Feed Quantity'}
         errorMessage={'Feed Quantity must be numeric'}
-        onChangeText={value => setFeedQuantity(value)}
-        error={error => {
+        onChangeText={(value) => setFeedQuantity(value)}
+        error={(error) => {
           setFeedQuantityError(error);
         }}
         regex={integerRegex}
@@ -122,8 +120,8 @@ function AddFeedItem({navigation}) {
         value={feedPrice}
         placeholder={'Feed Price'}
         errorMessage={'Feed Price must be numeric'}
-        onChangeText={value => setFeedPrice(value)}
-        error={error => {
+        onChangeText={(value) => setFeedPrice(value)}
+        error={(error) => {
           setFeedPriceError(error);
         }}
         regex={integerRegex}

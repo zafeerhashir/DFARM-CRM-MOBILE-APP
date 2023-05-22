@@ -11,7 +11,7 @@ function AddUser() {
   const [usernameError, setUsernameError] = useState('');
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const userReducerState = useSelector(state => state.user);
+  const userReducerState = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const usernameRef = useRef();
   const passwordRef = useRef();
@@ -38,8 +38,8 @@ function AddUser() {
         value={username}
         placeholder={'Enter Username'}
         errorMessage={'Username only contain letters'}
-        onChangeText={value => setUsername(value)}
-        error={error => {
+        onChangeText={(value) => setUsername(value)}
+        error={(error) => {
           setUsernameError(error);
         }}
         regex={usernameRegex}
@@ -54,8 +54,8 @@ function AddUser() {
         value={password}
         placeholder={'Enter Password'}
         errorMessage={'Password characters is not correct '}
-        onChangeText={value => setPassword(value)}
-        error={error => {
+        onChangeText={(value) => setPassword(value)}
+        error={(error) => {
           setPasswordError(error);
         }}
         regex={passwordRegex}

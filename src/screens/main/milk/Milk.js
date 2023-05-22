@@ -15,7 +15,7 @@ import {
   EditMilk,
   Row,
   ListView,
-  NumberFormatter
+  NumberFormatter,
 } from '../../../components/Index';
 import {
   deleteMilk,
@@ -29,7 +29,7 @@ function Milk({navigation}) {
   const [fromDate, setFromDate] = useState(agoDate(7));
   const [visible, setVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(false);
-  const milkReducerState = useSelector(state => state.milk);
+  const milkReducerState = useSelector((state) => state.milk);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -51,7 +51,7 @@ function Milk({navigation}) {
     }
   };
 
-  const _deleteMilk = item => {
+  const _deleteMilk = (item) => {
     setVisible(false);
     const payload = {animalTagId: item.animalTagId, _id: item._id};
     dispatch(deleteMilk(payload));
@@ -65,12 +65,7 @@ function Milk({navigation}) {
       total = total + (e.milkProduceAM + e.milkProducePM);
     }
 
-       return (
-      <NumberFormatter
-        value={total}
-        suffix={' liter'}
-      />
-    );
+    return <NumberFormatter value={total} suffix={' liter'} />;
   };
   // refreshing={milkReducerState.milkLoading}
   // onRefresh={() => onRefresh()}
@@ -87,111 +82,112 @@ function Milk({navigation}) {
 
     <ListView
       refreshing={milkReducerState.milkLoading}
-      onRefresh={() => onRefresh()}>
-        <View style={milkStyles.pickerRow}>
-          <View style={milkStyles.pickerColumnLeft}>
-            <Date
-              required={false}
-              date={fromDate}
-              placeholder={'Select from date'}
-              onDateChange={date => {
-                setFromDate(date);
-              }}
-            />
-          </View>
-          <View style={milkStyles.pickerColumnRight}>
-            <Date
-              required={false}
-              minDate={fromDate}
-              date={toDate}
-              placeholder={'Select to date'}
-              onDateChange={date => {
-                setToDate(date);
-              }}
-            />
-          </View>
-        </View>
-
-        <View style={milkStyles.countContainer}>
-          <View style={milkStyles.countLabelContainer}>
-            <Text style={milkStyles.countLabel}>Total Milk</Text>
-          </View>
-
-          <View style={milkStyles.countValueContainer}>
-            <Text style={milkStyles.countValue}>
-              {milkReducerState.milkData.length == 0 ? '0' : getTotalMilk()}
-            </Text>
-          </View>
-        </View>
-
-        {visible && (
-          <CardLongPressView
-            onEditPress={() => {
-              dispatch(editMilkVisible({visible: true})), setVisible(false);
+      onRefresh={() => onRefresh()}
+    >
+      <View style={milkStyles.pickerRow}>
+        <View style={milkStyles.pickerColumnLeft}>
+          <Date
+            required={false}
+            date={fromDate}
+            placeholder={'Select from date'}
+            onDateChange={(date) => {
+              setFromDate(date);
             }}
-            onDeletePress={() => _deleteMilk(selectedItem)}
-            onTabOut={() => setVisible(false)}
           />
-        )}
-
-        {milkReducerState.editMilkVisible && (
-          <EditMilk selectedItem={selectedItem} />
-        )}
-        {console.log(selectedItem, 'selectedItem')}
-
-        {milkReducerState.milkData.length == 0 &&
-        milkReducerState.milkLoading == false ? (
-          <View style={milkStyles.noRecordView}>
-            <Text style={milkStyles.noRecordText}>No Record Found</Text>
-          </View>
-        ) : (
-          <FlatList
-            data={milkReducerState.milkData}
-            renderItem={({item}) => (
-              <TouchableOpacity
-                onLongPress={() => {
-                  setVisible(true), setSelectedItem(item);
-                }}
-                style={milkStyles.cardContainer}>
-                <View style={milkStyles.cardContainerChild}>
-                  <Row label={'Date'} value={formatDate(item.date)} />
-                  <Row label={'Animal Tag'} value={item.tag} />
-                  <Row
-                    label={'Morning Milk'}
-                    value={`${item.milkProduceAM} liter`}
-                  />
-                  <Row
-                    label={'Evening Milk'}
-                    value={`${item.milkProducePM} liter`}
-                  />
-                  <Row
-                    label={'Total Milk'}
-                    value={item.milkProduceAM + item.milkProducePM}
-                  />
-                </View>
-              </TouchableOpacity>
-            )}
+        </View>
+        <View style={milkStyles.pickerColumnRight}>
+          <Date
+            required={false}
+            minDate={fromDate}
+            date={toDate}
+            placeholder={'Select to date'}
+            onDateChange={(date) => {
+              setToDate(date);
+            }}
           />
-        )}
+        </View>
+      </View>
+
+      <View style={milkStyles.countContainer}>
+        <View style={milkStyles.countLabelContainer}>
+          <Text style={milkStyles.countLabel}>Total Milk</Text>
+        </View>
+
+        <View style={milkStyles.countValueContainer}>
+          <Text style={milkStyles.countValue}>
+            {milkReducerState.milkData.length == 0 ? '0' : getTotalMilk()}
+          </Text>
+        </View>
+      </View>
+
+      {visible && (
+        <CardLongPressView
+          onEditPress={() => {
+            dispatch(editMilkVisible({visible: true})), setVisible(false);
+          }}
+          onDeletePress={() => _deleteMilk(selectedItem)}
+          onTabOut={() => setVisible(false)}
+        />
+      )}
+
+      {milkReducerState.editMilkVisible && (
+        <EditMilk selectedItem={selectedItem} />
+      )}
+      {console.log(selectedItem, 'selectedItem')}
+
+      {milkReducerState.milkData.length == 0 &&
+      milkReducerState.milkLoading == false ? (
+        <View style={milkStyles.noRecordView}>
+          <Text style={milkStyles.noRecordText}>No Record Found</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={milkReducerState.milkData}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              onLongPress={() => {
+                setVisible(true), setSelectedItem(item);
+              }}
+              style={milkStyles.cardContainer}
+            >
+              <View style={milkStyles.cardContainerChild}>
+                <Row label={'Date'} value={formatDate(item.date)} />
+                <Row label={'Animal Tag'} value={item.tag} />
+                <Row
+                  label={'Morning Milk'}
+                  value={`${item.milkProduceAM} liter`}
+                />
+                <Row
+                  label={'Evening Milk'}
+                  value={`${item.milkProducePM} liter`}
+                />
+                <Row
+                  label={'Total Milk'}
+                  value={item.milkProduceAM + item.milkProducePM}
+                />
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      )}
     </ListView>
   );
 }
 
 export {Milk};
 
-import {shadow} from '../../../assets/styles/Index'
+import {shadow} from '../../../assets/styles/Index';
 
 const milkStyles = {
   pickerRow: {
     width: '90%',
     alignItems: 'center',
     justifyContent: 'space-between',
-    flexDirection:'row',
-    marginBottom: 20
+    flexDirection: 'row',
+    marginBottom: 20,
   },
   pickerColumnLeft: {
     borderWidth: 0,
-
   },
   pickerColumnRight: {
     borderWidth: 0,

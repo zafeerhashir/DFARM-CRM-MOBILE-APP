@@ -6,8 +6,7 @@ const initialState = {
   onBoardingLoadingError: false,
   userToken: null,
   user: {},
-  splashLoading: false
-
+  splashLoading: false,
 };
 
 function onBoarding(state = initialState, action) {
@@ -16,8 +15,6 @@ function onBoarding(state = initialState, action) {
       return {...state, onBoardingLoading: true};
     case constant.LOGIN_SUCCESS:
       // AsyncStorage.setItem('userToken', action.payload.token)
-
-  
 
       return {
         ...state,
@@ -31,7 +28,7 @@ function onBoarding(state = initialState, action) {
 
     case constant.LOGOUT_START:
       // AsyncStorage.clear()
-      return {...state, onBoardingLoadingError: false, onBoardingLoading: true };
+      return {...state, onBoardingLoadingError: false, onBoardingLoading: true};
 
     case constant.LOGOUT_SUCCESS:
       // AsyncStorage.clear()
@@ -48,7 +45,7 @@ function onBoarding(state = initialState, action) {
         userToken: action.payload.token,
         user: action.payload,
         onBoardingLoadingError: false,
-        splashLoading: false
+        splashLoading: false,
       };
 
     case constant.RESTORE_TOKEN_START:
@@ -56,19 +53,17 @@ function onBoarding(state = initialState, action) {
         ...state,
         onBoardingLoadingError: false,
         onBoardingLoading: false,
-        splashLoading: true
+        splashLoading: true,
       };
 
-      case constant.RESTORE_TOKEN_FAILURE:
-        return {
-          ...state,
+    case constant.RESTORE_TOKEN_FAILURE:
+      return {
+        ...state,
         userToken: null,
         user: null,
         onBoardingLoadingError: true,
-        splashLoading: false
-        };
-      
-      
+        splashLoading: false,
+      };
 
     default:
       return state;
