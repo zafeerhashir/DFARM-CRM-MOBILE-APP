@@ -1,23 +1,23 @@
-import React, {useEffect,useState} from 'react';
-import {FlatList, Text, TouchableOpacity, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import color from '../assets/color/Index';
 import styles from '../assets/styles/Index';
 import {
   selectAnimalTagItem,
   selectAnimalTagVisible,
 } from '../redux/actions/Index';
-import {MYModal} from './Modal';
-import {Row} from './Row';
-import {SmartView} from './SmartView';
-import {SearchBar} from 'react-native-elements';
+import { MYModal } from './Modal';
+import { Row } from './Row';
+import { SmartView } from './SmartView';
+import { SearchBar } from 'react-native-elements';
 
 function SelectAnimalTag(props) {
   const milkReducerState = useSelector(state => state.milk);
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState('');
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const onChangeText = async searchTerm => {
     setSearchTerm(searchTerm);
@@ -33,16 +33,8 @@ function SelectAnimalTag(props) {
             return new RegExp(searchTerm, 'i').test(x.tag);
           });
       } catch (e) {
-        // this.setState({searchFound: false});
+        // 
       }
-
-      if (suggestion.length == 0) {
-        // this.setState({searchFound: false});
-      } else {
-        // this.setState({suggestion, searchFound: true});
-      }
-    } else {
-      // this.setState({suggestion: []});
     }
   };
 
@@ -54,9 +46,9 @@ function SelectAnimalTag(props) {
             <TouchableOpacity
               style={selectAnimalTagStyles.dismissTextContainer}
               onPress={() =>
-                dispatch(selectAnimalTagVisible({visible: false}))
+                dispatch(selectAnimalTagVisible({ visible: false }))
               }>
-              <Text style={{color: color.lightGrey}}>Dismiss</Text>
+              <Text style={{ color: color.lightGrey }}>Dismiss</Text>
             </TouchableOpacity>
           </View>
 
@@ -71,7 +63,7 @@ function SelectAnimalTag(props) {
           />
 
           {milkReducerState.animalTagData.length == 0 &&
-          milkReducerState.milkLoading == false ? (
+            milkReducerState.milkLoading == false ? (
             <View style={selectAnimalTagStyles.noRecordView}>
               <Text style={selectAnimalTagStyles.noRecordText}>
                 No Record Found
@@ -81,10 +73,10 @@ function SelectAnimalTag(props) {
             <FlatList
               data={milkReducerState.animalTagData}
               keyExtractor={(item) => item._Id}
-              renderItem={({item}) => (
+              renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() =>
-                    dispatch(selectAnimalTagItem({tag: item.tag, id: item._id}))
+                    dispatch(selectAnimalTagItem({ tag: item.tag, id: item._id }))
                   }
                   style={selectAnimalTagStyles.cardContainer}>
                   <View style={selectAnimalTagStyles.cardContainerChild}>
@@ -109,7 +101,7 @@ function SelectAnimalTag(props) {
   );
 }
 
-export {SelectAnimalTag};
+export { SelectAnimalTag };
 
 const selectAnimalTagStyles = {
   dismissRow: {
