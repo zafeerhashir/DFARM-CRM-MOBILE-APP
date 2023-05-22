@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   FlatList,
   Text,
@@ -6,7 +6,7 @@ import {
   View,
   RefreshControl,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import color from '../../../assets/color/Index';
 import styles from '../../../assets/styles/Index';
 import {
@@ -23,10 +23,10 @@ import {
   editMedicineVisible,
   filterMedicineData,
 } from '../../../redux/actions/Index';
-import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
+import { agoDate, currentDate, formatDate } from './../../../conversions/Index';
 import { currency } from '../../../constants'
 
-function Medicine({navigation}) {
+function Medicine({ navigation }) {
   const [toDate, setToDate] = useState(currentDate());
   const [fromDate, setFromDate] = useState(agoDate(7));
   const [visible, setVisible] = useState(false);
@@ -40,7 +40,7 @@ function Medicine({navigation}) {
       getMedicineMilkData();
     });
     return unsubscribe;
-  }, [navigation, fromDate, toDate, medicineReducerState.editMedicineVisible, ]);
+  }, [navigation, fromDate, toDate, medicineReducerState.editMedicineVisible,]);
 
   const onRefresh = useCallback(() => {
     getMedicineMilkData();
@@ -48,14 +48,14 @@ function Medicine({navigation}) {
 
   const getMedicineMilkData = async () => {
     if (fromDate !== '' && toDate !== '') {
-      const body = {toDate: toDate, fromDate: fromDate};
+      const body = { toDate: toDate, fromDate: fromDate };
       dispatch(filterMedicineData(body));
     }
   };
 
   const _deleteMedicine = (item) => {
     setVisible(false);
-    const payload = {id: item._id};
+    const payload = { id: item._id };
     dispatch(deleteMedicine(payload));
     getMedicineMilkData();
   };
@@ -63,14 +63,14 @@ function Medicine({navigation}) {
 
   const dataFormatter = () => {
     const data = []
-    for(let p of medicineReducerState.medicineData){
-       data.push({
-          Date: formatDate(p.date),
-          AnimalTag: p.animal ? p.animal.tag : '',
-          Price: `${p.price} ${currency.PKR}`,
-          Purpose: p.purpose,
-          Name: p.name
-       })
+    for (let p of medicineReducerState.medicineData) {
+      data.push({
+        Date: formatDate(p.date),
+        AnimalTag: p.animal ? p.animal.tag : '',
+        Price: `${p.price} ${currency.PKR}`,
+        Purpose: p.purpose,
+        Name: p.name
+      })
     }
     return data
   }
@@ -79,83 +79,82 @@ function Medicine({navigation}) {
   // onRefresh={() => onRefresh()}
 
   return (
-   <>
-    <ListView
-      refreshing={medicineReducerState.medicineLoading}
-      onRefresh={() => onRefresh()}>
-      <View style={medicineStyles.pickerRow}>
-        <View style={medicineStyles.pickerColumnLeft}>
-          <Date
-            required={false}
-            date={fromDate}
-            placeholder={'Select from date'}
-            onDateChange={(date) => {
-              setFromDate(date);
-            }}
-          />
-        </View>
-        <View style={medicineStyles.pickerColumnRight}>
-          <Date
-            required={false}
-            minDate={fromDate}
-            date={toDate}
-            placeholder={'Select to date'}
-            onDateChange={(date) => {
-              setToDate(date);
-            }}
-          />
-        </View>
-      </View>
-
-      
-
-      {visible && (
-        <CardLongPressView
-          onEditPress={() => {
-            dispatch(editMedicineVisible({visible: true})), setVisible(false);
-          }}
-          onDeletePress={() => _deleteMedicine(selectedItem)}
-          onTabOut={() => setVisible(false)}
-        />
-      )}
-
-      {medicineReducerState.editMedicineVisible && (
-        <EditMedicine selectedItem={selectedItem} />
-      )}
-      {console.log(selectedItem, 'selectedItem')}
-
-      {medicineReducerState.medicineData.length == 0 &&
-      medicineReducerState.medicineLoading == false ? (
-        <View style={medicineStyles.noRecordView}>
-          <Text style={medicineStyles.noRecordText}>No Record Found</Text>
-        </View>
-      ) : (
-        <FlatList
-          data={medicineReducerState.medicineData}
-          keyExtractor={(item) => item._id}
-          renderItem={({item}) => (
-            <TouchableOpacity
-              onLongPress={() => {
-                setVisible(true), setSelectedItem(item);
+    <>
+      <ListView
+        refreshing={medicineReducerState.medicineLoading}
+        onRefresh={() => onRefresh()}>
+        <View style={medicineStyles.pickerRow}>
+          <View style={medicineStyles.pickerColumnLeft}>
+            <Date
+              required={false}
+              date={fromDate}
+              placeholder={'Select from date'}
+              onDateChange={(date) => {
+                setFromDate(date);
               }}
-              style={medicineStyles.cardContainer}>
-              <View style={medicineStyles.cardContainerChild}>
-                <Row label={'Date'} value={formatDate(item.date)} />
+            />
+          </View>
+          <View style={medicineStyles.pickerColumnRight}>
+            <Date
+              required={false}
+              minDate={fromDate}
+              date={toDate}
+              placeholder={'Select to date'}
+              onDateChange={(date) => {
+                setToDate(date);
+              }}
+            />
+          </View>
+        </View>
 
-                {item.animal !== null && (
-                  <Row label={'Animal Tag'} value={item.animal.tag} />
-                )}
-                <Row label={'Price'} value={`${item.price} ${currency.PKR}`} />
-                <Row label={'Name'} value={item.name} />
-                <Row label={'Purpose'} value={item.purpose} />
-              </View>
-            </TouchableOpacity>
-          )}
-        />
-      )}
-    </ListView>
-     {medicineReducerState.medicineData.length !== 0 &&
-      <PDFGenerator
+
+
+        {visible && (
+          <CardLongPressView
+            onEditPress={() => {
+              dispatch(editMedicineVisible({ visible: true })), setVisible(false);
+            }}
+            onDeletePress={() => _deleteMedicine(selectedItem)}
+            onTabOut={() => setVisible(false)}
+          />
+        )}
+
+        {medicineReducerState.editMedicineVisible && (
+          <EditMedicine selectedItem={selectedItem} />
+        )}
+
+        {medicineReducerState.medicineData.length == 0 &&
+          medicineReducerState.medicineLoading == false ? (
+          <View style={medicineStyles.noRecordView}>
+            <Text style={medicineStyles.noRecordText}>No Record Found</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={medicineReducerState.medicineData}
+            keyExtractor={(item) => item._id}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onLongPress={() => {
+                  setVisible(true), setSelectedItem(item);
+                }}
+                style={medicineStyles.cardContainer}>
+                <View style={medicineStyles.cardContainerChild}>
+                  <Row label={'Date'} value={formatDate(item.date)} />
+
+                  {item.animal !== null && (
+                    <Row label={'Animal Tag'} value={item.animal.tag} />
+                  )}
+                  <Row label={'Price'} value={`${item.price} ${currency.PKR}`} />
+                  <Row label={'Name'} value={item.name} />
+                  <Row label={'Purpose'} value={item.purpose} />
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+        )}
+      </ListView>
+      {medicineReducerState.medicineData.length !== 0 &&
+        <PDFGenerator
           keys={['AnimalTag', 'Price', 'Name', 'Date', 'Purpose']}
           data={dataFormatter()}
           name={'Medicine'}
@@ -165,9 +164,9 @@ function Medicine({navigation}) {
   );
 }
 
-export {Medicine};
+export { Medicine };
 
-import {shadow} from '../../../assets/styles/Index';
+import { shadow } from '../../../assets/styles/Index';
 
 const medicineStyles = {
   pickerRow: {

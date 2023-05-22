@@ -1,15 +1,15 @@
-import {Alert} from 'react-native';
-import {call, put, takeLatest} from 'redux-saga/effects';
+import { Alert } from 'react-native';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import network from '../../services/network';
 import constant from '../constant/Index';
 
 async function serverErrorDialogue(message) {
-  Alert.alert('Sorry', message, [{text: 'OK'}], {cancelable: false});
+  Alert.alert('Sorry', message, [{ text: 'OK' }], { cancelable: false });
 }
 
 function* getAnimal() {
   const response = yield call(network.get, 'modules/animal');
-  console.log(response,'getAnimal')
+
   if (response.error) {
     serverErrorDialogue(response.errorMessage);
     yield put({
@@ -37,7 +37,7 @@ function* getAnimalMilk(action) {
     var filterData = response.data.filter(
       x => x._id == action.payload.animalTagId,
     );
-    console.log(filterData, 'modifyMfilterDatailkData');
+    ;
     const fromDate = new Date(action.payload.fromDate);
     const toDate = new Date(action.payload.toDate);
 
@@ -56,7 +56,7 @@ function* getAnimalMilk(action) {
 }
 
 function* addAnimal(action) {
-  console.log(action, 'addMilk');
+  ;
   const response = yield call(network.post, `modules/animal`, action.payload);
 
   if (response.error) {
@@ -66,18 +66,18 @@ function* addAnimal(action) {
       payload: response.errorMessage,
     });
   } else {
-    yield put({type: constant.ADD_ANIMAL_SUCCESS});
+    yield put({ type: constant.ADD_ANIMAL_SUCCESS });
   }
 }
 
 function* deleteAnimal(action) {
-  console.log(action, 'deleteAnimal');
+  ;
 
   const response = yield call(
     network.delete,
     `modules/animal/${action.payload.animalTagId}`,
   );
-  console.log(response,'deletedeleteAnimal')
+
   if (response.error) {
     serverErrorDialogue(response.errorMessage);
     yield put({
@@ -92,7 +92,7 @@ function* deleteAnimal(action) {
 }
 
 function* editAnimal(action) {
-  console.log(action, 'editAnimal');
+  ;
 
   const response = yield call(
     network.patch,
@@ -101,7 +101,7 @@ function* editAnimal(action) {
   );
 
 
-  console.log(response, 'editAnimalresponse');
+  ;
 
   if (response.error) {
     serverErrorDialogue(response.errorMessage);
@@ -123,4 +123,4 @@ function* animalWatcherSaga() {
   yield takeLatest(constant.GET_ANIMAL_START, getAnimal);
   yield takeLatest(constant.GET_ANIMAL_MILK_START, getAnimalMilk);
 }
-export {animalWatcherSaga};
+export { animalWatcherSaga };

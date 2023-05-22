@@ -4,7 +4,7 @@ import network from '../../services/network';
 import constant from '../constant/Index';
 
 async function serverErrorDialogue(message) {
-  Alert.alert('Sorry', message, [{text: 'OK'}], {cancelable: false});
+  Alert.alert('Sorry', message, [{ text: 'OK' }], { cancelable: false });
 }
 
 async function modifyMilkData(response) {
@@ -33,7 +33,7 @@ function* getMilk() {
     });
   } else {
     var data = yield call(modifyMilkData, response.data);
-    console.log(response.data, 'modifyMilkData');
+    ;
     yield put({
       type: constant.GET_MILK_SUCCESS,
       payload: data,
@@ -42,7 +42,7 @@ function* getMilk() {
 }
 
 function* addMilk(action) {
-  console.log(action, 'addMilk');
+  ;
   const response = yield call(
     network.post,
     `modules/milk/${action.payload.animalTagId}`,
@@ -56,7 +56,7 @@ function* addMilk(action) {
       payload: response.errorMessage,
     });
   } else {
-    yield put({type: constant.ADD_MILK_SUCCESS});
+    yield put({ type: constant.ADD_MILK_SUCCESS });
   }
 }
 
@@ -70,7 +70,7 @@ function* filterMilkData(action) {
     });
   } else {
     var modifyData = yield call(modifyMilkData, response.data);
-    console.log(modifyData, 'modifyMilkData');
+    ;
     const fromDate = new Date(action.payload.fromDate);
     const toDate = new Date(action.payload.toDate);
 
@@ -89,7 +89,7 @@ function* filterMilkData(action) {
 }
 
 function* deleteMilk(action) {
-  console.log(action, 'deleteMilk');
+  ;
 
   const response = yield call(
     network.delete,
@@ -109,7 +109,7 @@ function* deleteMilk(action) {
 }
 
 function* editMilk(action) {
-  console.log(action, 'editMilk');
+  ;
 
   const response = yield call(
     network.patch,
@@ -141,7 +141,7 @@ function* getAnimalTag() {
       payload: response.errorMessage,
     });
   } else {
-    console.log(response.data, 'GET_ANIMAL_SUCCESS');
+    ;
 
     yield put({
       type: constant.GET_ANIMAL_TAG_SUCCESS,

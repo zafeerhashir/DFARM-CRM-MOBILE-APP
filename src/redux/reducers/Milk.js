@@ -1,8 +1,8 @@
 import constant from '../constant/Index';
-import {gainsboro} from 'color-name';
+import { gainsboro } from 'color-name';
 
 const initialState = {
-  selectAnimalTagItem: {tag: '', id: ''},
+  selectAnimalTagItem: { tag: '', id: '' },
   animalTagData: [],
   milkData: [],
   milkPerDayData: [],
@@ -12,16 +12,16 @@ const initialState = {
   editMilkVisible: false,
   editMilkPerDayVisible: false,
   selectAnimalTagVisible: false,
-  animalTagSearchResults:[],
+  animalTagSearchResults: [],
   animalTagSearchTerm: ''
 };
 
 function milk(state = initialState, action) {
   switch (action.type) {
     case constant.GET_ANIMAL_TAG_START:
-      return {...state, milkLoading: true};
+      return { ...state, milkLoading: true };
     case constant.GET_ANIMAL_TAG_SUCCESS:
-      console.log(action.payload, '.GET_ANIMAL_TAG_SUCCESS');
+      ;
       return {
         ...state,
         animalTagData: action.payload,
@@ -30,12 +30,12 @@ function milk(state = initialState, action) {
         milkLoadingError: false,
       };
     case constant.GET_ANIMAL_TAG_FAILURE:
-      return {...state, milkLoadingError: true, milkLoading: false};
+      return { ...state, milkLoadingError: true, milkLoading: false };
 
     case constant.GET_MILK_START:
-      return {...state, milkLoadingError: false, milkLoading: true};
+      return { ...state, milkLoadingError: false, milkLoading: true };
     case constant.GET_MILK_SUCCESS:
-      console.log(action.payload, 'milkData');
+      ;
       return {
         ...state,
         milkData: action.payload,
@@ -76,7 +76,7 @@ function milk(state = initialState, action) {
         editMilkVisible: action.payload.visible,
       };
 
-      case constant.EDIT_MILK_PER_DAY_VISIBLE:
+    case constant.EDIT_MILK_PER_DAY_VISIBLE:
       return {
         ...state,
         editMilkPerDayVisible: action.payload.visible,
@@ -165,28 +165,28 @@ function milk(state = initialState, action) {
         milkData: [],
       };
 
-      case constant.FILTER_MILK_PER_DAY_DATA_START:
-        return {
-          ...state,
-          milkLoading: true,
-          milkLoadingError: false,
-        };
-  
-      case constant.FILTER_MILK_PER_DAY_DATA_SUCCESS:
-        return {
-          ...state,
-          milkPerDayData: action.payload,
-          milkLoadingError: false,
-          milkLoading: false,
-        };
-  
-      case constant.FILTER_MILK_PER_DAY_DATA_FAILURE:
-        return {
-          ...state,
-          milkLoadingError: true,
-          milkLoading: false,
-          milkPerDayData: [],
-        };  
+    case constant.FILTER_MILK_PER_DAY_DATA_START:
+      return {
+        ...state,
+        milkLoading: true,
+        milkLoadingError: false,
+      };
+
+    case constant.FILTER_MILK_PER_DAY_DATA_SUCCESS:
+      return {
+        ...state,
+        milkPerDayData: action.payload,
+        milkLoadingError: false,
+        milkLoading: false,
+      };
+
+    case constant.FILTER_MILK_PER_DAY_DATA_FAILURE:
+      return {
+        ...state,
+        milkLoadingError: true,
+        milkLoading: false,
+        milkPerDayData: [],
+      };
 
     case constant.SEARCH_ANIMAL_TAG:
       if (
@@ -227,4 +227,4 @@ function milk(state = initialState, action) {
   }
 }
 
-export {milk};
+export { milk };

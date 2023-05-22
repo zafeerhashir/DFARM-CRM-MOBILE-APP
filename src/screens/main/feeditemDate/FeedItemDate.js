@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, Text, TouchableOpacity, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import color from '../../../assets/color/Index';
 import styles from '../../../assets/styles/Index';
 import {
@@ -15,9 +15,9 @@ import {
   editMilkVisible,
   filterMilkData,
 } from '../../../redux/actions/Index';
-import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
+import { agoDate, currentDate, formatDate } from './../../../conversions/Index';
 
-function FeedItemDate({navigation}) {
+function FeedItemDate({ navigation }) {
   const [toDate, setToDate] = useState(currentDate());
   const [fromDate, setFromDate] = useState(agoDate(7));
   const [visible, setVisible] = useState(false);
@@ -47,14 +47,14 @@ function FeedItemDate({navigation}) {
 
   const getFilterMilkData = () => {
     if (fromDate !== '' && toDate !== '') {
-      const body = {toDate: toDate, fromDate: fromDate};
+      const body = { toDate: toDate, fromDate: fromDate };
       dispatch(filterMilkData(body));
     }
   };
 
   const _deleteMilk = item => {
     setVisible(false);
-    const payload = {animalTagId: item.animalTagId, _id: item._id};
+    const payload = { animalTagId: item.animalTagId, _id: item._id };
     dispatch(deleteMilk(payload));
     getFilterMilkData();
   };
@@ -111,7 +111,7 @@ function FeedItemDate({navigation}) {
         {visible && (
           <CardLongPressView
             onEditPress={() => {
-              dispatch(editMilkVisible({visible: true})), setVisible(false);
+              dispatch(editMilkVisible({ visible: true })), setVisible(false);
             }}
             onDeletePress={() => _deleteMilk(selectedItem)}
             onTabOut={() => setVisible(false)}
@@ -121,10 +121,9 @@ function FeedItemDate({navigation}) {
         {milkReducerState.editMilkVisible && (
           <EditMilk selectedItem={selectedItem} />
         )}
-        {console.log(selectedItem, 'selectedItem')}
 
         {milkReducerState.milkData.length == 0 &&
-        milkReducerState.milkLoading == false ? (
+          milkReducerState.milkLoading == false ? (
           <View style={milkStyles.noRecordView}>
             <Text style={milkStyles.noRecordText}>No Record Found</Text>
           </View>
@@ -134,7 +133,7 @@ function FeedItemDate({navigation}) {
             keyExtractor={(item) => item._Id}
             onRefresh={() => onRefresh()}
             data={milkReducerState.milkData}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <TouchableOpacity
                 onLongPress={() => {
                   setVisible(true), setSelectedItem(item);
@@ -165,7 +164,7 @@ function FeedItemDate({navigation}) {
   );
 }
 
-export {FeedItemDate};
+export { FeedItemDate };
 
 const milkStyles = {
   pickerRow: {
@@ -175,7 +174,7 @@ const milkStyles = {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  pickerColumnLeft: {width: '50%', justifyContent: 'center', borderWidth: 0},
+  pickerColumnLeft: { width: '50%', justifyContent: 'center', borderWidth: 0 },
   pickerColumnRight: {
     width: '50%',
     justifyContent: 'center',
@@ -212,7 +211,7 @@ const milkStyles = {
     marginBottom: 0,
   },
 
- 
+
   cardContainer: {
     minWidth: '100%',
     alignItems: 'center',
@@ -230,7 +229,7 @@ const milkStyles = {
     ...styles.abstractCardStyles,
   },
 
-  
+
   noRecordView: {
     marginTop: '25%',
     height: 30,

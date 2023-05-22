@@ -1,20 +1,20 @@
-import React, {useEffect, useRef, useState, useCallback} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import color from '../assets/color/Index';
-import {editMedicine, editMedicineVisible} from '../redux/actions/Index';
-import {literRegex, charactersRegex} from '../validations/Index';
-import {Button} from './Button';
-import {Date} from './DatePicker';
-import {Input} from './Input';
-import {MYModal} from './Modal';
-import {SmartView} from './SmartView';
-import {formatDate} from '../conversions/Index';
-import styles, {shadow} from '../assets/styles/Index';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { editMedicine, editMedicineVisible } from '../redux/actions/Index';
+import { literRegex, charactersRegex } from '../validations/Index';
+import { Button } from './Button';
+import { Date } from './DatePicker';
+import { Input } from './Input';
+import { MYModal } from './Modal';
+import { SmartView } from './SmartView';
+import { formatDate } from '../conversions/Index';
+import styles, { shadow } from '../assets/styles/Index';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 function EditMedicine(props) {
-  console.log(props,'EditMedicine')
+
   // const animalTagId = props.selectedItem.animal._id;
   const medicineId = props.selectedItem._id;
   const [price, setPrice] = useState(props.selectedItem.price);
@@ -33,16 +33,16 @@ function EditMedicine(props) {
   const animalTagRef = useRef();
   const dispatch = useDispatch();
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const callApi = () => {
     const postBodyEditMedicine = {
-        date,
-        price,
-        name,
-        purpose,
-      };
-  
+      date,
+      price,
+      name,
+      purpose,
+    };
+
 
     const payload = {
       postBodyEditMedicine,
@@ -59,72 +59,72 @@ function EditMedicine(props) {
         <View style={medicineMilkStyles.dismissRow}>
           <TouchableOpacity
             style={medicineMilkStyles.dismissTextContainer}
-            onPress={() => dispatch(editMedicineVisible({visible: false}))}>
-            <Text style={{color: color.lightGrey}}>Dismiss</Text>
+            onPress={() => dispatch(editMedicineVisible({ visible: false }))}>
+            <Text style={{ color: color.lightGrey }}>Dismiss</Text>
           </TouchableOpacity>
         </View>
 
         <Date
-        date={date}
-        ref={dateRef}
-        onDateChange={(date) => {
-          setDate(date);
-        }}
-      />
+          date={date}
+          ref={dateRef}
+          onDateChange={(date) => {
+            setDate(date);
+          }}
+        />
 
-      <Input
-        label={'Price'}
-        keyboardType={'number-pad'}
-        maxLength={8}
-        ref={priceRef}
-        value={price}
-        placeholder={'Enter Price'}
-        errorMessage={'Price must be in a number'}
-        onChangeText={(value) => setPrice(value)}
-        error={(error) => {
-          setPriceError(error);
-        }}
-        regex={literRegex}
-      />
+        <Input
+          label={'Price'}
+          keyboardType={'number-pad'}
+          maxLength={8}
+          ref={priceRef}
+          value={price}
+          placeholder={'Enter Price'}
+          errorMessage={'Price must be in a number'}
+          onChangeText={(value) => setPrice(value)}
+          error={(error) => {
+            setPriceError(error);
+          }}
+          regex={literRegex}
+        />
 
-      <Input
-        label={'Name'}
-        ref={nameRef}
-        value={name}
-        placeholder={'Enter Name'}
-        errorMessage={'Name must be in alphabets'}
-        onChangeText={(value) => setName(value)}
-        error={(error) => {
-          setNameError(error);
-        }}
-        regex={charactersRegex}
-      />
+        <Input
+          label={'Name'}
+          ref={nameRef}
+          value={name}
+          placeholder={'Enter Name'}
+          errorMessage={'Name must be in alphabets'}
+          onChangeText={(value) => setName(value)}
+          error={(error) => {
+            setNameError(error);
+          }}
+          regex={charactersRegex}
+        />
 
-      <Input
-        label={'Purpose'}
-        ref={purposeRef}
-        value={purpose}
-        placeholder={'Enter purpose'}
-        errorMessage={'Prupose must be an aplhabets'}
-        onChangeText={(value) => setPurpose(value)}
-        error={(error) => {
-          setPurposeError(error);
-        }}
-        regex={charactersRegex}
-      />
+        <Input
+          label={'Purpose'}
+          ref={purposeRef}
+          value={purpose}
+          placeholder={'Enter purpose'}
+          errorMessage={'Prupose must be an aplhabets'}
+          onChangeText={(value) => setPurpose(value)}
+          error={(error) => {
+            setPurposeError(error);
+          }}
+          regex={charactersRegex}
+        />
 
-    <Button
-        error={[priceError, nameError, purposeError]}
-        title={'Submit'}
-        onPress={() => callApi()}
-      />
+        <Button
+          error={[priceError, nameError, purposeError]}
+          title={'Submit'}
+          onPress={() => callApi()}
+        />
 
       </View>
     </MYModal>
   );
 }
 
-export {EditMedicine};
+export { EditMedicine };
 
 const medicineMilkStyles = {
   modalView: {

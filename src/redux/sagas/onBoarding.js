@@ -1,11 +1,11 @@
-import {Alert} from 'react-native';
-import {call, put, takeLatest} from 'redux-saga/effects';
+import { Alert } from 'react-native';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import network from '../../services/network';
 import constant from '../constant/Index';
 import AsyncStorage from '@react-native-community/async-storage';
 
 async function serverErrorDialogue(message) {
-  Alert.alert('Sorry', message, [{text: 'OK'}], {cancelable: false});
+  Alert.alert('Sorry', message, [{ text: 'OK' }], { cancelable: false });
 }
 
 async function saveUser(response) {
@@ -25,7 +25,7 @@ async function clearStorage() {
 }
 
 function* login(action) {
-  console.log(action, 'login');
+  ;
   const response = yield call(network.post, `onboarding/login`, action.payload);
 
   if (response.error) {
@@ -36,7 +36,7 @@ function* login(action) {
     });
   } else {
     yield call(saveUser, response);
-    yield put({type: constant.LOGIN_SUCCESS, payload: response.data.document});
+    yield put({ type: constant.LOGIN_SUCCESS, payload: response.data.document });
   }
 }
 
@@ -45,7 +45,7 @@ function* logout() {
 
   // let user = yield  call(getUser)
 
-  // console.log(user,'usrelogut')
+  // 
 
   // const response = yield call(network.get, `modules/user/logout/${user._id}`);
 
@@ -56,23 +56,21 @@ function* logout() {
   //     payload: response.errorMessage,
   //   });
   // } else {
-    yield call(clearStorage)
-    yield put({type: constant.LOGOUT_SUCCESS});
+  yield call(clearStorage)
+  yield put({ type: constant.LOGOUT_SUCCESS });
   // }
 
- 
+
 }
 function* restoreToken() {
 
-  let user = yield  call(getUser)
-  if(user == null)
-  {
-    yield put({type: constant.RESTORE_TOKEN_FAILURE});
+  let user = yield call(getUser)
+  if (user == null) {
+    yield put({ type: constant.RESTORE_TOKEN_FAILURE });
 
   }
-  else
-  {
-  yield put({type: constant.RESTORE_TOKEN_SUCCESS, payload: user});
+  else {
+    yield put({ type: constant.RESTORE_TOKEN_SUCCESS, payload: user });
   }
 }
 
@@ -82,4 +80,4 @@ function* onBoardingWatcherSaga() {
   yield takeLatest(constant.LOGOUT_START, logout);
 }
 
-export {onBoardingWatcherSaga};
+export { onBoardingWatcherSaga };

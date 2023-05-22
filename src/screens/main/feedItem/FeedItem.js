@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, Text, TouchableOpacity, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import color from '../../../assets/color/Index';
 import styles from '../../../assets/styles/Index';
 import {
@@ -19,10 +19,10 @@ import {
   getFeedData,
   editFeedItemVisible,
 } from '../../../redux/actions/Index';
-import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
+import { agoDate, currentDate, formatDate } from './../../../conversions/Index';
 import { currency } from '../../../constants'
 
-function FeedItem({navigation}) {
+function FeedItem({ navigation }) {
   const [toDate, setToDate] = useState(currentDate());
   const [fromDate, setFromDate] = useState(agoDate(7));
   const [visible, setVisible] = useState(false);
@@ -44,14 +44,14 @@ function FeedItem({navigation}) {
 
   const getData = () => {
     if (fromDate !== '' && toDate !== '') {
-      const body = {toDate: toDate, fromDate: fromDate};
+      const body = { toDate: toDate, fromDate: fromDate };
       dispatch(getFeedData(body));
     }
   };
 
   const _deleteMilk = item => {
     setVisible(false);
-    const payload = {feedItemDateId: item.feedItemDateId, feedItemId: item._id};
+    const payload = { feedItemDateId: item.feedItemDateId, feedItemId: item._id };
     dispatch(deleteFeedItem(payload));
     getData()
   };
@@ -72,105 +72,104 @@ function FeedItem({navigation}) {
 
   const dataFormatter = () => {
     const data = []
-    for(let p of feedItemReducerState.feedItemData){
-       data.push({
-          Date: formatDate(p.date),
-          FeedName: p.name,
-          FeedUnit: p.unit,
-          FeedQuantity: p.quantity,
-          FeedPrice: `${p.price} ${currency.PKR}`
-       })
+    for (let p of feedItemReducerState.feedItemData) {
+      data.push({
+        Date: formatDate(p.date),
+        FeedName: p.name,
+        FeedUnit: p.unit,
+        FeedQuantity: p.quantity,
+        FeedPrice: `${p.price} ${currency.PKR}`
+      })
     }
     return data
   }
 
   return (
     <>
-    <ListView
-      refreshing={feedItemReducerState.feedItemLoading}
-      onRefresh={() => onRefresh()}>
-      <View style={FeedItemStyles.parentContainer}>
-        <View style={FeedItemStyles.pickerRow}>
-          <View style={FeedItemStyles.pickerColumnLeft}>
-            <Date
-              required={false}
-              date={fromDate}
-              placeholder={'Select from date'}
-              onDateChange={date => {
-                setFromDate(date);
-              }}
-            />
-          </View>
-          <View style={FeedItemStyles.pickerColumnRight}>
-            <Date
-              required={false}
-              minDate={fromDate}
-              date={toDate}
-              placeholder={'Select to date'}
-              onDateChange={date => {
-                setToDate(date);
-              }}
-            />
-          </View>
-        </View>
-
-        <View style={FeedItemStyles.countContainer}>
-          <View style={FeedItemStyles.countLabelContainer}>
-            <Text style={FeedItemStyles.countLabel}>Total Price</Text>
-          </View>
-          {feedItemReducerState.feedItemData.length != 0 && (
-            <View style={FeedItemStyles.countValueContainer}>
-              {getTotalFeedPrice()}
+      <ListView
+        refreshing={feedItemReducerState.feedItemLoading}
+        onRefresh={() => onRefresh()}>
+        <View style={FeedItemStyles.parentContainer}>
+          <View style={FeedItemStyles.pickerRow}>
+            <View style={FeedItemStyles.pickerColumnLeft}>
+              <Date
+                required={false}
+                date={fromDate}
+                placeholder={'Select from date'}
+                onDateChange={date => {
+                  setFromDate(date);
+                }}
+              />
             </View>
+            <View style={FeedItemStyles.pickerColumnRight}>
+              <Date
+                required={false}
+                minDate={fromDate}
+                date={toDate}
+                placeholder={'Select to date'}
+                onDateChange={date => {
+                  setToDate(date);
+                }}
+              />
+            </View>
+          </View>
+
+          <View style={FeedItemStyles.countContainer}>
+            <View style={FeedItemStyles.countLabelContainer}>
+              <Text style={FeedItemStyles.countLabel}>Total Price</Text>
+            </View>
+            {feedItemReducerState.feedItemData.length != 0 && (
+              <View style={FeedItemStyles.countValueContainer}>
+                {getTotalFeedPrice()}
+              </View>
+            )}
+          </View>
+
+          {visible && (
+            <CardLongPressView
+              onEditPress={() => {
+                dispatch(editFeedItemVisible({ visible: true })), setVisible(false);
+              }}
+              onDeletePress={() => _deleteMilk(selectedItem)}
+              onTabOut={() => setVisible(false)}
+            />
+          )}
+
+          {feedItemReducerState.editFeedItemVisible && (
+            <EditFeedItem selectedItem={selectedItem} />
+          )}
+
+          {feedItemReducerState.feedItemData.length == 0 &&
+            feedItemReducerState.feedItemLoading == false ? (
+            <View style={FeedItemStyles.noRecordView}>
+              <Text style={FeedItemStyles.noRecordText}>No Record Found</Text>
+            </View>
+          ) : (
+            <FlatList
+              data={feedItemReducerState.feedItemData}
+              keyExtractor={(item) => item._Id}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onLongPress={() => {
+                    setVisible(true), setSelectedItem(item);
+                  }}
+                  style={FeedItemStyles.cardContainer}>
+                  <View style={FeedItemStyles.cardContainerChild}>
+                    <Row label={'Date'} value={formatDate(item.date)} />
+                    <Row label={'Feed Name'} value={item.name} />
+                    <Row label={'Feed Unit'} value={item.unit} />
+                    <Row label={'Feed Quantity'} value={item.quantity} />
+
+                    <Row label={'Feed Price'} value={`${item.price} ${currency.PKR}`} />
+                  </View>
+                </TouchableOpacity>
+              )}
+            />
           )}
         </View>
-
-        {visible && (
-          <CardLongPressView
-            onEditPress={() => {
-              dispatch(editFeedItemVisible({visible: true})), setVisible(false);
-            }}
-            onDeletePress={() => _deleteMilk(selectedItem)}
-            onTabOut={() => setVisible(false)}
-          />
-        )}
-
-        {feedItemReducerState.editFeedItemVisible && (
-          <EditFeedItem selectedItem={selectedItem} />
-        )}
-        {console.log(selectedItem, 'selectedItem')}
-
-        {feedItemReducerState.feedItemData.length == 0 &&
-        feedItemReducerState.feedItemLoading == false ? (
-          <View style={FeedItemStyles.noRecordView}>
-            <Text style={FeedItemStyles.noRecordText}>No Record Found</Text>
-          </View>
-        ) : (
-          <FlatList
-            data={feedItemReducerState.feedItemData}
-            keyExtractor={(item) => item._Id}
-            renderItem={({item}) => (
-              <TouchableOpacity
-                onLongPress={() => {
-                  setVisible(true), setSelectedItem(item);
-                }}
-                style={FeedItemStyles.cardContainer}>
-                <View style={FeedItemStyles.cardContainerChild}>
-                  <Row label={'Date'} value={formatDate(item.date)} />
-                  <Row label={'Feed Name'} value={item.name} />
-                  <Row label={'Feed Unit'} value={item.unit} />
-                  <Row label={'Feed Quantity'} value={item.quantity} />
-
-                  <Row label={'Feed Price'} value={`${item.price} ${currency.PKR}`} />
-                </View>
-              </TouchableOpacity>
-            )}
-          />
-        )}
-      </View>
-    </ListView>
-     {feedItemReducerState.feedItemData.length !== 0 &&
-      <PDFGenerator
+      </ListView>
+      {feedItemReducerState.feedItemData.length !== 0 &&
+        <PDFGenerator
           keys={['Date', 'FeedName', 'FeedUnit', 'FeedQuantity', 'FeedPrice']}
           data={dataFormatter()}
           name={'Feed'}
@@ -180,7 +179,7 @@ function FeedItem({navigation}) {
   );
 }
 
-export {FeedItem};
+export { FeedItem };
 
 const FeedItemStyles = {
   countLabel: {
@@ -196,7 +195,7 @@ const FeedItemStyles = {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  pickerColumnLeft: {width: '50%', justifyContent: 'center', borderWidth: 0},
+  pickerColumnLeft: { width: '50%', justifyContent: 'center', borderWidth: 0 },
   pickerColumnRight: {
     width: '50%',
     justifyContent: 'center',

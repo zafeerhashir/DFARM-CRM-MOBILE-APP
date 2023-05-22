@@ -72,7 +72,7 @@ function PDFGenerator({ keys, data, name }) {
 
 
     const createPDF = async (template) => {
-        console.log(template, 'createPDF')
+
         let options = {
             html: template,
             fileName: name,
@@ -84,7 +84,7 @@ function PDFGenerator({ keys, data, name }) {
 
     const onPress = async () => {
         const template = await createTemplate(keys, data)
-        console.log(template, 'template')
+
         await createPDF(template)
     }
 

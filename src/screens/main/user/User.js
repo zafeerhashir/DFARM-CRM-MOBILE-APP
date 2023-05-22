@@ -1,7 +1,7 @@
-import React, {useEffect, useState, useCallback} from 'react';
-import {FlatList, Text, TouchableOpacity, View, StyleSheet} from 'react-native';
-import {SearchBar} from 'react-native-elements';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useEffect, useState, useCallback } from 'react';
+import { FlatList, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { SearchBar } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
 import color from '../../../assets/color/Index';
 import styles from '../../../assets/styles/Index';
 import {
@@ -14,11 +14,11 @@ import {
   getUser,
   deleteUser,
   editUserPasswordVisible,
-   selectedUser,
+  selectedUser,
   searchUser,
 } from '../../../redux/actions/Index';
 
-function User({navigation}) {
+function User({ navigation }) {
   const userReducerState = useSelector(state => state.user);
   const [visible, setVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -62,7 +62,7 @@ function User({navigation}) {
           containerStyle={styles.searchBarContainerStyle}
           inputContainerStyle={styles.searchBarInputContainerStyle}
           inputStyle={styles.searchBarInputStyle}
-          onChangeText={searchTerm => dispatch(searchUser({searchTerm}))}
+          onChangeText={searchTerm => dispatch(searchUser({ searchTerm }))}
           value={userReducerState.userSearchTerm}
           placeholderTextColor={color.grey}
           clearIcon={false}
@@ -78,7 +78,7 @@ function User({navigation}) {
             <Text style={userStyles.countValue}>
               {userReducerState.userData == 0
                 ? '0'
-                : userReducerState.userData.length }
+                : userReducerState.userData.length}
             </Text>
           </View>
         </View>
@@ -86,7 +86,7 @@ function User({navigation}) {
         {visible && (
           <CardLongPressView
             onEditPress={() => {
-              dispatch(editUserPasswordVisible({visible: true})),
+              dispatch(editUserPasswordVisible({ visible: true })),
                 setVisible(false);
             }}
             onDeletePress={() => _deleteUser()}
@@ -97,10 +97,10 @@ function User({navigation}) {
         {userReducerState.changeUserPasswordVisible && (
           <EditUserPassword selectedItem={userReducerState.selectedUser} />
         )}
-        {console.log(userReducerState.selectedUser, 'selectedItem')}
+        { }
 
         {userReducerState.userSearchResults.length == 0 &&
-        userReducerState.userLoading == false ? (
+          userReducerState.userLoading == false ? (
           <View style={userStyles.noRecordView}>
             <Text style={userStyles.noRecordText}>No Record Found</Text>
           </View>
@@ -108,7 +108,7 @@ function User({navigation}) {
           <FlatList
             data={userReducerState.userSearchResults}
             keyExtractor={(item) => item._Id}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <TouchableOpacity
                 onLongPress={() => {
                   setVisible(true),
@@ -134,7 +134,7 @@ function User({navigation}) {
   );
 }
 
-export {User};
+export { User };
 
 const userStyles = StyleSheet.create({
   countLabel: {

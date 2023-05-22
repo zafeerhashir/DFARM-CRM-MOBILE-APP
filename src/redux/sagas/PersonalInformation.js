@@ -4,13 +4,13 @@ import network from '../../services/network';
 import constant from '../constant/Index';
 
 async function serverErrorDialogue(message) {
-  Alert.alert('Sorry', message, [{text: 'OK'}], {cancelable: false});
+  Alert.alert('Sorry', message, [{ text: 'OK' }], { cancelable: false });
 }
 
 
 function* changePassword(action) {
-    
-  console.log(action, 'changePassword');
+
+  ;
   const response = yield call(
     network.post,
     `modules/user/changepassword/${action.payload.userId}`,
@@ -23,7 +23,7 @@ function* changePassword(action) {
       payload: response.errorMessage,
     });
   } else {
-    yield put({type: constant.CHANGE_PASSWORD_SUCCESS});
+    yield put({ type: constant.CHANGE_PASSWORD_SUCCESS });
   }
 }
 

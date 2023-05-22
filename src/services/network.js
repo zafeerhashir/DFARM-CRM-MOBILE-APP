@@ -1,4 +1,4 @@
-import {tryStatement} from '@babel/types';
+import { tryStatement } from '@babel/types';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const baseURL = 'https://dfarm.herokuapp.com/';
@@ -24,8 +24,8 @@ async function executeRequest(
   body = {},
   headers = {},
 ) {
-  console.log(body, 'executeRequest');
-  console.log(pathname, 'pathname');
+  ;
+  ;
 
 
   fetchInputObject = {
@@ -34,7 +34,7 @@ async function executeRequest(
     body: JSON.stringify(body),
   };
 
-  console.log(fetchInputObject, 'headers');
+  ;
 
 
   if (method == 'GET' || method == 'DELETE') {
@@ -42,21 +42,21 @@ async function executeRequest(
   }
 
   try {
-    console.log(`${baseURL}${pathname}`,'fullurl')
+
     var response = await fetch(`${baseURL}${pathname}`, fetchInputObject);
   } catch (e) {
-    return await {error: true, errorMessage: 'Network failed'};
+    return await { error: true, errorMessage: 'Network failed' };
   }
-  console.log(response.status,"response.status")
+
 
   const statusCode = response.status;
   const data = method == 'DELETE' ? {} : await response.json();
 
   if (statusCode == 200) {
-    return await {error: false, data: data};
+    return await { error: false, data: data };
   } else {
     if (statusCode == 409) {
-      return await {error: true, errorMessage: data.errorMessage};
+      return await { error: true, errorMessage: data.errorMessage };
     } else if (statusCode == 401) {
       return await {
         error: true,

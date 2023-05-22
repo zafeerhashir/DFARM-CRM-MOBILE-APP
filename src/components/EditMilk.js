@@ -1,26 +1,26 @@
-import React, {useEffect, useRef, useState, useCallback} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import color from '../assets/color/Index';
 import {
   editMilk,
   editMilkVisible,
   editMilkPerDayVisible,
 } from '../redux/actions/Index';
-import {literRegex} from '../validations/Index';
-import {Button} from './Button';
-import {Date} from './DatePicker';
-import {Input} from './Input';
-import {MYModal} from './Modal';
-import {SmartView} from './SmartView';
-import {formatDate} from '../conversions/Index';
-import styles, {shadow} from '../assets/styles/Index';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { literRegex } from '../validations/Index';
+import { Button } from './Button';
+import { Date } from './DatePicker';
+import { Input } from './Input';
+import { MYModal } from './Modal';
+import { SmartView } from './SmartView';
+import { formatDate } from '../conversions/Index';
+import styles, { shadow } from '../assets/styles/Index';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import PropTypes from 'prop-types';
 
 function EditMilk(props) {
-  
-  console.log(props, 'editmilkprops');
+
+  ;
   // const animalTagId = props.selectedItem.animal._id;
   const milkId = props.selectedItem._id;
   const [milkAM, setMilkAM] = useState(props.selectedItem.milkProduceAM);
@@ -34,11 +34,11 @@ function EditMilk(props) {
   const dispatch = useDispatch();
   const error = [milkAMError, milkPMError, rateError];
 
-  if(!props.milkPerDay){
-    error.splice(2,1)
+  if (!props.milkPerDay) {
+    error.splice(2, 1)
   }
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const callApi = () => {
     const postBodyEditMilk = {
@@ -59,9 +59,9 @@ function EditMilk(props) {
 
   const onDismiss = () => {
     if (props.milkPerDay) {
-      dispatch(editMilkPerDayVisible({visible: false}));
+      dispatch(editMilkPerDayVisible({ visible: false }));
     } else {
-      dispatch(editMilkVisible({visible: false}));
+      dispatch(editMilkVisible({ visible: false }));
     }
   };
 
@@ -72,7 +72,7 @@ function EditMilk(props) {
           <TouchableOpacity
             style={addMilkStyles.dismissTextContainer}
             onPress={() => onDismiss()}>
-            <Text style={{color: color.lightGrey}}>Dismiss</Text>
+            <Text style={{ color: color.lightGrey }}>Dismiss</Text>
           </TouchableOpacity>
         </View>
 
@@ -145,7 +145,7 @@ EditMilk.defaultProps = {
   milkPerDay: false
 }
 
-export {EditMilk};
+export { EditMilk };
 
 const addMilkStyles = {
   modalView: {

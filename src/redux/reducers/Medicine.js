@@ -1,8 +1,8 @@
 import constant from '../constant/Index';
-import {gainsboro} from 'color-name';
+import { gainsboro } from 'color-name';
 
 const initialState = {
-  selectAnimalTagItem: {tag: '', id: ''},
+  selectAnimalTagItem: { tag: '', id: '' },
   animalTagData: [],
   medicineData: [],
   medicineLoading: false,
@@ -10,17 +10,17 @@ const initialState = {
   editMedicineLoading: false,
   editMedicineVisible: false,
   selectAnimalTagVisible: false,
-  animalTagSearchResults:[],
+  animalTagSearchResults: [],
   animalTagSearchTerm: ''
 };
 
 function medicine(state = initialState, action) {
   switch (action.type) {
-      // ANIMAL TAG
+    // ANIMAL TAG
     case constant.GET_ANIMAL_TAG_START:
-      return {...state, medicineLoading: true};
+      return { ...state, medicineLoading: true };
     case constant.GET_ANIMAL_TAG_SUCCESS:
-      console.log(action.payload, '.GET_ANIMAL_TAG_SUCCESS');
+      ;
       return {
         ...state,
         animalTagData: action.payload,
@@ -29,13 +29,13 @@ function medicine(state = initialState, action) {
         medicineLoadingError: false,
       };
     case constant.GET_ANIMAL_TAG_FAILURE:
-      return {...state, medicineLoadingError: true, medicineLoading: false};
+      return { ...state, medicineLoadingError: true, medicineLoading: false };
 
 
     case constant.GET_MEDICINE_START:
-      return {...state, medicineLoadingError: false, medicineLoading: true};
+      return { ...state, medicineLoadingError: false, medicineLoading: true };
     case constant.GET_MEDICINE_SUCCESS:
-      console.log(action.payload, 'medicineData');
+      ;
       return {
         ...state,
         medicineData: action.payload,
@@ -196,4 +196,4 @@ function medicine(state = initialState, action) {
   }
 }
 
-export {medicine};
+export { medicine };

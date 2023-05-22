@@ -4,7 +4,7 @@ import network from '../../services/network';
 import constant from '../constant/Index';
 
 async function serverErrorDialogue(message) {
-  Alert.alert('Sorry', message, [{text: 'OK'}], {cancelable: false});
+  Alert.alert('Sorry', message, [{ text: 'OK' }], { cancelable: false });
 }
 
 
@@ -12,11 +12,11 @@ async function serverErrorDialogue(message) {
 function* getSummary(action) {
 
   const { fromDate, toDate } = action.payload
-  
-  const response = yield call(network.get, `modules/report?fromdate=${fromDate}&todate=${toDate}`);
-  console.log(response,'getSummary')
 
-  if(response.error) {
+  const response = yield call(network.get, `modules/report?fromdate=${fromDate}&todate=${toDate}`);
+
+
+  if (response.error) {
     serverErrorDialogue(response.errorMessage);
 
     yield put({
@@ -28,7 +28,7 @@ function* getSummary(action) {
       type: constant.GET_SUMMARY_SUCCESS,
       payload: response.data,
     });
-    
+
   }
 }
 

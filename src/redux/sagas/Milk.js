@@ -4,11 +4,11 @@ import network from '../../services/network';
 import constant from '../constant/Index';
 
 async function serverErrorDialogue(message) {
-  Alert.alert('Sorry', message, [{text: 'OK'}], {cancelable: false});
+  Alert.alert('Sorry', message, [{ text: 'OK' }], { cancelable: false });
 }
 
 async function modifyMilkData(response) {
-  return await response.filter((x) => x.animal !== null )
+  return await response.filter((x) => x.animal !== null)
 }
 
 function* getMilk() {
@@ -24,7 +24,7 @@ function* getMilk() {
     });
   } else {
     var data = yield call(modifyMilkData, response.data);
-    console.log(response.data, 'modifyMilkData');
+    ;
     yield put({
       type: constant.GET_MILK_SUCCESS,
       payload: data,
@@ -33,7 +33,7 @@ function* getMilk() {
 }
 
 function* addMilk(action) {
-  console.log(action, 'addMilk');
+  ;
   const response = yield call(
     network.post,
     `modules/milk`,
@@ -47,15 +47,15 @@ function* addMilk(action) {
       payload: response.errorMessage,
     });
   } else {
-    yield put({type: constant.ADD_MILK_SUCCESS});
+    yield put({ type: constant.ADD_MILK_SUCCESS });
   }
 }
 
 
 function* filterMilkPerDayData(action) {
-  console.log(action,'actionfilterMilkPerDayData')
+
   const response = yield call(network.get, 'modules/milk');
-  console.log(response,'filterMilkPerDayData')
+
   if (response.error) {
     serverErrorDialogue(response.errorMessage);
     yield put({
@@ -64,7 +64,7 @@ function* filterMilkPerDayData(action) {
     });
   } else {
     var modifyData = response.data.filter((x) => x.animal === null)
-    console.log(modifyData, 'modifyMilkperdayData');
+      ;
     const fromDate = new Date(action.payload.fromDate);
     const toDate = new Date(action.payload.toDate);
 
@@ -93,7 +93,7 @@ function* filterMilkData(action) {
     });
   } else {
     var modifyData = yield call(modifyMilkData, response.data);
-    console.log(modifyData, 'modifyMilkData');
+    ;
     const fromDate = new Date(action.payload.fromDate);
     const toDate = new Date(action.payload.toDate);
 
@@ -112,7 +112,7 @@ function* filterMilkData(action) {
 }
 
 function* deleteMilk(action) {
-  console.log(action, 'deleteMilk');
+  ;
 
   const response = yield call(
     network.delete,
@@ -132,7 +132,7 @@ function* deleteMilk(action) {
 }
 
 function* editMilk(action) {
-  console.log(action, 'editMilk');
+  ;
 
   const response = yield call(
     network.patch,
@@ -164,7 +164,7 @@ function* getAnimalTag() {
       payload: response.errorMessage,
     });
   } else {
-    console.log(response.data, 'GET_ANIMAL_SUCCESS');
+    ;
 
     yield put({
       type: constant.GET_ANIMAL_TAG_SUCCESS,

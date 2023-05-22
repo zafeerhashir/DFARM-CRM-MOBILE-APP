@@ -1,11 +1,11 @@
-import {Alert} from 'react-native';
-import {call, put, takeLatest} from 'redux-saga/effects';
+import { Alert } from 'react-native';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import network from '../../services/network';
 import constant from '../constant/Index';
-import {formatDate} from '../../conversions/Index';
+import { formatDate } from '../../conversions/Index';
 
 async function serverErrorDialogue(message) {
-  Alert.alert('Sorry', message, [{text: 'OK'}], {cancelable: false});
+  Alert.alert('Sorry', message, [{ text: 'OK' }], { cancelable: false });
 }
 
 async function modifyFeedItemData(response) {
@@ -28,9 +28,9 @@ async function getFeedItemDate(response, payload) {
       (await new Date(formatDate(x.date)).getTime()) ==
       new Date(formatDate(payload)).getTime()
     ) {
-      console.log(new Date(formatDate(x.date)).getTime(), 'x.date');
-      console.log(new Date(formatDate(payload)).getTime(), 'payload');
-      return await {date: x.date, id: x._id};
+      ).getTime(), 'x.date');
+      ).getTime(), 'payload');
+      return await { date: x.date, id: x._id };
     }
   }
 
@@ -63,7 +63,7 @@ function* addFeedItemDate(action) {
       } else {
         yield put({
           type: constant.ADD_FEED_ITEM_DATE_SUCCESS,
-          payload: {date: response.data.date, id: response.data._id},
+          payload: { date: response.data.date, id: response.data._id },
         });
       }
     } else {
@@ -77,7 +77,7 @@ function* addFeedItemDate(action) {
 
 
 function* addFeedItem(action) {
-  console.log(action, 'addFeedItem');
+  ;
 
   const response = yield call(
     network.post,
@@ -92,7 +92,7 @@ function* addFeedItem(action) {
       payload: response.errorMessage,
     });
   } else {
-    yield put({type: constant.ADD_FEED_ITEM_SUCCESS});
+    yield put({ type: constant.ADD_FEED_ITEM_SUCCESS });
   }
 }
 
@@ -107,7 +107,7 @@ function* getFeedItem(action) {
     });
   } else {
     var modifyData = yield call(modifyFeedItemData, response.data);
-    console.log(modifyData, 'modifyFeedItemData');
+    ;
     const fromDate = new Date(action.payload.fromDate);
     const toDate = new Date(action.payload.toDate);
 
@@ -130,8 +130,7 @@ function* deleteFeed(action) {
 
   const response = yield call(
     network.delete,
-    `modules/feeditem/${action.payload.feedItemDateId}/${
-      action.payload.feedItemId
+    `modules/feeditem/${action.payload.feedItemDateId}/${action.payload.feedItemId
     }`,
     action.payload.postBodyEditFeedItem,
   );
@@ -149,7 +148,7 @@ function* deleteFeed(action) {
 }
 
 function* editFeedItem(action) {
-  console.log(action, 'editFeedItem');
+  ;
   const response = yield call(
     network.patch,
     `modules/feeditem/${action.payload.feedItemDateId}/${action.payload.feedItemId}`,
@@ -182,4 +181,4 @@ function* feedItemWatcherSaga() {
   yield takeLatest(constant.DELETE_FEED_ITEM_START, deleteFeed);
 }
 
-export {feedItemWatcherSaga};
+export { feedItemWatcherSaga };

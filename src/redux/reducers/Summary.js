@@ -1,5 +1,5 @@
 import constant from '../constant/Index';
-import {gainsboro} from 'color-name';
+import { gainsboro } from 'color-name';
 
 const initialState = {
   animalTagData: [],
@@ -13,9 +13,9 @@ function summary(state = initialState, action) {
   switch (action.type) {
 
     case constant.GET_SUMMARY_START:
-      return {...state, summaryLoadingError: false, summaryLoading: true};
+      return { ...state, summaryLoadingError: false, summaryLoading: true };
     case constant.GET_SUMMARY_SUCCESS:
-      console.log(action.payload, 'summaryData');
+      ;
       return {
         ...state,
         summaryData: action.payload,
@@ -29,10 +29,10 @@ function summary(state = initialState, action) {
         summaryLoading: false,
       };
 
- 
+
     default:
       return state;
   }
 }
 
-export {summary};
+export { summary };

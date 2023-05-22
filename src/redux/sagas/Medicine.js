@@ -4,7 +4,7 @@ import network from '../../services/network';
 import constant from '../constant/Index';
 
 async function serverErrorDialogue(message) {
-  Alert.alert('Sorry', message, [{text: 'OK'}], {cancelable: false});
+  Alert.alert('Sorry', message, [{ text: 'OK' }], { cancelable: false });
 }
 
 // async function modifyMEDICINEData(response) {
@@ -24,7 +24,7 @@ function* getMedicine() {
   } else {
     // var data = yield call(modifyMEDICINEData, response.data);
     alert(JSON.stringify(data))
-    console.log(response.data, 'modifyMEDICINEData');
+      ;
     yield put({
       type: constant.GET_MEDICINE_SUCCESS,
       payload: response.data,
@@ -33,7 +33,7 @@ function* getMedicine() {
 }
 
 function* addMedicine(action) {
-  console.log(action, 'addMEDICINE');
+  ;
   const response = yield call(
     network.post,
     `modules/medicine`,
@@ -47,7 +47,7 @@ function* addMedicine(action) {
       payload: response.errorMessage,
     });
   } else {
-    yield put({type: constant.ADD_MEDICINE_SUCCESS});
+    yield put({ type: constant.ADD_MEDICINE_SUCCESS });
   }
 }
 
@@ -62,7 +62,7 @@ function* filterMedicineData(action) {
       payload: response.errorMessage,
     });
   } else {
-   
+
     const fromDate = new Date(action.payload.fromDate);
     const toDate = new Date(action.payload.toDate);
 
@@ -81,7 +81,7 @@ function* filterMedicineData(action) {
 }
 
 function* deleteMedicine(action) {
-  console.log(action, 'deleteMEDICINE');
+  ;
 
   const response = yield call(
     network.delete,
@@ -101,7 +101,7 @@ function* deleteMedicine(action) {
 }
 
 function* editMedicine(action) {
-  console.log(action, 'editMEDICINE');
+  ;
 
   const response = yield call(
     network.patch,
@@ -133,7 +133,7 @@ function* getAnimalTag() {
       payload: response.errorMessage,
     });
   } else {
-    console.log(response.data, 'GET_ANIMAL_SUCCESS');
+    ;
 
     yield put({
       type: constant.GET_ANIMAL_TAG_SUCCESS,
@@ -151,5 +151,5 @@ function* medicineWatcherSaga() {
   yield takeLatest(constant.GET_ANIMAL_TAG_START, getAnimalTag);
 }
 
-export {medicineWatcherSaga};
+export { medicineWatcherSaga };
 

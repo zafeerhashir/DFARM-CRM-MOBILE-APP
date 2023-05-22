@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   FlatList,
   Text,
@@ -6,7 +6,7 @@ import {
   View,
   RefreshControl,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import color from '../../../assets/color/Index';
 import styles from '../../../assets/styles/Index';
 import {
@@ -23,9 +23,9 @@ import {
   editMilkVisible,
   filterMilkData,
 } from '../../../redux/actions/Index';
-import {agoDate, currentDate, formatDate} from './../../../conversions/Index';
+import { agoDate, currentDate, formatDate } from './../../../conversions/Index';
 
-function Milk({navigation}) {
+function Milk({ navigation }) {
   const [toDate, setToDate] = useState(currentDate());
   const [fromDate, setFromDate] = useState(agoDate(7));
   const [visible, setVisible] = useState(false);
@@ -48,43 +48,43 @@ function Milk({navigation}) {
 
   const getFilterMilkData = async () => {
     if (fromDate !== '' && toDate !== '') {
-      const body = {toDate: toDate, fromDate: fromDate};
+      const body = { toDate: toDate, fromDate: fromDate };
       dispatch(filterMilkData(body));
     }
   };
 
   const _deleteMilk = item => {
     setVisible(false);
-    console.log(JSON.stringify(item),'itemdeletemilk')
-    const payload = {animalTagId: item.animalTagId, id: item._id};
-    dispatch(deleteMilk(payload));
-    getFilterMilkData();
-  };
+    ,'itemdeletemilk')
+  const payload = { animalTagId: item.animalTagId, id: item._id };
+  dispatch(deleteMilk(payload));
+  getFilterMilkData();
+};
 
-  const getTotalMilk = () => {
-    var total = 0;
+const getTotalMilk = () => {
+  var total = 0;
 
-    for (let e of milkReducerState.milkData) {
-      total = total + (e.milkProduceAM + e.milkProducePM);
-    }
+  for (let e of milkReducerState.milkData) {
+    total = total + (e.milkProduceAM + e.milkProducePM);
+  }
 
-    return <NumberFormatter value={total} suffix={' seer'} />;
-  };
-  // refreshing={milkReducerState.milkLoading}
-  // onRefresh={() => onRefresh()}
+  return <NumberFormatter value={total} suffix={' seer'} />;
+};
+// refreshing={milkReducerState.milkLoading}
+// onRefresh={() => onRefresh()}
 
 
 
-  return (
-    //   <ListView
-    //   refreshControl={
-    //   <RefreshControl
-    //   refreshing={milkReducerState.milkLoading}
-    //   onRefresh={() => onRefresh()}
-    // />}
+return (
+  //   <ListView
+  //   refreshControl={
+  //   <RefreshControl
+  //   refreshing={milkReducerState.milkLoading}
+  //   onRefresh={() => onRefresh()}
+  // />}
 
-    //   >
-    <>
+  //   >
+  <>
     <ListView
       refreshing={milkReducerState.milkLoading}
       onRefresh={() => onRefresh()}>
@@ -127,7 +127,7 @@ function Milk({navigation}) {
       {visible && (
         <CardLongPressView
           onEditPress={() => {
-            dispatch(editMilkVisible({visible: true})), setVisible(false);
+            dispatch(editMilkVisible({ visible: true })), setVisible(false);
           }}
           onDeletePress={() => _deleteMilk(selectedItem)}
           onTabOut={() => setVisible(false)}
@@ -137,10 +137,9 @@ function Milk({navigation}) {
       {milkReducerState.editMilkVisible && (
         <EditMilk selectedItem={selectedItem} />
       )}
-      {console.log(selectedItem, 'selectedItem')}
 
       {milkReducerState.milkData.length == 0 &&
-      milkReducerState.milkLoading == false ? (
+        milkReducerState.milkLoading == false ? (
         <View style={milkStyles.noRecordView}>
           <Text style={milkStyles.noRecordText}>No Record Found</Text>
         </View>
@@ -148,7 +147,7 @@ function Milk({navigation}) {
         <FlatList
           data={milkReducerState.milkData}
           keyExtractor={(item) => item._id}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <TouchableOpacity
               onLongPress={() => {
                 setVisible(true), setSelectedItem(item);
@@ -157,7 +156,7 @@ function Milk({navigation}) {
               <View style={milkStyles.cardContainerChild}>
                 <Row label={'Date'} value={formatDate(item.date)} />
 
-            { item.animal !== null && <Row label={'Animal Tag'} value={item.animal.tag} /> }
+                {item.animal !== null && <Row label={'Animal Tag'} value={item.animal.tag} />}
                 <Row
                   label={'Morning Milk'}
                   value={`${item.milkProduceAM} seer`}
@@ -176,15 +175,15 @@ function Milk({navigation}) {
         />
       )}
     </ListView>
-   
-    </>
-  );
+
+  </>
+);
 }
 
 
-export {Milk};
+export { Milk };
 
-import {shadow} from '../../../assets/styles/Index';
+import { shadow } from '../../../assets/styles/Index';
 
 const milkStyles = {
   pickerRow: {

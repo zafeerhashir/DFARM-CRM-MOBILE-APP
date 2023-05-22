@@ -1,7 +1,7 @@
-import React, {useEffect, useState, useCallback} from 'react';
-import {FlatList, Text, TouchableOpacity, View, StyleSheet} from 'react-native';
-import {SearchBar} from 'react-native-elements';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useEffect, useState, useCallback } from 'react';
+import { FlatList, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { SearchBar } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
 import color from '../../../assets/color/Index';
 import styles from '../../../assets/styles/Index';
 import {
@@ -18,9 +18,9 @@ import {
   selectedAnimal,
   searchAnimal,
 } from '../../../redux/actions/Index';
-import {formatDate} from '../../../conversions/Index';
+import { formatDate } from '../../../conversions/Index';
 
-function Animal({navigation}) {
+function Animal({ navigation }) {
   const animalReducerState = useSelector(state => state.animal);
   const [visible, setVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -85,7 +85,7 @@ function Animal({navigation}) {
           containerStyle={styles.searchBarContainerStyle}
           inputContainerStyle={styles.searchBarInputContainerStyle}
           inputStyle={styles.searchBarInputStyle}
-          onChangeText={searchTerm => dispatch(searchAnimal({searchTerm}))}
+          onChangeText={searchTerm => dispatch(searchAnimal({ searchTerm }))}
           value={animalReducerState.animalSearchTerm}
           placeholderTextColor={color.grey}
           clearIcon={false}
@@ -94,7 +94,7 @@ function Animal({navigation}) {
 
         <View style={animalStyles.countContainer}>
           <View style={animalStyles.countLabelContainer}>
-            <Text  style={animalStyles.countLabel} >Total Animal</Text>
+            <Text style={animalStyles.countLabel} >Total Animal</Text>
           </View>
 
           <View style={animalStyles.countValueContainer}>
@@ -110,7 +110,7 @@ function Animal({navigation}) {
           <CardLongPressView
             viewDetails={true}
             onEditPress={() => {
-              dispatch(editAnimalVisible({visible: true})), setVisible(false);
+              dispatch(editAnimalVisible({ visible: true })), setVisible(false);
             }}
             onDeletePress={() => _deleteAnimal()}
             onDetailsPress={() => {
@@ -123,10 +123,9 @@ function Animal({navigation}) {
         {animalReducerState.editAnimalVisible && (
           <EditAnimal selectedItem={animalReducerState.selectedAnimal} />
         )}
-        {console.log(animalReducerState.selectedAnimal, 'selectedItem')}
 
         {animalReducerState.animalSearchResults.length == 0 &&
-        animalReducerState.animalLoading == false ? (
+          animalReducerState.animalLoading == false ? (
           <View style={animalStyles.noRecordView}>
             <Text style={animalStyles.noRecordText}>No Record Found</Text>
           </View>
@@ -134,7 +133,7 @@ function Animal({navigation}) {
           <FlatList
             data={animalReducerState.animalSearchResults}
             keyExtractor={(item) => item._Id}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <TouchableOpacity
                 onLongPress={() => {
                   setVisible(true),
@@ -146,13 +145,13 @@ function Animal({navigation}) {
                 }}
                 style={animalStyles.cardContainer}>
                 <View style={[animalStyles.cardContainerChild]}>
-                    <Row label={'Animal Tag'} value={item.tag} />
-                    <Row label={'Origin'} value={item.origin} />
-                    {
-                      item.purchaseDate !== undefined &&
-                      <Row label={'Purchase Date'} value={formatDate(item.purchaseDate)} />
-                    }
-                    <Row label={'Price'} value={item.price} />
+                  <Row label={'Animal Tag'} value={item.tag} />
+                  <Row label={'Origin'} value={item.origin} />
+                  {
+                    item.purchaseDate !== undefined &&
+                    <Row label={'Purchase Date'} value={formatDate(item.purchaseDate)} />
+                  }
+                  <Row label={'Price'} value={item.price} />
                 </View>
               </TouchableOpacity>
             )}
@@ -163,16 +162,16 @@ function Animal({navigation}) {
   );
 }
 
-export {Animal};
+export { Animal };
 
 const animalStyles = StyleSheet.create({
 
-  countLabel:{
-    color:color.black
+  countLabel: {
+    color: color.black
 
   },
-  countValue:{
-   color:color.black
+  countValue: {
+    color: color.black
   },
 
   countContainer: {
