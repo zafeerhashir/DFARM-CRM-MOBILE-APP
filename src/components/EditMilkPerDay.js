@@ -1,58 +1,58 @@
-import React, {useEffect, useRef, useState, useCallback} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import color from '../assets/color/Index';
 import {
   editMilk,
   editMilkVisible,
   editMilkPerDayVisible,
 } from '../redux/actions/Index';
-import {integerRegex} from '../validations/Index';
-import {Button} from './Button';
-import {Date} from './DatePicker';
-import {Input} from './Input';
-import {MYModal} from './Modal';
-import {SmartView} from './SmartView';
-import {formatDate} from '../conversions/Index';
-import styles, {shadow} from '../assets/styles/Index';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { integerRegex } from '../validations/Index';
+import { Button } from './Button';
+import { Date } from './DatePicker';
+import { Input } from './Input';
+import { MYModal } from './Modal';
+import { SmartView } from './SmartView';
+import { formatDate } from '../conversions/Index';
+import styles, { shadow } from '../assets/styles/Index';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import PropTypes from 'prop-types';
 
 function EditMilkPerDay(props) {
-const [milkGallonAM, setMilkGallonAM] = useState(props.selectedItem.milkGallonAM);
-const [milkGallonPM, setMilkGallonPM] = useState(props.selectedItem.milkGallonPM);
-const [milkLiterAM, setMilkLiterAM] = useState(props.selectedItem.milkLiterAM);
-const [milkLiterAM, setMilkLiterPM] = useState(props.selectedItem.milkLiterAM);
-const [rate, setRate] = useState('');
-const [date, setDate] = useState(currentDate());
-const dispatch = useDispatch();
-const [rateError, setRateError] = useState(true);
-const [milkGallonAMError, setMilkGallonAMError] = useState(true);
-const [milkGallonPMError, setMilkGallonPMError] = useState(true);
-const [milkLiterAMError, setMilkLiterAMError] = useState(true);
-const [milkLiterPMError, setMilkLiterPMError] = useState(true);
-const [animalTagError, setAnimalTagError] = useState(true);
-const [dateError, setDateError] = useState(true);
-const rateRef = useRef();
-const milkGallonAMRef = useRef();
-const milkGallonPMRef = useRef();
-const milkLiterAMRef = useRef();
-const milkLiterPMRef = useRef();
-const dateRef = useRef();
-const animalTagRef = useRef();
-const error = [milkGallonAMError, milkLiterAMError, milkGallonPMError, milkLiterPMError, rateError];
+  const [milkGallonAM, setMilkGallonAM] = useState(props.selectedItem.milkGallonAM);
+  const [milkGallonPM, setMilkGallonPM] = useState(props.selectedItem.milkGallonPM);
+  const [milkLiterAM, setMilkLiterAM] = useState(props.selectedItem.milkLiterAM);
+  const [milkLiterPM, setMilkLiterPM] = useState(props.selectedItem.milkLiterPM);
+  const [rate, setRate] = useState('');
+  const [date, setDate] = useState(currentDate());
+  const dispatch = useDispatch();
+  const [rateError, setRateError] = useState(true);
+  const [milkGallonAMError, setMilkGallonAMError] = useState(true);
+  const [milkGallonPMError, setMilkGallonPMError] = useState(true);
+  const [milkLiterAMError, setMilkLiterAMError] = useState(true);
+  const [milkLiterPMError, setMilkLiterPMError] = useState(true);
+  const [animalTagError, setAnimalTagError] = useState(true);
+  const [dateError, setDateError] = useState(true);
+  const rateRef = useRef();
+  const milkGallonAMRef = useRef();
+  const milkGallonPMRef = useRef();
+  const milkLiterAMRef = useRef();
+  const milkLiterPMRef = useRef();
+  const dateRef = useRef();
+  const animalTagRef = useRef();
+  const error = [milkGallonAMError, milkLiterAMError, milkGallonPMError, milkLiterPMError, rateError];
 
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   const callApi = () => {
     const postBodyEditMilk = {
-        date,
-        milkGallonAM,
-        milkGallonPM,
-        milkLiterAM,
-        milkLiterPM,
-        rate,
+      date,
+      milkGallonAM,
+      milkGallonPM,
+      milkLiterAM,
+      milkLiterPM,
+      rate,
     };
 
     const payload = {
@@ -65,7 +65,7 @@ const error = [milkGallonAMError, milkLiterAMError, milkGallonPMError, milkLiter
   const onLayout = useCallback();
 
   const onDismiss = () => {
-    dispatch(editMilkPerDayVisible({visible: false}));
+    dispatch(editMilkPerDayVisible({ visible: false }));
   };
 
   return (
@@ -75,7 +75,7 @@ const error = [milkGallonAMError, milkLiterAMError, milkGallonPMError, milkLiter
           <TouchableOpacity
             style={addMilkStyles.dismissTextContainer}
             onPress={() => onDismiss()}>
-            <Text style={{color: color.lightGrey}}>Dismiss</Text>
+            <Text style={{ color: color.lightGrey }}>Dismiss</Text>
           </TouchableOpacity>
         </View>
 
@@ -88,88 +88,88 @@ const error = [milkGallonAMError, milkLiterAMError, milkGallonPMError, milkLiter
             setDateError(error);
           }}
         />
-       <Input
-        label={'Morning Milk Maan'}
-        keyboardType={'number-pad'}
-        maxLength={20}
-        ref={milkGallonAMRef}
-        value={milkGallonAM}
-        placeholder={'Enter Morning Milk In Maan'}
-        errorMessage={'Morning Milk must be in maan'}
-        onChangeText={value => setMilkGallonAM(value)}
-        error={error => {
-          setMilkGallonAMError(error);
-        }}
-        regex={integerRegex}
-      />
+        <Input
+          label={'Morning Milk Maan'}
+          keyboardType={'number-pad'}
+          maxLength={20}
+          ref={milkGallonAMRef}
+          value={milkGallonAM}
+          placeholder={'Enter Morning Milk In Maan'}
+          errorMessage={'Morning Milk must be in maan'}
+          onChangeText={value => setMilkGallonAM(value)}
+          error={error => {
+            setMilkGallonAMError(error);
+          }}
+          regex={integerRegex}
+        />
 
 
-      <Input
-        label={'Evening Milk Maan'}
-        keyboardType={'number-pad'}
-        required={false}
-        maxLength={20}
-        ref={milkGallonPMRef}
-        value={milkGallonPM}
-        placeholder={'Enter Evening Milk In Maan'}
-        errorMessage={'Evening Milk must be in maan'}
-        onChangeText={value => setMilkGallonPM(value)}
-        error={error => {
-          setMilkGallonPMError(error);
-        }}
-        regex={integerRegex}
-      />
+        <Input
+          label={'Evening Milk Maan'}
+          keyboardType={'number-pad'}
+          required={false}
+          maxLength={20}
+          ref={milkGallonPMRef}
+          value={milkGallonPM}
+          placeholder={'Enter Evening Milk In Maan'}
+          errorMessage={'Evening Milk must be in maan'}
+          onChangeText={value => setMilkGallonPM(value)}
+          error={error => {
+            setMilkGallonPMError(error);
+          }}
+          regex={integerRegex}
+        />
 
 
-    <Input
-        label={'Morning Milk Seer'}
-        keyboardType={'number-pad'}
-        required={false}
-        maxLength={20}
-        ref={milkLiterAMRef}
-        value={milkLiterAM}
-        placeholder={'Enter Morning Milk In Seer'}
-        errorMessage={'Morning Milk must be in seer'}
-        onChangeText={value => setMilkLiterAM(value)}
-        error={error => {
-          setMilkLiterAMError(error);
-        }}
-        regex={integerRegex}
-      />
+        <Input
+          label={'Morning Milk Seer'}
+          keyboardType={'number-pad'}
+          required={false}
+          maxLength={20}
+          ref={milkLiterAMRef}
+          value={milkLiterAM}
+          placeholder={'Enter Morning Milk In Seer'}
+          errorMessage={'Morning Milk must be in seer'}
+          onChangeText={value => setMilkLiterAM(value)}
+          error={error => {
+            setMilkLiterAMError(error);
+          }}
+          regex={integerRegex}
+        />
 
 
-      <Input
-        label={'Evening Milk Seer'}
-        keyboardType={'number-pad'}
-        required={false}
-        maxLength={20}
-        ref={milkLiterPMRef}
-        value={milkLiterPM}
-        placeholder={'Enter Evening Milk In Seer'}
-        errorMessage={'Evening Milk must be in seer'}
-        onChangeText={value => setMilkLiterPM(value)}
-        error={error => {
-          setMilkLiterPMError(error);
-        }}
-        regex={integerRegex}
-      />
+        <Input
+          label={'Evening Milk Seer'}
+          keyboardType={'number-pad'}
+          required={false}
+          maxLength={20}
+          ref={milkLiterPMRef}
+          value={milkLiterPM}
+          placeholder={'Enter Evening Milk In Seer'}
+          errorMessage={'Evening Milk must be in seer'}
+          onChangeText={value => setMilkLiterPM(value)}
+          error={error => {
+            setMilkLiterPMError(error);
+          }}
+          regex={integerRegex}
+        />
 
 
-      <Input
-        label={'Rate'}
-        keyboardType={'number-pad'}
-        maxLength={8}
-        ref={rateRef}
-        value={rate}
-        placeholder={'Enter Rate'}
-        errorMessage={'Rate must be in number'}
-        onChangeText={value => setRate(value)}
-        error={error => {
-          setRateError(error);
-        }}
-        regex={integerRegex}
-      />
-        
+        <Input
+          label={'Rate'}
+          keyboardType={'number-pad'}
+          maxLength={8}
+          ref={rateRef}
+          value={rate}
+          placeholder={'Enter Rate'}
+          errorMessage={'Rate must be in number'}
+          onChangeText={value => setRate(value)}
+          error={error => {
+            setRateError(error);
+          }}
+          regex={integerRegex}
+        />
+
         <Button
           error={error}
           title={'Edit'}
@@ -182,7 +182,7 @@ const error = [milkGallonAMError, milkLiterAMError, milkGallonPMError, milkLiter
 
 
 
-export {EditMilkPerDay};
+export { EditMilkPerDay };
 
 const addMilkStyles = {
   modalView: {
